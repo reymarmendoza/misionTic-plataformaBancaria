@@ -1,4 +1,6 @@
 import React, {useState} from 'react';
+// import '../../node_modules/boostrap/dist/css/boostrap.min.css';
+// import 'boostrap/dist/css/boostrap.min.css';
 
 const MIN_PWD = 8;
 const MAX_PWD = 15;
@@ -11,6 +13,7 @@ const Login = () => {
     const [pwd, setPwd] = useState('');
     const [errMail, setErrMail] = useState('');
     const [errPwd, setErrPwd] = useState('');
+    const [errGral, setErrGral] = useState('');
 
     const changeHandlerEmail = (event) => {
         setEmail(event.target.value);
@@ -30,18 +33,30 @@ const Login = () => {
 
     const submitHandler = (event) => {
         event.preventDefault();
-        alert(typeof(REG_EMAIL) + "\nY " + REG_PWD);
+        if (email === '' || pwd === ''){
+            setErrGral('Los campos email y contrasea son requeridos')
+        } else if (errMail !== ''){
+            setErrGral('No es un email valido')
+        } else if (errPwd !== ''){
+            setErrGral('No es una contraseña valida')
+        } else if (email !== 'admin@banagrario.com' || pwd !== 'Abcd/123'){
+            setErrGral('Usuario y/o contraseña incorrecta')
+        } else {
+            setErrGral('');
+            alert('Bienvenido!!!');
+        }        
     };
 
     return (
         <form onSubmit={submitHandler}>
-            <label htmlFor='email'>E-mail: </label>
+            <label htmlFor='email'>E-mail: *</label>
             <input type='email' name='email' value={email} onChange={changeHandlerEmail} />
             {Boolean(errMail) && <p>{errMail}</p>}
-            <label htmlFor='pwd'>Contraseña: </label>
-            <input type='pwd' name='pwd' value={pwd} onChange={changeHandlerPwd} />
+            <label htmlFor='pwd'>Contraseña: *</label>
+            <input type='password' name='pwd' value={pwd} onChange={changeHandlerPwd} />
             {Boolean(errPwd) && <p>{errPwd}</p>}
             <input type='submit' value='Ingresar' />
+            {Boolean(errGral) && <p>{errGral}</p>}
         </form>
     )
 }
