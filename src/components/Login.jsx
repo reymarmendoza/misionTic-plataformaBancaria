@@ -17,31 +17,60 @@ const Login = () => {
 		setEmail(event.target.value);
 		const isValid = REG_EMAIL.test(event.target.value.toLowerCase());
 
-		if (isValid) setErrMail('');
-		else setErrMail('Email no valido')
+		isValid ? setErrMail('') : setErrMail('Email no valido');
 	};
 
 	const changeHandlerPwd = (event) => {
 		setPwd(event.target.value);
 		const isValid = REG_PWD.test(event.target.value);
 
-		if (isValid) setErrPwd('');
-		else setErrPwd('Contraseña no valida. Debe tener al menos una mayuscula, una minuscula, un numero y un caracter especial. Su longitud debe estar entre 8 y 15 caracteres')
+		isValid ? setErrPwd('') : setErrPwd('La contraseña debe tener al menos una mayuscula, un numero, un caracter especial y una longitud de entre 8 y 15 caracteres');
 	};
+
+	// cambiar el onclick de email, pwd para que evalue antes de hacer submit
+	// const validateFields = () => {
+	// 	changeHandlerEmail;
+	// 	changeHandlerPwd;
+	// }
 
 	const submitHandler = (event) => {
 		event.preventDefault();
-		if (email === '' || pwd === '') {
-			setErrGral('Los campos email y contrasea son requeridos')
-		} else if (errMail !== '') {
-			setErrGral('No es un email valido')
-		} else if (errPwd !== '') {
-			setErrGral('No es una contraseña valida')
-		} else if (email !== 'admin@banagrario.com' || pwd !== 'Abcd/123') {
-			setErrGral('Usuario y/o contraseña incorrecta')
+
+		const localStorageUsers = localStorage.getItem('GRUPO1_V1');
+		let parsedUser;
+
+		if (!localStorageUsers) {
+			localStorage.setItem("GRUPO1_V1", JSON.stringify([]));
+			parsedUser = [];
 		} else {
-			setErrGral('');
-			alert('Bienvenido!!!');
+			parsedUser = JSON.parse(localStorageUsers);
+		}
+
+		const numUsers = Object.keys(parsedUser).length;
+
+		if (email === '' || pwd === '') {
+			setErrGral('Los campos email y contraseña son requeridos');
+		} else if (errMail !== '') {
+			setErrGral('No es un email valido');
+		} else if (errPwd !== '') {
+			setErrGral('No es una contraseña valida');
+		} else {
+
+			let credentialsMatch = false;
+
+			for (let i = 0; i < numUsers; i++) {
+				if (parsedUser[i]["email"] == email && parsedUser[i]["pwd"] == pwd) {
+					parsedUser[i]["log"] = !parsedUser[i]["log"];
+					credentialsMatch = true;
+					setErrGral('');
+					alert('Bienvenido!!!');
+				}
+			}
+
+			if (!credentialsMatch) {
+				setErrGral('Usuario y/o contraseña incorrecta');
+			}
+
 		}
 	};
 

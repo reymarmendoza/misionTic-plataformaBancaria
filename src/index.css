@@ -36,3 +36,7 @@ input[class="italicFont"]::placeholder {
   font-style: italic;
   font-weight: 100;
 }
+
+input[class="italicFont"]:focus::placeholder {
+  color: transparent;
+}
