@@ -1,6 +1,8 @@
 // import logo from './logo.svg';
 import './App.css';
 import { Login } from './components/Login'
+import { NavBar } from './components/NavBar'
+import { SideBar } from './components/SideBar'
 
 function App() {
   /*
@@ -21,8 +23,11 @@ function App() {
   */
 
   return (
-    <div className="App">
+    <div className="App">      
+      <NavBar />
+      <SideBar />
       <Login />
+      
       {/* <img src={logo} className="App-logo" alt="logo" /> */}
     </div>
   );
