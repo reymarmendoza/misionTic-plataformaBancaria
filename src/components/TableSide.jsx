@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from 'react-router-dom';
 
 export function TableSide() {
 	return (
@@ -10,16 +11,20 @@ export function TableSide() {
 			<>
 				<ul className="nav nav-pills flex-column mb-auto">
 					<li className="nav-item">
+						<Link to="/usuario/inicio">
 						<a href="#" className="nav-link active" aria-current="page">
 							<svg className="bi me-2" width="16" height="16"><use></use></svg>
 							Inicio
 						</a>
+						</Link>
 					</li>
 					<li>
+						<Link to="/usuario/ctas">
 						<a href="#" className="nav-link link-dark">
 							<svg className="bi me-2" width="16" height="16"><use></use></svg>
 							Cuentas
 						</a>
+						</Link>
 					</li>
 					<li>
 						<a href="#" className="nav-link link-dark">
@@ -36,7 +41,7 @@ export function TableSide() {
 					<li>
 						<a href="#" className="nav-link link-dark">
 							<svg className="bi me-2" width="16" height="16"><use></use></svg>
-							Otros
+							Nueva Cuenta
 						</a>
 					</li>
 				</ul>

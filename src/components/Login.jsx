@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
 
 const MIN_PWD = 8;
 const MAX_PWD = 15;
@@ -101,7 +101,7 @@ const Login = () => {
 							<div className="row">
 								<label className="col-form-label"></label>
 								<div className="col-12">
-									<Link to="/tableFull">
+									<Link to="/usuario">
 										<button type="submit" className="btn btn-primary">Ingresar</button>
 										{Boolean(errGral) && <div className="form-text">{errGral}</div>}
 									</Link>

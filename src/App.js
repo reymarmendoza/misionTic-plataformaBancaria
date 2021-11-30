@@ -1,14 +1,15 @@
-import React from 'react'
+import React from 'react';
 import {
   BrowserRouter,
   Routes,
   Route
-} from 'react-router-dom'
+} from 'react-router-dom';
 
 import { Login } from './components/Login'
 import { NavBar } from './components/NavBar'
 import { Error } from './components/ErrorPage'
 import { TableFull } from './components/TableFull'
+import { Cuentas } from './components/Cuentas'
 
 import appStyles from './Styles/root.module.css'
 import navStyles from './Styles/navbar.module.css'
@@ -22,9 +23,22 @@ export default function App() {
       </div>
       <Routes>
         {/* Aqui se crean las rutas, para usar el link al componente, se usa link y el path que especifique aqui */}
-        <Route path="/" />
+        <Route exact path="/" />
         <Route path="/login" element={<Login />} />
-        <Route path="/tableFull" element={<TableFull />} />
+        <Route path="/usuario/*" element={<TableFull />} >
+          <Route path='inicio'
+            element={
+              <div className="col-8">
+                HOME
+              </div>}
+          />
+          <Route path='ctas'
+            element={
+              <div className="col-8">
+                <Cuentas />
+              </div>}
+          />
+        </Route>
         <Route path="*" element={<Error />} /> {/* Debe estar de ultima */}
       </Routes>
       <NavBar className={navStyles.prueba} />

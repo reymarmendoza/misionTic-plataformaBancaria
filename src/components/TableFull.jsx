@@ -1,20 +1,21 @@
-import React from 'react'
+import React from 'react';
+import {
+	Outlet
+  } from 'react-router-dom';
 
-import { TableSide } from './TableSide'
-import { TableSheet } from './TableSheet'
+import { TableSide } from './TableSide';
 
 import tabSheStyles from '../Styles/tableSheet.module.css'
 import tabSidStyles from '../Styles/tableSide.module.css'
 
 export function TableFull() {
 	return (
+		// <BrowserRouter>
 		<div className="row">
 			<div className="col-4">
 				<TableSide />
 			</div>
-			<div className="col-8">
-				<TableSheet />
-			</div>
+			<Outlet />
 		</div>
 	)
 }
