@@ -1,7 +1,9 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
-
-import { Login } from './Login'
+import {
+	Routes,
+	Route,
+	Link
+} from 'react-router-dom'
 
 export function NavBar() {
 	return (
