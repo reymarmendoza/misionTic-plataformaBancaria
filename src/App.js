@@ -1,36 +1,24 @@
-// import logo from './logo.svg';
-import './App.css';
+import React from 'react'
+import { Link } from "react-router-dom"
+
 import { Login } from './components/Login'
 import { NavBar } from './components/NavBar'
 import { SideBar } from './components/SideBar'
 
-function App() {
-  /*
-  const localStorageUsers = localStorage.getItem('GRUPO1_V1');
-  let parsedUser;
+import appStyles from './Styles/root.module.css'
+import navStyles from './Styles/navbar.module.css'
+import logStyles from './Styles/login.module.css'
 
-  if (!localStorageUsers) {
-    localStorage.setItem("GRUPO1_V1", JSON.stringify([]));
-    parsedUser = [];
-  } else {
-    parsedUser = JSON.parse(localStorageUsers);
-  }
-
-  const changeState = (newState) => {
-    const stringedUsers = JSON.stringify(newState);
-    localStorage.setItem("GRUPO1_V1", stringedUsers);
-  }
-  */
-
+export default function App() {
   return (
-    <div className="App">      
-      <NavBar />
+    <div className="App" className={appStyles.root}>
+      <NavBar className={navStyles} />
+
+
+      {/* 
       <SideBar />
-      <Login />
-      
-      {/* <img src={logo} className="App-logo" alt="logo" /> */}
+      <Login className={logStyles} /> 
+      */}
     </div>
   );
 }
-
-export { App };
