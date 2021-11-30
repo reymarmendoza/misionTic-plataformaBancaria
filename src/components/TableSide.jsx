@@ -2,7 +2,7 @@ import React from "react";
 
 export function TableSide() {
 	return (
-		<div className="d-flex flex-column flex-shrink-0 p-3 bg-light" styles="width: 280px;">
+		<div className="d-flex flex-column flex-shrink-0 p-3 bg-light">
 			<a href="/" className="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
 				<svg className="bi me-2" width="40" height="32"><use></use></svg>
 				<span className="fs-4">Panel</span>

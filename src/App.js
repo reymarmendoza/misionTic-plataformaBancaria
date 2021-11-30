@@ -27,6 +27,7 @@ export default function App() {
         <Route path="/tableFull" element={<TableFull />} />
         <Route path="*" element={<Error />} /> {/* Debe estar de ultima */}
       </Routes>
+      <NavBar className={navStyles.prueba} />
     </BrowserRouter>
   );
 }
