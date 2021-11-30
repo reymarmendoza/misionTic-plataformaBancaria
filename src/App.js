@@ -1,36 +1,33 @@
-// import logo from './logo.svg';
-import './App.css';
+import React from 'react'
+import {
+  BrowserRouter,
+  Routes,
+  Route
+} from 'react-router-dom'
+
 import { Login } from './components/Login'
 import { NavBar } from './components/NavBar'
-import { SideBar } from './components/SideBar'
+import { Error } from './components/ErrorPage'
+import { TableFull } from './components/TableFull'
 
-function App() {
-  /*
-  const localStorageUsers = localStorage.getItem('GRUPO1_V1');
-  let parsedUser;
+import appStyles from './Styles/root.module.css'
+import navStyles from './Styles/navbar.module.css'
+// import logStyles from './Styles/login.module.css'
 
-  if (!localStorageUsers) {
-    localStorage.setItem("GRUPO1_V1", JSON.stringify([]));
-    parsedUser = [];
-  } else {
-    parsedUser = JSON.parse(localStorageUsers);
-  }
-
-  const changeState = (newState) => {
-    const stringedUsers = JSON.stringify(newState);
-    localStorage.setItem("GRUPO1_V1", stringedUsers);
-  }
-  */
-
+export default function App() {
   return (
-    <div className="App">      
-      <NavBar />
-      <SideBar />
-      <Login />
-      
-      {/* <img src={logo} className="App-logo" alt="logo" /> */}
-    </div>
+    <BrowserRouter>
+      <div className="App" className={appStyles.root}>
+        <NavBar className={navStyles.prueba} />
+      </div>
+      <Routes>
+        {/* Aqui se crean las rutas, para usar el link al componente, se usa link y el path que especifique aqui */}
+        <Route path="/" />
+        <Route path="/login" element={<Login />} />
+        <Route path="/tableFull" element={<TableFull />} />
+        <Route path="*" element={<Error />} /> {/* Debe estar de ultima */}
+      </Routes>
+      <NavBar className={navStyles.prueba} />
+    </BrowserRouter>
   );
 }
-
-export { App };

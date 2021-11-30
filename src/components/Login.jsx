@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom'
 
 const MIN_PWD = 8;
 const MAX_PWD = 15;
@@ -35,7 +36,7 @@ const Login = () => {
 
 	const submitHandler = (event) => {
 		event.preventDefault();
-
+		/*
 		const localStorageUsers = localStorage.getItem('GRUPO1_V1');
 		let parsedUser;
 
@@ -70,8 +71,8 @@ const Login = () => {
 			if (!credentialsMatch) {
 				setErrGral('Usuario y/o contraseña incorrecta');
 			}
-
 		}
+		*/
 	};
 
 	return (
@@ -100,8 +101,10 @@ const Login = () => {
 							<div className="row">
 								<label className="col-form-label"></label>
 								<div className="col-12">
-									<button type="submit" className="btn btn-primary">Ingresar</button>
-									{Boolean(errGral) && <div className="form-text">{errGral}</div>}
+									<Link to="/tableFull">
+										<button type="submit" className="btn btn-primary">Ingresar</button>
+										{Boolean(errGral) && <div className="form-text">{errGral}</div>}
+									</Link>
 								</div>
 							</div>
 
