@@ -76,42 +76,37 @@ const Login = () => {
 	};
 
 	return (
-		<div className="container">
-			<div class="row col-12 justify-content-center">
-				<div class="card col-sm-12 col-md-6" id="loginCard">
-					<div class="card-body">
-						<form className="col-sm-12 col-md-9 col-lg-6 mx-auto" onSubmit={submitHandler}>
+		<div class="row col-12 justify-content-center">
+			<form className="col-sm-12 col-md-9 col-lg-6 mx-auto" onSubmit={submitHandler}>
 
-							<div className="row">
-								<label htmlFor="email" className="col-12 col-form-label">E-mail: &nbsp; </label>
-								<div className="col-12">
-									<input className="italicFont" type="email" name="email" id="email" value={email} placeholder="janedoe@email.com" className="form-control" onChange={changeHandlerEmail} required />
-									{Boolean(errMail) && <div className="form-text">{errMail}</div>}
-								</div>
-							</div>
-
-							<div className="row">
-								<label htmlFor="pwd" className="col-12 col-form-label">Contraseña: &nbsp; </label>
-								<div className="col-12">
-									<input className="italicFont" type="password" name="pwd" id="pwd" value={pwd} placeholder="********" className="form-control" onChange={changeHandlerPwd} required />
-									{Boolean(errPwd) && <div className="form-text">{errPwd}</div>}
-								</div>
-							</div>
-
-							<div className="row">
-								<label className="col-form-label"></label>
-								<div className="col-12">
-									<Link to="/usuario">
-										<button type="submit" className="btn btn-primary">Ingresar</button>
-										{Boolean(errGral) && <div className="form-text">{errGral}</div>}
-									</Link>
-								</div>
-							</div>
-
-						</form>
+				<div className="row">
+					<label htmlFor="email" className="col-12 col-form-label">E-mail: &nbsp; </label>
+					<div className="col-12">
+						<input className="italicFont" type="email" name="email" id="email" value={email} placeholder="janedoe@email.com" className="form-control" onChange={changeHandlerEmail} required />
+						{Boolean(errMail) && <div className="form-text">{errMail}</div>}
 					</div>
 				</div>
-			</div>
+
+				<div className="row">
+					<label htmlFor="pwd" className="col-12 col-form-label">Contraseña: &nbsp; </label>
+					<div className="col-12">
+						<input className="italicFont" type="password" name="pwd" id="pwd" value={pwd} placeholder="********" className="form-control" onChange={changeHandlerPwd} required />
+						{Boolean(errPwd) && <div className="form-text">{errPwd}</div>}
+					</div>
+				</div>
+
+				<div className="row">
+					<label className="col-form-label"></label>
+					<div className="col-12">
+						<Link to="/usuario">
+							<button type="submit" className="btn btn-primary">Ingresar</button>
+							{Boolean(errGral) && <div className="form-text">{errGral}</div>}
+						</Link>
+					</div>
+					<label className="col-form-label"></label>
+				</div>
+
+			</form>
 		</div>
 	)
 }

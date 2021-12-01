@@ -26,26 +26,24 @@ export default function App() {
         {/* Aqui se crean las rutas, para usar el link al componente, se usa link y el path que especifique aqui */}
         <Route exact path="/" />
         <Route path="/login" element={
-          <div>
+          <div className="container">
             <Login />
             <Registro />
           </div>
         } />
         <Route path="/usuario/*" element={<TableFull />} >
-          <Route path='inicio'
-            element={
-              <div className="col-8">
-                HOME
-              </div>}
-          />
-          <Route path='ctas'
-            element={
-              <div className="col-8">
-                <Cuentas />
-              </div>}
-          />
+          <Route path='inicio' element={
+            <div className="col-8">
+              HOME
+            </div>
+          } />
+          <Route path='ctas' element={
+            <div className="col-8">
+              <Cuentas />
+            </div>
+          } />
         </Route>
-        <Route path="*" element={<Error />} /> {/* Debe estar de ultima */}
+        <Route path="*" element={<Error />} />
       </Routes>
       <NavBar className={navStyles.prueba} />
     </BrowserRouter>
