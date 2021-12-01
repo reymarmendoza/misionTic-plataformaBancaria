@@ -5,12 +5,13 @@ import {
   Route
 } from 'react-router-dom';
 
-import { Login } from './components/Login'
-import { NavBar } from './components/NavBar'
-import { Error } from './components/ErrorPage'
-import { TableFull } from './components/TableFull'
-import { Cuentas } from './components/Cuentas'
-import { Registro } from './components/Registro'
+import { Landing } from './components/Landing';
+import { Login } from './components/Login';
+import { NavBar } from './components/NavBar';
+import { Error } from './components/ErrorPage';
+import { TableFull } from './components/TableFull';
+import { Cuentas } from './components/Cuentas';
+import { Registro } from './components/Registro';
 
 import appStyles from './Styles/root.module.css'
 import navStyles from './Styles/navbar.module.css'
@@ -48,6 +49,7 @@ export default function App() {
         <Route path="*" element={<Error />} /> {/* Debe estar de ultima */}
       </Routes>
       <NavBar className={navStyles.prueba} />
+      <Landing></Landing>
     </BrowserRouter>
   );
 }
