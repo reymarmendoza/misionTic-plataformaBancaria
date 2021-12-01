@@ -37,14 +37,20 @@ const lista = [
 	},
 ];
 
-export function Cuentas() {
+const Cuentas = () => {
 	const [showModal, setShowModal] = useState(false);
 	
 	const handleShowModal = (event) => {
-        setShowModal(true);
-		// console.log(showModal);
-		// console.log('showModal');
-    }
+        event.preventDefault();
+		setShowModal(true);
+		console.log(showModal);
+		console.log('showModal');
+    };
+
+	const handleCancelar = (event) => {
+		event.preventDefault();
+		console.log("cancel");
+	}
 
 	return (
 		<div>
@@ -72,7 +78,7 @@ export function Cuentas() {
 									{showModal ? <Modal /> : null}
         						</td>
 								<td>
-									<button type="button" class="btn btn-danger">Cancelar</button>									
+									<button type="button" class="btn btn-danger" onClick={handleCancelar}>Cancelar</button>									
 								</td>
 							</tr>
 						))
@@ -81,4 +87,6 @@ export function Cuentas() {
 			</table>
 		</div>
 	)
-}
+};
+
+export { Cuentas };

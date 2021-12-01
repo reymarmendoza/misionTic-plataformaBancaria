@@ -28,7 +28,7 @@ export function TableSide() {
 							return u.select.map((s) => (
 								<li>
 									<Link to={`/${tipoUsr}/${s.replace(/ /g, '')}`}>
-										<a href="#" className="nav-link link-dark">
+										<a href={`/${tipoUsr}/${s.replace(/ /g, '')}`} className="nav-link link-dark">
 											<svg className="bi me-2" width="16" height="16"><use></use></svg>
 											{s}
 										</a>
