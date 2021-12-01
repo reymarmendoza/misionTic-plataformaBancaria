@@ -101,7 +101,7 @@ const Login = () => {
 							<div className="row">
 								<label className="col-form-label"></label>
 								<div className="col-12">
-									<Link to="/usuario">
+									<Link to="/cliente">
 										<button type="submit" className="btn btn-primary">Ingresar</button>
 										{Boolean(errGral) && <div className="form-text">{errGral}</div>}
 									</Link>
