@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useState } from 'react';
+import Modal from './Modal'; 
 
 // const lista = [ 
 // 	{ 
@@ -18,51 +19,66 @@ import React from 'react'
 // 	}, 
 // ];
 
-const lista = [ 
-		{ 
-			idCuenta: 1, 
-			saldo: 100, 
-			activa:true 
-		}, 
-		{ 
-			idCuenta: 2, 
-			saldo: 943000, 
-			activa:true 
-		}, 
-		{ 
-			idCuenta: 3, 
-			saldo: 2456789, 
-			activa:true 
-		}, 
-	];
+const lista = [
+	{
+		idCuenta: 1,
+		saldo: 100,
+		activa: true
+	},
+	{
+		idCuenta: 2,
+		saldo: 943000,
+		activa: true
+	},
+	{
+		idCuenta: 3,
+		saldo: 2456789,
+		activa: true
+	},
+];
 
 export function Cuentas() {
+	const [showModal, setShowModal] = useState(false);
+	
+	const handleShowModal = (event) => {
+        setShowModal(true);
+		// console.log(showModal);
+		// console.log('showModal');
+    }
+
 	return (
-        <table className="table table-striped table-hover">
-            <thead>
-                <tr>
-					<th scope="col">#Cta</th>
-					<th scope="col">Saldo</th>
-					<th scope="col">Transferir</th>
-					<th scope="col">Cancelar</th>
-				</tr>
-            </thead>
-			<tbody>
-				{						
-					lista.map((e) => (
-						<tr>
-							<th scope="row">{e.idCuenta}</th>
-							<td>$ {e.saldo}</td>
-							<td>
-								<button type="button" class="btn btn-warning">Transferir</button>
-							</td>
-							<td>
-								<button type="button" class="btn btn-danger">Cancelar</button>
-							</td>								
-						</tr>
-					))
-				}
-            </tbody>
-        </table>
+		<div>
+			<p>
+				Cuentas de ...
+			</p>
+			<br />
+			<table className="table table-striped table-hover">
+				<thead>
+					<tr>
+						<th scope="col"># Cuenta</th>
+						<th scope="col">Saldo</th>
+						<th scope="col">Transferir</th>
+						<th scope="col">Cancelar</th>
+					</tr>
+				</thead>
+				<tbody>
+					{
+						lista.map((e) => (
+							<tr>
+								<th scope="row">{e.idCuenta}</th>
+								<td>$ {e.saldo}</td>
+								<td>
+									<button type="button" class="btn btn-warning" onClick={handleShowModal}>Transferir</button>
+									{showModal ? <Modal /> : null}
+        						</td>
+								<td>
+									<button type="button" class="btn btn-danger">Cancelar</button>									
+								</td>
+							</tr>
+						))
+					}
+				</tbody>
+			</table>
+		</div>
 	)
 }
