@@ -23,18 +23,12 @@ const Login = () => {
 		setPwd(event.target.value)
 		const isValid = REG_PWD.test(event.target.value)
 
-		isValid ? setErrPwd('') : setErrPwd('La contraseña debe tener al menos una mayuscula, un numero, un caracter especial y una longitud de entre 8 y 15 caracteres')
+		isValid ? setErrPwd('') : setErrPwd('La contraseña debe contener mayusculas, numeros, caracteres especiales y estar entre 8 y 15 caracteres')
 	}
-
-	// cambiar el onclick de email, pwd para que evalue antes de hacer submit
-	// const validateFields = () => {
-	// 	changeHandlerEmail
-	// 	changeHandlerPwd
-	// }
 
 	const submitHandler = (event) => {
 		event.preventDefault()
-		/*
+
 		const localStorageUsers = localStorage.getItem('GRUPO1_V1')
 		let parsedUser
 
@@ -54,10 +48,9 @@ const Login = () => {
 		} else if (errPwd !== '') {
 			setErrGral('No es una contraseña valida')
 		} else {
-
 			let credentialsMatch = false
 
-			for (let i = 0 i < numUsers i++) {
+			for (let i = 0; i < numUsers; i++) {
 				if (parsedUser[i]["email"] == email && parsedUser[i]["pwd"] == pwd) {
 					parsedUser[i]["log"] = !parsedUser[i]["log"]
 					credentialsMatch = true
@@ -70,7 +63,6 @@ const Login = () => {
 				setErrGral('Usuario y/o contraseña incorrecta')
 			}
 		}
-		*/
 	}
 
 	return (
@@ -78,7 +70,7 @@ const Login = () => {
 			<form className="col-sm-12 col-md-9 col-lg-6 mx-auto" onSubmit={submitHandler}>
 
 				<div className="row">
-					<label htmlFor="email" className="col-12 col-form-label">E-mail: &nbsp </label>
+					<label htmlFor="email" className="col-12 col-form-label">E-mail:</label>
 					<div className="col-12">
 						<input className="italicFont" type="email" name="email" id="email" value={email} placeholder="janedoe@email.com" className="form-control" onChange={changeHandlerEmail} required />
 						{Boolean(errMail) && <div className="form-text">{errMail}</div>}
@@ -86,7 +78,7 @@ const Login = () => {
 				</div>
 
 				<div className="row">
-					<label htmlFor="pwd" className="col-12 col-form-label">Contraseña: &nbsp </label>
+					<label htmlFor="pwd" className="col-12 col-form-label">Contraseña:</label>
 					<div className="col-12">
 						<input className="italicFont" type="password" name="pwd" id="pwd" value={pwd} placeholder="********" className="form-control" onChange={changeHandlerPwd} required />
 						{Boolean(errPwd) && <div className="form-text">{errPwd}</div>}
@@ -96,10 +88,10 @@ const Login = () => {
 				<div className="row">
 					<label className="col-form-label"></label>
 					<div className="col-12">
-						<Link to="/usuario">
-							<button type="submit" className="btn btn-primary">Ingresar</button>
-							{Boolean(errGral) && <div className="form-text">{errGral}</div>}
-						</Link>
+						{/* <Link to="/usuario"> */}
+						<button type="submit" className="btn btn-primary">Ingresar</button>
+						{Boolean(errGral) && <div className="form-text">{errGral}</div>}
+						{/* </Link> */}
 					</div>
 					<label className="col-form-label"></label>
 				</div>
