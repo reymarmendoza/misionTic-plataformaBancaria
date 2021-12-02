@@ -1,0 +1,18 @@
+.landingContainer {
+  width: 100vw; 
+  margin: unset;
+}
+.landingBanner {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 75vh;
+  background-image: url(https://cdn.forbes.co/2020/05/Agro-scaled.jpg);
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+.bankLoogo {
+  margin-bottom: 2rem;
+}
