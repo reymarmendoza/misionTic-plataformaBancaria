@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
 
 import { REG_EMAIL, REG_PWD_VAR } from '../utils/resources'

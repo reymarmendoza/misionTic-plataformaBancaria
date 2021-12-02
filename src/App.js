@@ -15,7 +15,7 @@ import { Registro } from './components/Registro';
 
 import appStyles from './Styles/root.module.css'
 import navStyles from './Styles/navbar.module.css'
-// import logStyles from './Styles/login.module.css'
+import logStyles from './Styles/login.module.css'
 
 export default function App() {
 	return (
