@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 import { REG_EMAIL, REG_PWD_VAR } from '../utils/resources'
 
@@ -11,6 +11,8 @@ const Login = () => {
 	const [errMail, setErrMail] = useState('')
 	const [errPwd, setErrPwd] = useState('')
 	const [errGral, setErrGral] = useState('')
+
+	let navigate = useNavigate()
 
 	const changeHandlerEmail = (event) => {
 		setEmail(event.target.value)
@@ -55,12 +57,13 @@ const Login = () => {
 					parsedUser[i]["log"] = !parsedUser[i]["log"]
 					credentialsMatch = true
 					setErrGral('')
-					alert('Bienvenido!!!')
 				}
 			}
 
 			if (!credentialsMatch) {
 				setErrGral('Usuario y/o contraseña incorrecta')
+			} else {
+				navigate('/usuario')
 			}
 		}
 	}
@@ -88,10 +91,8 @@ const Login = () => {
 				<div className="row">
 					<label className="col-form-label"></label>
 					<div className="col-12">
-						{/* <Link to="/usuario"> */}
 						<button type="submit" className="btn btn-primary">Ingresar</button>
 						{Boolean(errGral) && <div className="form-text">{errGral}</div>}
-						{/* </Link> */}
 					</div>
 					<label className="col-form-label"></label>
 				</div>
