@@ -64,7 +64,7 @@ const Login = () => {
 			if (!credentialsMatch) {
 				setErrGral('Usuario y/o contraseña incorrecta')
 			} else {
-				navigate('/usuario')
+				navigate('/cliente')
 			}
 		}
 	}
@@ -92,10 +92,8 @@ const Login = () => {
 				<div className="row">
 					<label className="col-form-label"></label>
 					<div className="col-12">
-						<Link to="/cliente">
-							<button type="submit" className="btn btn-primary">Ingresar</button>
-							{Boolean(errGral) && <div className="form-text">{errGral}</div>}
-						</Link>
+						<button type="submit" className="btn btn-primary">Ingresar</button>
+						{Boolean(errGral) && <div className="form-text">{errGral}</div>}
 					</div>
 					<label className="col-form-label"></label>
 				</div>
