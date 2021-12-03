@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import Modals from './Modals';
 
 const lista = [
@@ -27,10 +26,10 @@ const Cuentas = () => {
 
 	return (
 		<div>
-			{/* <p>
+			<p>
 				Cuentas de ...
-			</p> 
-			<br />*/}
+			</p>
+			<br />
 			<table className="table table-striped table-hover">
 				<thead>
 					<tr>
