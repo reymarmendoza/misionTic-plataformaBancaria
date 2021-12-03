@@ -20,51 +20,54 @@ import logStyles from './Styles/login.module.css'
 
 export default function App() {
 	return (
-		<BrowserRouter>
-			<div className="App" className={appStyles.root}>
+		<>
+			<BrowserRouter>
+				<div className="App" className={appStyles.root}>
+					<NavBar className={navStyles.prueba} />
+				</div>
+
+				<Routes>
+					<Route path="/" />
+
+					<Route path="/login" element={
+						<div>
+							<Login />
+							<Registro />
+						</div>
+					} />
+					<Route path="/cliente/*" element={<TableFull />} >
+						<Route path='Cuentas'
+							element={
+								<div className="col-8">
+									<Cuentas />
+								</div>}
+						/>
+						<Route path='Transferencias'
+							element={
+								<div className="col-8">
+									<Transferencias />
+								</div>}
+						/>
+						<Route path='Reclamos'
+							element={
+								<div className="col-8">
+									Reclamos
+								</div>}
+						/>
+						<Route path='NuevaCuenta'
+							element={
+								<div className="col-8">
+									Nueva Cuenta
+								</div>}
+						/>
+					</Route>
+
+					<Route path="*" element={<Error />} />
+
+				</Routes>
+
 				<NavBar className={navStyles.prueba} />
-			</div>
-
-			<Routes>
-				<Route path="/" />
-
-				<Route path="/login" element={
-					<div>
-						<Login />
-						<Registro />
-					</div>
-				} />
-				<Route path="/cliente/*" element={<TableFull />} >
-					<Route path='Cuentas'
-						element={
-							<div className="col-8">
-								<Cuentas />
-							</div>}
-					/>
-					<Route path='Transferencias'
-						element={
-							<div className="col-8">
-								<Transferencias />
-							</div>}
-					/>
-					<Route path='Reclamos'
-						element={
-							<div className="col-8">
-								Reclamos
-							</div>}
-					/>
-					<Route path='NuevaCuenta'
-						element={
-							<div className="col-8">
-								Nueva Cuenta
-							</div>}
-					/>
-				</Route>
-
-				<Route path="*" element={<Error />} />
-			</Routes>
-
-			<NavBar className={navStyles.prueba} />
-		</BrowserRouter>
+			</BrowserRouter>
+		</>
 	);
 }
