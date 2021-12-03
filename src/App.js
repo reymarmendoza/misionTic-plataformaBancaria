@@ -30,7 +30,7 @@ export default function App() {
 					<Route path="/" />
 
 					<Route path="/login" element={
-						<div>
+						<div className="row">
 							<Login />
 							<Registro />
 						</div>

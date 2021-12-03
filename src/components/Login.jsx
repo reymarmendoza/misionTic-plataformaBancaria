@@ -69,9 +69,8 @@ const Login = () => {
 	}
 
 	return (
-		<div class="row col-12 justify-content-center">
-			<form className="col-sm-12 col-md-9 col-lg-6 mx-auto" onSubmit={submitHandler}>
-
+		<div class="col-12 col-lg-6">
+			<form className="p-3 my-3 mx-auto" onSubmit={submitHandler}>
 				<div className="row">
 					<label htmlFor="email" className="col-12 col-form-label">E-mail:</label>
 					<div className="col-12">
