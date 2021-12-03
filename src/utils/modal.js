@@ -1,4 +1,4 @@
-import "./Modal.css"
+import "../styles/modal.css"
 
 const Modal = ({ children, isOpen, closeModal }) => {
 	// stopPropagation evita los eventos del arbol
