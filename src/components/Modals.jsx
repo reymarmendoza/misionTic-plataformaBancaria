@@ -1,17 +1,38 @@
+import { useState } from "react"
 import Modal from "./Modal"
 import { useModal } from "./useModal"
 
-const Modals = () => {
+const Modals = ({ cuenta, saldo }) => {
 	const [isOpenModal, openModal, closeModal] = useModal(false)
+	const [destino, setDestino] = useState('')
+	const [montoTransf, setMontoTransf] = useState(saldo)
+
+	function sendMoney(e) {
+		e.preventDefault()
+		console.log(`Se envio ${montoTransf} a la cuenta ${destino}`)
+	}
 
 	return (
 		<div>
-			{/* <h2>Modales</h2> */}
-			<button onClick={openModal}>Modal 1</button>
+			<button class="btn btn-warning" onClick={openModal}>Transferir</button>
+
 			<Modal isOpen={isOpenModal} closeModal={closeModal}>
-				<h3>Modal 1</h3>
-				<p>Hola mundo</p>
-				<img src="https://placeimg.com/400/400/animals" alt="animals" />
+				<h3>{cuenta}</h3>
+
+				<form onSubmit={sendMoney}>
+					<div className="row">
+						<label htmlFor="destino">Por favor confirme la cuenta destino</label>
+						<input type="text" className="destino" name="destino"></input>
+					</div>
+
+					<div className="row">
+						<label htmlFor="montoTransf">Monto a depositar</label>
+						<input type="text" className="montoTransf" name="montoTransf" value={montoTransf}></input>
+					</div>
+
+					<button type="submit">Enviar</button>
+				</form>
+
 			</Modal>
 		</div>
 	)

@@ -27,10 +27,10 @@ const Cuentas = () => {
 
 	return (
 		<div>
-			<p>
+			{/* <p>
 				Cuentas de ...
-			</p>
-			<br />
+			</p> 
+			<br />*/}
 			<table className="table table-striped table-hover">
 				<thead>
 					<tr>
@@ -47,8 +47,7 @@ const Cuentas = () => {
 								<th scope="row">{e.idCuenta}</th>
 								<td>$ {e.saldo}</td>
 								<td>
-									<button type="button" class="btn btn-warning" onClick={''}>Transferir</button>
-									<Modals />
+									<Modals cuenta={e.idCuenta} saldo={e.saldo} />
 								</td>
 								<td>
 									<button type="button" class="btn btn-danger" onClick={handleCancelar}>Cancelar</button>
