@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
 
 import { REG_EMAIL, REG_PWD_VAR } from '../utils/resources'
@@ -64,7 +63,7 @@ const Login = () => {
 			if (!credentialsMatch) {
 				setErrGral('Usuario y/o contraseña incorrecta')
 			} else {
-				navigate('/usuario')
+				navigate('/cliente')
 			}
 		}
 	}
@@ -92,10 +91,8 @@ const Login = () => {
 				<div className="row">
 					<label className="col-form-label"></label>
 					<div className="col-12">
-						<Link to="/cliente">
-							<button type="submit" className="btn btn-primary">Ingresar</button>
-							{Boolean(errGral) && <div className="form-text">{errGral}</div>}
-						</Link>
+						<button type="submit" className="btn btn-primary">Ingresar</button>
+						{Boolean(errGral) && <div className="form-text">{errGral}</div>}
 					</div>
 					<label className="col-form-label"></label>
 				</div>

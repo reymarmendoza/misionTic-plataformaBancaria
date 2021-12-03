@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Modal from './Modal'; 
+import Modal from './Modals';
 
 // const lista = [
 // 	{
@@ -41,7 +41,7 @@ const lista = [
 		idTransf: 101,
 		fecha: "2021-10-12",
 		ctaOrigen: 2,
-		ctaDestino: 3,		
+		ctaDestino: 3,
 		monto: 650,
 		reclamo: false
 	},
@@ -49,7 +49,7 @@ const lista = [
 		idTransf: 102,
 		fecha: "2021-08-06",
 		ctaOrigen: 2,
-		ctaDestino: 1,		
+		ctaDestino: 1,
 		monto: 45850,
 		reclamo: false
 	},
@@ -57,7 +57,7 @@ const lista = [
 		idTransf: 105,
 		fecha: "2021-07-20",
 		ctaOrigen: 1,
-		ctaDestino: 2,		
+		ctaDestino: 2,
 		monto: 6500000,
 		reclamo: false
 	},
@@ -65,7 +65,7 @@ const lista = [
 		idTransf: 113,
 		fecha: "2021-09-15",
 		ctaOrigen: 3,
-		ctaDestino: 1,		
+		ctaDestino: 1,
 		monto: 48700000,
 		reclamo: false
 	},
@@ -73,13 +73,13 @@ const lista = [
 
 const Transferencias = () => {
 	const [showModal, setShowModal] = useState(false);
-	
+
 	const handleShowModal = (event) => {
-        event.preventDefault();
+		event.preventDefault();
 		setShowModal(true);
 		console.log(showModal);
 		console.log('showModal');
-    };
+	};
 
 	const handleCancelar = (event) => {
 		event.preventDefault();
@@ -115,7 +115,7 @@ const Transferencias = () => {
 								<td>
 									<button type="button" class="btn btn-warning" onClick={handleShowModal}>Reclamar</button>
 									{showModal ? <Modal /> : null}
-        						</td>
+								</td>
 							</tr>
 						))
 					}
