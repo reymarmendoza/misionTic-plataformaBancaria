@@ -1,5 +1,5 @@
 import React from 'react';
-import '../registro.css';
+import '../styles/registro.module.css';
 import { Formik,Form,Field,ErrorMessage } from 'formik';
 
 const REG_NOM = /^[a-zA-ZÀ-ÿ\s]{1,100}$/;
@@ -87,91 +87,92 @@ const Registro = () => {
 
             {({errors}) => (
                 // Formulario
+                <div className="col-12 col-lg-6">
+                    <Form className='mx-auto p-3 my-3'>
+                        <div className="row mb-2">
+                            <div className="col">
+                                <label className='form-label mb-0' htmlFor='nombre'>Nombre completo:</label>
+                                <Field className='form-control' id='nombre' type='text' name='nombre'/>
+                                <ErrorMessage name="nombre" component={() => (<p className="error">{errors.nombre}</p>)}/>
+                            </div>
+                        </div>
                 
-                <Form className='m-auto p-3 my-3'>
-                    <div className="row mb-2">
-                        <div className="col">
-                            <label className='form-label mb-0' htmlFor='nombre'>Nombre completo:</label>
-                            <Field className='form-control' id='nombre' type='text' name='nombre'/>
-                            <ErrorMessage name="nombre" component={() => (<p className="error">{errors.nombre}</p>)}/>
+                        <div className="row mb-2">
+                            <div className="col">
+                                <label className='form-label mb-0' htmlFor='documento'>Tipo de documento: </label>
+                                <Field className='form-control' id='documento' name='tipoDoc' as="select">
+                                    <option value='' disabled selected>Seleccione</option>
+                                    <option value='cedulaCiudadania'>Cedula de ciudadanía</option>
+                                    <option value='cedulaExtranjeria'>Cedula de extranjería</option>
+                                    <option value='pasaporte'>Pasaporte</option>
+                                </Field>
+                                <ErrorMessage name="tipoDoc" component={() => (<p className="error">{errors.tipoDoc}</p>)}/>
+                            </div>
                         </div>
-                    </div>
-            
-                    <div className="row mb-2">
-                        <div className="col">
-                            <label className='form-label mb-0' htmlFor='documento'>Tipo de documento: </label>
-                            <Field className='form-control' id='documento' name='tipoDoc' as="select">
-                                <option value='' disabled selected>Seleccione</option>
-                                <option value='cedulaCiudadania'>Cedula de ciudadanía</option>
-                                <option value='cedulaExtranjeria'>Cedula de extranjería</option>
-                                <option value='pasaporte'>Pasaporte</option>
-                            </Field>
-                            <ErrorMessage name="tipoDoc" component={() => (<p className="error">{errors.tipoDoc}</p>)}/>
+                        
+                        <div className="row mb-2">
+                            <div className="col-12 col-sm-6">
+                                <label className='form-label mb-0' htmlFor='numDoc'>Número de documento: </label>
+                                <Field className='form-control' id='numDoc' type='number' name='numDoc'  />
+                                <ErrorMessage name="numDoc" component={() => (<p className="error">{errors.numDoc}</p>)}/>
+                            </div>
+                            <div className="col-12 col-sm-6">
+                                <label className='form-label mb-0' htmlFor='fechaExpDoc'>Fecha de expedición: </label>
+                                <Field className='form-control' id='fechaExpDoc' type='date' name='fechaExpDoc' />
+                                <ErrorMessage name="fechaExpDoc" component={() => (<p className="error">{errors.fechaExpDoc}</p>)}/>
+                            </div>
                         </div>
-                    </div>
-                    
-                    <div className="row mb-2">
-                        <div className="col-12 col-sm-6">
-                            <label className='form-label mb-0' htmlFor='numDoc'>Número de documento: </label>
-                            <Field className='form-control' id='numDoc' type='number' name='numDoc'  />
-                            <ErrorMessage name="numDoc" component={() => (<p className="error">{errors.numDoc}</p>)}/>
+                        
+                        <div className="row mb-2">
+                            <div className="col-12 col-sm-6">
+                                <label className='form-label mb-0' htmlFor='fechaNacimiento'>Fecha de nacimiento: </label>
+                                <Field className='form-control' id='fechaNacimiento' type='date' name='fechaNacimiento'  />
+                                <ErrorMessage name="fechaNacimiento" component={() => (<p className="error">{errors.fechaNacimiento}</p>)}/>
+                            </div>
+                            <div className="col-12 col-sm-6">
+                                <label className='form-label mb-0' htmlFor='ciudad'>Ciudad: </label>
+                                <Field className='form-control' id='ciudad' type='text' name='ciudad'/>
+                                <ErrorMessage name="ciudad" component={() => (<p className="error">{errors.ciudad}</p>)}/>
+                            </div>
                         </div>
-                        <div className="col-12 col-sm-6">
-                            <label className='form-label mb-0' htmlFor='fechaExpDoc'>Fecha de expedición: </label>
-                            <Field className='form-control' id='fechaExpDoc' type='date' name='fechaExpDoc' />
-                            <ErrorMessage name="fechaExpDoc" component={() => (<p className="error">{errors.fechaExpDoc}</p>)}/>
-                        </div>
-                    </div>
-                    
-                    <div className="row mb-2">
-                        <div className="col-12 col-sm-6">
-                            <label className='form-label mb-0' htmlFor='fechaNacimiento'>Fecha de nacimiento: </label>
-                            <Field className='form-control' id='fechaNacimiento' type='date' name='fechaNacimiento'  />
-                            <ErrorMessage name="fechaNacimiento" component={() => (<p className="error">{errors.fechaNacimiento}</p>)}/>
-                        </div>
-                        <div className="col-12 col-sm-6">
-                            <label className='form-label mb-0' htmlFor='ciudad'>Ciudad: </label>
-                            <Field className='form-control' id='ciudad' type='text' name='ciudad'/>
-                            <ErrorMessage name="ciudad" component={() => (<p className="error">{errors.ciudad}</p>)}/>
-                        </div>
-                    </div>
 
-                    <div className="row mb-2">
-                        <div className="col">
-                            <label className='form-label mb-0' htmlFor='direccion'>Dirección: </label>
-                            <Field className='form-control' id='direccion' type='text' name='direccion'/>
-                            <ErrorMessage name="direccion" component={() => (<p className="error">{errors.direccion}</p>)}/>
+                        <div className="row mb-2">
+                            <div className="col">
+                                <label className='form-label mb-0' htmlFor='direccion'>Dirección: </label>
+                                <Field className='form-control' id='direccion' type='text' name='direccion'/>
+                                <ErrorMessage name="direccion" component={() => (<p className="error">{errors.direccion}</p>)}/>
+                            </div>
                         </div>
-                    </div>
 
-                    <div className="row mb-2">
-                        <div className="col">
-                            <label className='form-label mb-0' htmlFor='correo'>E-mail: </label>
-                            <Field className='form-control' id='correo' type='email' name='correo' />
-                            <ErrorMessage name="correo" component={() => (<p className="error">{errors.correo}</p>)}/>
+                        <div className="row mb-2">
+                            <div className="col">
+                                <label className='form-label mb-0' htmlFor='correo'>E-mail: </label>
+                                <Field className='form-control' id='correo' type='email' name='correo' />
+                                <ErrorMessage name="correo" component={() => (<p className="error">{errors.correo}</p>)}/>
+                            </div>
                         </div>
-                    </div>
-                    <div className="row mb-2">
-                        <div className="col">
-                            <label className='form-label mb-0' htmlFor='psswd'>Contraseña: </label>
-                            <Field className='form-control' id='psswd' type='password' name='pwd' />
-                            <ErrorMessage name="pwd" component={() => (<p className="error">{errors.pwd}</p>)}/>
+                        <div className="row mb-2">
+                            <div className="col">
+                                <label className='form-label mb-0' htmlFor='psswd'>Contraseña: </label>
+                                <Field className='form-control' id='psswd' type='password' name='pwd' />
+                                <ErrorMessage name="pwd" component={() => (<p className="error">{errors.pwd}</p>)}/>
+                            </div>
                         </div>
-                    </div>
-                    
-                    <div className="row mb-2">
-                        <div className="col">
-                            <Field id="terminos" type="checkbox" className="form-check-input me-2" name="terminos"/>
-                            <label htmlFor="terminos" className="form-check-label">Acepto terminos y condiciones</label>
-                            <ErrorMessage name="terminos" component={() => (<p className="error">{errors.terminos}</p>)}/>
+                        
+                        <div className="row mb-2">
+                            <div className="col">
+                                <Field id="terminos" type="checkbox" className="form-check-input me-2" name="terminos"/>
+                                <label htmlFor="terminos" className="form-check-label">Acepto terminos y condiciones</label>
+                                <ErrorMessage name="terminos" component={() => (<p className="error">{errors.terminos}</p>)}/>
+                            </div>
                         </div>
-                    </div>
-                    <div className="row">
-                        <div className="col text-center">
-                            <input id="btn" className='btn btn-primary' type='submit' value='Registrarme' />
+                        <div className="row">
+                            <div className="col text-center">
+                                <input id="btn" className='btn btn-primary' type='submit' value='Registrarme' />
+                            </div>
                         </div>
-                    </div>
-                </Form>
+                    </Form>
+                </div>
             )}
         </Formik>
     )

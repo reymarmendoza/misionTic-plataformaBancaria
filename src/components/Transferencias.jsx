@@ -1,77 +1,7 @@
 import React, { useState } from 'react';
-import Modal from './Modals';
+import TransfModal from './TransfModal';
 
-// const lista = [
-// 	{
-// 		idTransf: 101,
-// 		fecha: "2021-10-12",
-// 		ctaOrigen: 2,
-// 		ctaDestino: 3,		
-// 		monto: 650,
-// 		reclamo: false
-// 	},
-// 	{
-// 		idTransf: 102,
-// 		fecha: "2021-08-06",
-// 		ctaOrigen: 2,
-// 		ctaDestino: 1,		
-// 		monto: 45850,
-// 		reclamo: false
-// 	},
-// 	{
-// 		idTransf: 105,
-// 		fecha: "2021-07-20",
-// 		ctaOrigen: 1,
-// 		ctaDestino: 2,		
-// 		monto: 6500000,
-// 		reclamo: false
-// 	},
-// 	{
-// 		idTransf: 113,
-// 		fecha: "2021-09-15",
-// 		ctaOrigen: 3,
-// 		ctaDestino: 1,		
-// 		monto: 48700000,
-// 		reclamo: false
-// 	},
-// ];
-
-const lista = [
-	{
-		idTransf: 101,
-		fecha: "2021-10-12",
-		ctaOrigen: 2,
-		ctaDestino: 3,
-		monto: 650,
-		reclamo: false
-	},
-	{
-		idTransf: 102,
-		fecha: "2021-08-06",
-		ctaOrigen: 2,
-		ctaDestino: 1,
-		monto: 45850,
-		reclamo: false
-	},
-	{
-		idTransf: 105,
-		fecha: "2021-07-20",
-		ctaOrigen: 1,
-		ctaDestino: 2,
-		monto: 6500000,
-		reclamo: false
-	},
-	{
-		idTransf: 113,
-		fecha: "2021-09-15",
-		ctaOrigen: 3,
-		ctaDestino: 1,
-		monto: 48700000,
-		reclamo: false
-	},
-];
-
-const Transferencias = () => {
+const Transferencias = ({ data }) => {
 	const [showModal, setShowModal] = useState(false);
 
 	const handleShowModal = (event) => {
@@ -81,15 +11,10 @@ const Transferencias = () => {
 		console.log('showModal');
 	};
 
-	const handleCancelar = (event) => {
-		event.preventDefault();
-		console.log("cancel");
-	}
-
 	return (
 		<div>
 			<p>
-				Transferencias de cuenta #... desde dd/mm/aaaaa al dd/mm/aaaa
+				Transferencias de cuenta # {data[0].cuentas[0].idCuenta} desde dd/mm/aaaaa al dd/mm/aaaa
 			</p>
 			<br />
 			<table className="table table-striped table-hover">
@@ -105,7 +30,7 @@ const Transferencias = () => {
 				</thead>
 				<tbody>
 					{
-						lista.map((e) => (
+						data[0].cuentas[0].transferencias.map((e) => (
 							<tr>
 								<th scope="row">{e.idTransf}</th>
 								<td>{e.fecha}</td>
@@ -114,7 +39,7 @@ const Transferencias = () => {
 								<td>$ {e.monto}</td>
 								<td>
 									<button type="button" class="btn btn-warning" onClick={handleShowModal}>Reclamar</button>
-									{showModal ? <Modal /> : null}
+									{showModal ? <TransfModal /> : null}
 								</td>
 							</tr>
 						))
