@@ -1,116 +1,104 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
-const MIN_PWD = 8;
-const MAX_PWD = 15;
-const REG_EMAIL = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-const REG_PWD_VAR = `^(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).{${MIN_PWD},${MAX_PWD}}$`;
-const REG_PWD = new RegExp(REG_PWD_VAR);
+import { REG_EMAIL, REG_PWD_VAR } from '../utils/resources'
+
+const REG_PWD = new RegExp(REG_PWD_VAR)
 
 const Login = () => {
-	const [email, setEmail] = useState('');
-	const [pwd, setPwd] = useState('');
-	const [errMail, setErrMail] = useState('');
-	const [errPwd, setErrPwd] = useState('');
-	const [errGral, setErrGral] = useState('');
+	const [email, setEmail] = useState('')
+	const [pwd, setPwd] = useState('')
+	const [errMail, setErrMail] = useState('')
+	const [errPwd, setErrPwd] = useState('')
+	const [errGral, setErrGral] = useState('')
+
+	let navigate = useNavigate()
 
 	const changeHandlerEmail = (event) => {
-		setEmail(event.target.value);
-		const isValid = REG_EMAIL.test(event.target.value.toLowerCase());
+		setEmail(event.target.value)
+		const isValid = REG_EMAIL.test(event.target.value.toLowerCase())
 
-		isValid ? setErrMail('') : setErrMail('Email no valido');
-	};
+		isValid ? setErrMail('') : setErrMail('Email no valido')
+	}
 
 	const changeHandlerPwd = (event) => {
-		setPwd(event.target.value);
-		const isValid = REG_PWD.test(event.target.value);
+		setPwd(event.target.value)
+		const isValid = REG_PWD.test(event.target.value)
 
-		isValid ? setErrPwd('') : setErrPwd('La contraseña debe tener al menos una mayuscula, un numero, un caracter especial y una longitud de entre 8 y 15 caracteres');
-	};
-
-	// cambiar el onclick de email, pwd para que evalue antes de hacer submit
-	// const validateFields = () => {
-	// 	changeHandlerEmail;
-	// 	changeHandlerPwd;
-	// }
+		isValid ? setErrPwd('') : setErrPwd('La contraseña debe contener mayusculas, numeros, caracteres especiales y estar entre 8 y 15 caracteres')
+	}
 
 	const submitHandler = (event) => {
-		event.preventDefault();
+		event.preventDefault()
 
-		const localStorageUsers = localStorage.getItem('GRUPO1_V1');
-		let parsedUser;
+		const localStorageUsers = localStorage.getItem('GRUPO1_V1')
+		let parsedUser
 
 		if (!localStorageUsers) {
-			localStorage.setItem("GRUPO1_V1", JSON.stringify([]));
-			parsedUser = [];
+			localStorage.setItem("GRUPO1_V1", JSON.stringify([]))
+			parsedUser = []
 		} else {
-			parsedUser = JSON.parse(localStorageUsers);
+			parsedUser = JSON.parse(localStorageUsers)
 		}
 
-		const numUsers = Object.keys(parsedUser).length;
+		const numUsers = Object.keys(parsedUser).length
 
 		if (email === '' || pwd === '') {
-			setErrGral('Los campos email y contraseña son requeridos');
+			setErrGral('Los campos email y contraseña son requeridos')
 		} else if (errMail !== '') {
-			setErrGral('No es un email valido');
+			setErrGral('No es un email valido')
 		} else if (errPwd !== '') {
-			setErrGral('No es una contraseña valida');
+			setErrGral('No es una contraseña valida')
 		} else {
-
-			let credentialsMatch = false;
+			let credentialsMatch = false
 
 			for (let i = 0; i < numUsers; i++) {
-				if (parsedUser[i]["email"] == email && parsedUser[i]["pwd"] == pwd) {
-					parsedUser[i]["log"] = !parsedUser[i]["log"];
-					credentialsMatch = true;
-					setErrGral('');
-					alert('Bienvenido!!!');
+				if (parsedUser[i]["email"] === email && parsedUser[i]["pwd"] === pwd) {
+					parsedUser[i]["log"] = !parsedUser[i]["log"]
+					credentialsMatch = true
+					setErrGral('')
 				}
 			}
 
 			if (!credentialsMatch) {
-				setErrGral('Usuario y/o contraseña incorrecta');
+				setErrGral('Usuario y/o contraseña incorrecta')
+			} else {
+				navigate('/cliente')
 			}
-
 		}
-	};
+	}
 
 	return (
-		<div className="container">
-			<div class="row col-12 justify-content-center">
-				<div class="card col-sm-12 col-md-6" id="loginCard">
-					<div class="card-body">
-						<form className="col-sm-12 col-md-9 col-lg-6 mx-auto" onSubmit={submitHandler}>
-
-							<div className="row">
-								<label htmlFor="email" className="col-12 col-form-label">E-mail: &nbsp; </label>
-								<div className="col-12">
-									<input className="italicFont" type="email" name="email" id="email" value={email} placeholder="janedoe@email.com" className="form-control" onChange={changeHandlerEmail} required />
-									{Boolean(errMail) && <div className="form-text">{errMail}</div>}
-								</div>
-							</div>
-
-							<div className="row">
-								<label htmlFor="pwd" className="col-12 col-form-label">Contraseña: &nbsp; </label>
-								<div className="col-12">
-									<input className="italicFont" type="password" name="pwd" id="pwd" value={pwd} placeholder="********" className="form-control" onChange={changeHandlerPwd} required />
-									{Boolean(errPwd) && <div className="form-text">{errPwd}</div>}
-								</div>
-							</div>
-
-							<div className="row">
-								<label className="col-form-label"></label>
-								<div className="col-12">
-									<button type="submit" className="btn btn-primary">Ingresar</button>
-									{Boolean(errGral) && <div className="form-text">{errGral}</div>}
-								</div>
-							</div>
-
-						</form>
+		<div class="col-12 col-lg-6">
+			<form className="p-3 my-3 mx-auto" onSubmit={submitHandler}>
+				<div className="row">
+					<label htmlFor="email" className="col-12 col-form-label">E-mail:</label>
+					<div className="col-12">
+						<input type="email" name="email" id="email" value={email} placeholder="janedoe@email.com" className="form-control" onChange={changeHandlerEmail} required />
+						{Boolean(errMail) && <div className="form-text">{errMail}</div>}
 					</div>
 				</div>
-			</div>
+
+				<div className="row">
+					<label htmlFor="pwd" className="col-12 col-form-label">Contraseña:</label>
+					<div className="col-12">
+						<input type="password" name="pwd" id="pwd" value={pwd} placeholder="********" className="form-control" onChange={changeHandlerPwd} required />
+						{Boolean(errPwd) && <div className="form-text">{errPwd}</div>}
+					</div>
+				</div>
+
+				<div className="row">
+					<label className="col-form-label"></label>
+					<div className="col-12">
+						<button type="submit" className="btn btn-primary">Ingresar</button>
+						{Boolean(errGral) && <div className="form-text">{errGral}</div>}
+					</div>
+					<label className="col-form-label"></label>
+				</div>
+
+			</form>
 		</div>
 	)
 }
 
-export { Login };
+export { Login }
