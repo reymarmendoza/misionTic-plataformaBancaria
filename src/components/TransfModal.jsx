@@ -1,15 +1,17 @@
-import { useState } from "react"
+import React, { useState } from "react";
 import Modal from "../utils/modal"
 import { useModal } from "../utils/useModal"
 
-const Modals = ({ cuenta, saldo }) => {
+const TransfModal = ({ cuenta, saldo }) => {
 	const [isOpenModal, openModal, closeModal] = useModal(false)
 	const [destino, setDestino] = useState('')
 	const [montoTransf, setMontoTransf] = useState(saldo)
 
 	function sendMoney(e) {
-		e.preventDefault()
-		console.log(`Se envio ${montoTransf} a la cuenta ${destino}`)
+		alert(`Se envio ${montoTransf} a la cuenta ${destino}`)
+		
+		closeModal();
+		e.preventDefault();
 	}
 
 	function updateDestino(e) {
@@ -25,19 +27,25 @@ const Modals = ({ cuenta, saldo }) => {
 			<button class="btn btn-warning" onClick={openModal}>Transferir</button>
 
 			<Modal isOpen={isOpenModal} closeModal={closeModal}>
-				<h3>{cuenta}</h3>
 
 				<form onSubmit={sendMoney}>
 					<div className="row">
-						<label htmlFor="destino">Por favor confirme la cuenta destino</label>
-						<input type="text" className="destino" name="destino"
+						<label htmlFor="origen" className="form-label">Por favor confirme la cuenta origen</label>
+						<input type="text" className="form-control" name="destino"
+							value={destino} placeholder={cuenta} >
+						</input>
+					</div>
+
+					<div className="row">
+						<label htmlFor="destino" className="form-label">Por favor confirme la cuenta destino</label>
+						<input type="text" className="form-control" name="destino"
 							value={destino} onChange={updateDestino}>
 						</input>
 					</div>
 
 					<div className="row">
-						<label htmlFor="montoTransf">Monto a depositar</label>
-						<input type="text" className="montoTransf" name="montoTransf"
+						<label htmlFor="montoTransf" className="form-label">Monto a depositar</label>
+						<input type="text" className="form-control" name="montoTransf"
 							value={montoTransf} onChange={updateMontoTransf}>
 						</input>
 					</div>
@@ -50,4 +58,4 @@ const Modals = ({ cuenta, saldo }) => {
 	)
 }
 
-export default Modals
+export default TransfModal

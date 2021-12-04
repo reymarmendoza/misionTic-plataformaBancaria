@@ -53,7 +53,7 @@ const Login = () => {
 			let credentialsMatch = false
 
 			for (let i = 0; i < numUsers; i++) {
-				if (parsedUser[i]["email"] == email && parsedUser[i]["pwd"] == pwd) {
+				if (parsedUser[i]["email"] === email && parsedUser[i]["pwd"] === pwd) {
 					parsedUser[i]["log"] = !parsedUser[i]["log"]
 					credentialsMatch = true
 					setErrGral('')
@@ -74,7 +74,7 @@ const Login = () => {
 				<div className="row">
 					<label htmlFor="email" className="col-12 col-form-label">E-mail:</label>
 					<div className="col-12">
-						<input className="italicFont" type="email" name="email" id="email" value={email} placeholder="janedoe@email.com" className="form-control" onChange={changeHandlerEmail} required />
+						<input type="email" name="email" id="email" value={email} placeholder="janedoe@email.com" className="form-control" onChange={changeHandlerEmail} required />
 						{Boolean(errMail) && <div className="form-text">{errMail}</div>}
 					</div>
 				</div>
@@ -82,7 +82,7 @@ const Login = () => {
 				<div className="row">
 					<label htmlFor="pwd" className="col-12 col-form-label">Contraseña:</label>
 					<div className="col-12">
-						<input className="italicFont" type="password" name="pwd" id="pwd" value={pwd} placeholder="********" className="form-control" onChange={changeHandlerPwd} required />
+						<input type="password" name="pwd" id="pwd" value={pwd} placeholder="********" className="form-control" onChange={changeHandlerPwd} required />
 						{Boolean(errPwd) && <div className="form-text">{errPwd}</div>}
 					</div>
 				</div>
