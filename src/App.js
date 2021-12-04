@@ -5,6 +5,8 @@ import {
 	Route
 } from 'react-router-dom';
 
+import data from './utils/data';
+
 import { Landing } from './components/Landing';
 import { Login } from './components/Login';
 import { NavBar } from './components/NavBar';
@@ -18,7 +20,8 @@ import appStyles from './styles/root.module.css'
 import navStyles from './styles/navbar.module.css'
 import logStyles from './styles/login.module.css'
 
-export default function App() {
+export default function App() {	
+	
 	return (
 		<>
 			<BrowserRouter>
@@ -27,7 +30,11 @@ export default function App() {
 				</div>
 
 				<Routes>
-					<Route path="/" />
+					<Route path="/" element={
+						<div>
+							<Landing />
+						</div>
+					}/>
 
 					<Route path="/login" element={
 						<div className="row">
@@ -39,13 +46,13 @@ export default function App() {
 						<Route path='Cuentas'
 							element={
 								<div className="col-8">
-									<Cuentas />
+									<Cuentas data={data} />
 								</div>}
 						/>
 						<Route path='Transferencias'
 							element={
 								<div className="col-8">
-									<Transferencias />
+									<Transferencias data={data} />
 								</div>}
 						/>
 						<Route path='Reclamos'
