@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from 'react'
 import { Formik, Form, Field, ErrorMessage } from 'formik'
 import Axios from 'axios'
 
@@ -83,7 +82,6 @@ const Registro = () => {
             }}
 
             onSubmit={(valores, { resetForm }) => {
-                // Axios.post("http://localhost:3001/createUser", {
                 Axios.post(`${process.env.REACT_APP_URL}/createUser`, {
                     nombre: valores.nombre,
                     correo: valores.correo,
