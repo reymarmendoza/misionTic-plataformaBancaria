@@ -1,7 +1,8 @@
 const express = require("express")
 const mongoose = require("mongoose")
 const cors = require("cors")
-const { UserModel } = require("./models/Users")
+// const { UserModel } = require("./models/Users")
+const { RegistroModel } = require("./models/Registro")
 
 const app = express()
 
@@ -17,7 +18,8 @@ mongoose.connect(`mongodb+srv://${USER}:${PASSWORD}@banagrario.57kdk.mongodb.net
 
 app.get("/getUsers", (req, res) => {
 	// despues de encontrar las coincidencias de la coleccion se ejecutara el callback
-	UserModel.find({}, (error, result) => {
+	// UserModel.find({}, (error, result) => {
+	RegistroModel.find({}, (error, result) => {
 		if (error) {
 			res.json(error)
 		} else {
@@ -29,7 +31,7 @@ app.get("/getUsers", (req, res) => {
 
 app.post("/createUser", async (req, res) => {
 	const user = req.body
-	const newUser = new UserModel(user)
+	const newUser = new RegistroModel(user)
 
 	await newUser.save()
 	res.json(user)
