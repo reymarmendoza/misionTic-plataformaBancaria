@@ -81,6 +81,7 @@ const Cuentas = ({ data }) => {
 						<h1>{user.name}</h1>
 						<h1>{user.age}</h1>
 						<h1>{user.username}</h1>
+						<h1>----------</h1>
 					</div>
 				)
 			})}

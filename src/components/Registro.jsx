@@ -4,8 +4,6 @@ import Axios from 'axios'
 
 import '../styles/registro.module.css'
 
-// const URL = process.env.REACT_APP_URL
-
 const REG_NOM = /^[a-zA-ZÀ-ÿ\s]{1,100}$/;
 const REG_CIU = /^[a-zA-ZÀ-ÿ\s]{1,70}$/;
 const REG_NUMDOC = /^\d{3,13}$/;
@@ -85,8 +83,8 @@ const Registro = () => {
             }}
 
             onSubmit={(valores, { resetForm }) => {
-                // Axios.post(`${URL}/createUser`, {
-                Axios.post("http://localhost:3001/createUser", {
+                // Axios.post("http://localhost:3001/createUser", {
+                Axios.post(`${process.env.REACT_APP_URL}/createUser`, {
                     nombre: valores.nombre,
                     correo: valores.correo,
                     tipoDoc: valores.tipoDoc,
@@ -98,9 +96,9 @@ const Registro = () => {
                     fechaExpDoc: valores.fechaExpDoc,
                     fechaNacimiento: valores.fechaNacimiento
                 }).then((response) => {
-                    console.log(`SUCCESS: ${response.value}`)
+                    console.log(`SUCCESS: ${response}`)
                 }).catch((error) => {
-                    console.log(`ERROR: ${error.value}`)
+                    console.log(`ERROR: ${error}`)
                 })
 
                 resetForm();
