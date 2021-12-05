@@ -20,5 +20,6 @@ const UserSchema = new mongoose.Schema({
 // (nombre de la coleccion[en la db], esquema que se va a aplicar a ella)
 // si la primera vez que se conecta a la bd la coleccion no existe, se va a crear
 const UserModel = mongoose.model("users", UserSchema)
+// const UserModel = mongoose.model("clientes", UserSchema)
 
 module.exports = { UserModel }

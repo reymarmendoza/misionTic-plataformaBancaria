@@ -29,7 +29,8 @@ app.get("/getUsers", (req, res) => {
 
 app.post("/createUser", async (req, res) => {
 	const user = req.body
-	const newUser = new RegistroModel(user)
+	// const newUser = new RegistroModel(user)
+	const newUser = new UserModel(user)
 
 	await newUser.save()
 	res.json(user)

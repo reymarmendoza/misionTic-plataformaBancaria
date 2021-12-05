@@ -2,8 +2,6 @@ import TransfModal from './TransfModal'
 import { useEffect, useState } from 'react'
 import Axios from 'axios'
 
-// const URL = process.env.REACT_APP_URL
-
 const Cuentas = ({ data }) => {
 	const handleCancelar = (event) => {
 		event.preventDefault()
@@ -17,9 +15,7 @@ const Cuentas = ({ data }) => {
 	const [username, setUsername] = useState('')
 
 	useEffect(() => {
-		// console.log(`URLGET: ${URL}/getUsers`)
-		// Axios.get(`${URL}/getUsers`)
-		Axios.get("http://localhost:3001/getUsers")
+		Axios.get(`${process.env.REACT_APP_URL}/getUsers`)
 			.then((response) => {
 				setListUsers(response.data)
 			})
@@ -36,9 +32,7 @@ const Cuentas = ({ data }) => {
 	}
 
 	const handleSenttoDB = () => {
-		// console.log(`URLPOST: ${URL}/createUser`)
-		// Axios.post(`${URL}/createUser`, {
-		Axios.post("http://localhost:3001/createUser", {
+		Axios.post(`${process.env.REACT_APP_URL}/createUser`, {
 			name: name,
 			age: age,
 			username: username
