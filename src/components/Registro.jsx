@@ -4,7 +4,7 @@ import Axios from 'axios'
 
 import '../styles/registro.module.css'
 
-const URL = process.env.REACT_APP_URL
+// const URL = process.env.REACT_APP_URL
 
 const REG_NOM = /^[a-zA-ZÀ-ÿ\s]{1,100}$/;
 const REG_CIU = /^[a-zA-ZÀ-ÿ\s]{1,70}$/;
@@ -85,7 +85,8 @@ const Registro = () => {
             }}
 
             onSubmit={(valores, { resetForm }) => {
-                Axios.post(`${URL}/createUser`, {
+                // Axios.post(`${URL}/createUser`, {
+                Axios.post("http://localhost:3001/createUser", {
                     nombre: valores.nombre,
                     correo: valores.correo,
                     tipoDoc: valores.tipoDoc,

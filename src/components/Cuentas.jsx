@@ -2,7 +2,7 @@ import TransfModal from './TransfModal'
 import { useEffect, useState } from 'react'
 import Axios from 'axios'
 
-const URL = process.env.REACT_APP_URL
+// const URL = process.env.REACT_APP_URL
 
 const Cuentas = ({ data }) => {
 	const handleCancelar = (event) => {
@@ -17,8 +17,9 @@ const Cuentas = ({ data }) => {
 	const [username, setUsername] = useState('')
 
 	useEffect(() => {
-		console.log(`URLGET: ${URL}/getUsers`)
-		Axios.get(`${URL}/getUsers`)
+		// console.log(`URLGET: ${URL}/getUsers`)
+		// Axios.get(`${URL}/getUsers`)
+		Axios.get("http://localhost:3001/getUsers")
 			.then((response) => {
 				setListUsers(response.data)
 			})
@@ -35,8 +36,9 @@ const Cuentas = ({ data }) => {
 	}
 
 	const handleSenttoDB = () => {
-		console.log(`URLPOST: ${URL}/createUser`)
-		Axios.post(`${URL}/createUser`, {
+		// console.log(`URLPOST: ${URL}/createUser`)
+		// Axios.post(`${URL}/createUser`, {
+		Axios.post("http://localhost:3001/createUser", {
 			name: name,
 			age: age,
 			username: username
@@ -93,7 +95,7 @@ const Cuentas = ({ data }) => {
 				<input type="text" placeholde="nombre" onChange={updateNombre}></input>
 				<input type="number" placeholde="edad" onChange={updateEdad}></input>
 				<input type="text" placeholde="username" onChange={updateUsername}></input>
-				<button type="submit" onClick={handleSenttoDB}></button>
+				<button type="submit" onClick={handleSenttoDB}>Enviar</button>
 			</form>
 			{/* Prueba */}
 		</div>
