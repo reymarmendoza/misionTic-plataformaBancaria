@@ -6,15 +6,13 @@ const { RegistroModel } = require("./models/Registro")
 
 const app = express()
 
+require('dotenv').config()
 // de esta forma habilito la opcion de usar json desde express para poder comunicarme con el server
 app.use(express.json())
 app.use(cors())
 
-const USER = "banagrario1"
-const PASSWORD = "eFez3yG5TF9Knj7"
-const DB = "BancoDB"
-
-mongoose.connect(`mongodb+srv://${USER}:${PASSWORD}@banagrario.57kdk.mongodb.net/${DB}?retryWrites=true&w=majority`)
+console.log(process.env.USER, process.env.PASSWORD, process.env.DB)
+mongoose.connect(`mongodb+srv://${process.env.USER}:${process.env.PASSWORD}@banagrario.57kdk.mongodb.net/${process.env.DB}?retryWrites=true&w=majority`)
 
 app.get("/getUsers", (req, res) => {
 	// despues de encontrar las coincidencias de la coleccion se ejecutara el callback
