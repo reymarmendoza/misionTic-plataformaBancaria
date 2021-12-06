@@ -1,9 +1,9 @@
-import TransfModal from './TransfModal';
+import TransfModal from './TransfModal'
 
 const Cuentas = ({ data }) => {
 	const handleCancelar = (event) => {
-		event.preventDefault();
-		console.log("cancel");
+		event.preventDefault()
+		console.log("cancel")
 	}
 
 	return (

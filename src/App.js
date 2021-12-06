@@ -20,8 +20,8 @@ import appStyles from './styles/root.module.css'
 import navStyles from './styles/navbar.module.css'
 import logStyles from './styles/login.module.css'
 
-export default function App() {	
-	
+export default function App() {
+
 	return (
 		<>
 			<BrowserRouter>
@@ -34,7 +34,7 @@ export default function App() {
 						<div>
 							<Landing />
 						</div>
-					}/>
+					} />
 
 					<Route path="/login" element={
 						<div className="row">
