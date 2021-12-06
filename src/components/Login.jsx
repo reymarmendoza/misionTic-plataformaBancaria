@@ -43,7 +43,7 @@ const Login = () => {
 	}
 
 	return (
-		<div class="col-12 col-lg-6">
+		<div>
 			<form className="p-3 my-3 mx-auto" onSubmit={submitHandler}>
 
 				<div className="row">

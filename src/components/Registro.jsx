@@ -103,7 +103,7 @@ const Registro = () => {
 
             {({ errors }) => (
                 // Formulario
-                <div className="col-12 col-lg-6">
+                <div>
                     <Form className='mx-auto p-3 my-3'>
                         <div className="row mb-2">
                             <div className="col">

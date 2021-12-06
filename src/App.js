@@ -15,13 +15,14 @@ import { TableFull } from './components/TableFull';
 import { Cuentas } from './components/Cuentas';
 import { Transferencias } from './components/Transferencias';
 import { Registro } from './components/Registro';
+import { GestionarEmpleado } from './components/GestionarEmpleado';
 
 import appStyles from './styles/root.module.css'
 import navStyles from './styles/navbar.module.css'
 import logStyles from './styles/login.module.css'
 
-export default function App() {
-
+export default function App() {	
+	
 	return (
 		<>
 			<BrowserRouter>
@@ -34,12 +35,16 @@ export default function App() {
 						<div>
 							<Landing />
 						</div>
-					} />
+					}/>
 
 					<Route path="/login" element={
 						<div className="row">
-							<Login />
-							<Registro />
+							<div className="col-12 col-lg-6">
+								<Login />
+							</div>
+							<div className="col-12 col-lg-6">
+								<Registro />
+							</div>
 						</div>
 					} />
 					<Route path="/cliente/*" element={<TableFull />} >
@@ -65,6 +70,16 @@ export default function App() {
 							element={
 								<div className="col-8">
 									Nueva Cuenta
+								</div>}
+						/>
+					</Route>
+						
+					
+					<Route path="/administrador/" element={<TableFull />}>
+						<Route path='GestionarEmpleado'
+							element={
+								<div className="col-8">
+									<GestionarEmpleado />
 								</div>}
 						/>
 					</Route>

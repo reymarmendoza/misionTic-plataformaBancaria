@@ -9,10 +9,14 @@ const user = [
 	{
 		user: 'empleado',
 		select: ['Depositos', 'Cuentas', 'Reclamos']
+	},
+	{
+		user: 'administrador',
+		select: ['Gestionar Empleado']
 	}
 ];
 
-const tipoUsr = 'cliente'; // Este valor debe venir de la BD
+const tipoUsr = 'administrador'; // Este valor debe venir de la BD
 
 export function TableSide() {
 	return (
