@@ -1,13 +1,11 @@
 import { Formik, Form, Field, ErrorMessage } from 'formik'
 import Axios from 'axios'
 
+import { REG_NOM, REG_CIU, REG_NUMDOC, REG_EMAIL, REG_PWD_VAR } from '../utils/resources'
+
 import '../styles/registro.module.css'
 
-const REG_NOM = /^[a-zA-ZÀ-ÿ\s]{1,100}$/;
-const REG_CIU = /^[a-zA-ZÀ-ÿ\s]{1,70}$/;
-const REG_NUMDOC = /^\d{3,13}$/;
-const REG_EMAIL = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
-const REG_PWD = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,15}$/;
+const REG_PWD = new RegExp(REG_PWD_VAR)
 
 const Registro = () => {
     return (
@@ -61,7 +59,7 @@ const Registro = () => {
                 if (!valores.ciudad)
                     errores.ciudad = 'Por favor ingrese su ciudad de residencia'
                 else if (!REG_CIU.test(valores.ciudad))
-                    errores.ciudad = 'Ciudad no válida. Solo se permiten letras, longitud máxima de 70 caracteres'
+                    errores.ciudad = 'Solo se permiten letras, longitud máxima de 70 caracteres'
 
                 // Validar número dirección
                 if (!valores.direccion)
@@ -73,7 +71,7 @@ const Registro = () => {
                 if (!valores.pwd)
                     errores.pwd = 'Por favor ingrese una contraseña'
                 else if (!REG_PWD.test(valores.pwd))
-                    errores.pwd = 'Contraseña no válida. Debe tener al menos una mayúscula, una minúscula, un número y un caracter especial. La longitud debe estar entre 8 y 15 caracteres'
+                    errores.pwd = 'La contraseña debe contener mayusculas, numeros, caracteres especiales y estar entre 8 y 15 caracteres'
 
                 // Validar terminos y condiciones
                 if (!valores.terminos)
