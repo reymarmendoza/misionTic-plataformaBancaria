@@ -1,4 +1,5 @@
 import TransfModal from './TransfModal'
+import CancelCtaModal from './CancelCtaModal'
 
 const Cuentas = ({ data }) => {
 	const handleCancelar = (event) => {
@@ -31,7 +32,7 @@ const Cuentas = ({ data }) => {
 									<TransfModal cuenta={e.idCuenta} saldo={e.saldo} />
 								</td>
 								<td>
-									<button type="button" class="btn btn-danger" onClick={handleCancelar}>Cancelar</button>
+									<CancelCtaModal cuenta={e.idCuenta} saldo={e.saldo} />
 								</td>
 							</tr>
 						))
