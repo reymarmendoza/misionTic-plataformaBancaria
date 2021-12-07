@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from 'react-router-dom';
+import RegTransModal from './RegTransModal';
 
 const user = [
 	{
@@ -26,16 +27,22 @@ export function TableSide() {
 				<ul className="nav nav-pills flex-column mb-auto">
 					{user.map((u) => {
 						if (u.user === tipoUsr) {
-							return u.select.map((s) => (
-								<li>
-									<Link to={`/${tipoUsr}/${s.replace(/ /g, '')}`}>
-										<a href={`/${tipoUsr}/${s.replace(/ /g, '')}`} className="nav-link link-dark">
-											<svg className="bi me-2" width="16" height="16"><use></use></svg>
-											{s}
-										</a>
-									</Link>
-								</li>
-							))
+							return u.select.map((s) => {
+								if(s === 'Transferencias') {
+									return (<RegTransModal tipoUsr={tipoUsr} s={s} />);
+								} else {
+									return(
+										<li>
+											<Link to={`/${tipoUsr}/${s.replace(/ /g, '')}`}>
+												<a href={`/${tipoUsr}/${s.replace(/ /g, '')}`} className="nav-link link-dark">
+													<svg className="bi me-2" width="16" height="16"><use></use></svg>
+													{s}
+												</a>
+											</Link>
+										</li>
+									)
+								}
+							})
 						} else {return null}
 					})
 					}

@@ -1,27 +1,32 @@
 import React, { useState } from "react";
 import Modal from "../utils/modal"
-import { useModal } from "../utils/useModal"
+import { useModal } from "../utils/useModal";
+import { useNavigate } from 'react-router-dom';
 
-const TransfModal = ({ cuenta, saldo }) => {
+const CancelCtaModal = ({ cuenta, dis }) => {
 	const [isOpenModal, openModal, closeModal] = useModal(false);
+	const navigate = useNavigate();
 
 	function cancelCta(e) {
-		alert(`En la brevedad un asesor confirmara la cancelacion de la cuenta ${cuenta}`)
-
+		cuenta.estado = "pendiente";
+		alert(`En la brevedad un asesor confirmara la cancelacion de la cuenta ${cuenta.idCuenta}`)		
 		closeModal();
+		navigate('/cliente/Cuentas');
 		e.preventDefault();
 	}
 
 	return (
 		<div>
-			<button class="btn btn-danger" onClick={openModal}>Cancelar</button>
-
+			{Boolean(dis) ?
+				<button class="btn btn-danger" onClick={openModal} disabled>Cancelar</button>
+			: <button class="btn btn-danger" onClick={openModal}>Cancelar</button>
+			}
 			<Modal isOpen={isOpenModal} closeModal={closeModal}>
 
 				<form onSubmit={cancelCta}>
 					<div className="row">
 						<label htmlFor="origen" className="form-label">
-							{`Por favor confirme que quiere cancelar la cuenta ${cuenta}`}
+							{`Por favor confirme que quiere cancelar la cuenta ${cuenta.idCuenta}`}
 						</label>
 					</div>
 
@@ -33,4 +38,4 @@ const TransfModal = ({ cuenta, saldo }) => {
 	)
 }
 
-export default TransfModal
+export default CancelCtaModal

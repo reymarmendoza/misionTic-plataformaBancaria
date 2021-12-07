@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import Modal from "../utils/modal"
-import { useModal } from "../utils/useModal"
+import { useModal } from "../utils/useModal";
+import { Link } from 'react-router-dom';
 
-const TransfModal = ({ cuentas, id, dis }) => {
+const RegTransModal = ({ tipoUsr, s }) => {
 	const [isOpenModal, openModal, closeModal] = useModal(false)
-	const [origen, setOrigen] = useState(id);
+	const [origen, setOrigen] = useState('');
 	const [destino, setDestino] = useState('');
 	const [montoTransf, setMontoTransf] = useState(0);	
 	const [totalADescontar, setTotalADescontar] = useState(0);
@@ -15,30 +16,30 @@ const TransfModal = ({ cuentas, id, dis }) => {
 		setOrigen(parseInt(e.target.value))
 	}
 
-	useEffect(() => {
-		let cuenta = cuentas.find(cta => cta.idCuenta === origen)
+	// useEffect(() => {
+	// 	let cuenta = cuentas.find(cta => cta.idCuenta === origen)
 		
-		if (cuenta) {
-			setSaldo(cuenta.saldo)
-			setAviso('')
-		} else {
-			setAviso('No existe esa cuenta de origen');
-		}
-	}, [cuentas, origen])
+	// 	if (cuenta) {
+	// 		setSaldo(cuenta.saldo)
+	// 		setAviso('')
+	// 	} else {
+	// 		setAviso('No existe esa cuenta de origen');
+	// 	}
+	// }, [cuentas, origen])
 
 	function updateDestino(e) {
 		setDestino(parseInt(e.target.value));
 	}
 
-	useEffect(() => {
-		let cuenta = cuentas.find(cta => cta.idCuenta === destino)
+	// useEffect(() => {
+	// 	let cuenta = cuentas.find(cta => cta.idCuenta === destino)
 		
-		if (!cuenta) {
-			setAviso('No existe esa cuenta de destino');
-		} else {
-			setAviso('');
-		}
-	}, [cuentas, destino])
+	// 	if (!cuenta) {
+	// 		setAviso('No existe esa cuenta de destino');
+	// 	} else {
+	// 		setAviso('');
+	// 	}
+	// }, [cuentas, destino])
 
 	function updateMontoTransf(e) {
 		setMontoTransf(parseFloat(e.target.value));
@@ -58,33 +59,38 @@ const TransfModal = ({ cuentas, id, dis }) => {
 		}
 	}, [saldo, totalADescontar])
 
-	function sendMoney(e) {
-		alert(`Se te descontará ${totalADescontar} para transferir ${montoTransf} debido a la comisión del 1% del banco`)
-		let ctaOrigen = cuentas.find(cta => cta.idCuenta === origen);
-		let ctaDestino = cuentas.find(cta => cta.idCuenta === destino);
-		if (ctaOrigen && ctaDestino && saldo >= totalADescontar && totalADescontar >= 0 ){
-			ctaOrigen.saldo -= totalADescontar;
-			ctaDestino.saldo += montoTransf;
-		} else {
-			alert('No podemos procesar tu solicitud');
-		}
-		closeModal();
-		e.preventDefault();
-	}
+	// function sendMoney(e) {
+	// 	alert(`Se te descontará ${totalADescontar} para transferir ${montoTransf} debido a la comisión del 1% del banco`)
+	// 	let ctaOrigen = cuentas.find(cta => cta.idCuenta === origen);
+	// 	let ctaDestino = cuentas.find(cta => cta.idCuenta === destino);
+	// 	if (ctaOrigen && ctaDestino && saldo >= totalADescontar && totalADescontar >= 0 ){
+	// 		ctaOrigen.saldo -= totalADescontar;
+	// 		ctaDestino.saldo += montoTransf;
+	// 	} else {
+	// 		alert('No podemos procesar tu solicitud');
+	// 	}
+	// 	closeModal();
+	// 	e.preventDefault();
+	// }
 
 	return (
 		<div>
-			{Boolean(dis) ?
-				<button className="btn btn-warning" onClick={openModal} disabled>Transferir</button>
-			: <button className="btn btn-warning" onClick={openModal} >Transferir</button>
-			}
+			<li>
+				<Link to={`/${tipoUsr}/${s}`}>
+					<a href={`/${tipoUsr}/${s}`} className="nav-link link-dark" onClick={openModal}>
+						<svg className="bi me-2" width="16" height="16"><use></use></svg>
+						{s}
+					</a>
+				</Link>
+			</li>
+
 			<Modal isOpen={isOpenModal} closeModal={closeModal}>
 
-				<form onSubmit={sendMoney}>
+				<form >
 					<div className="row">
 						<label htmlFor="origen" className="form-label">Por favor confirme la cuenta origen</label>
 						<input type="number" className="form-control" name="origen"
-							value={origen} placeholder={id} onChange={updateOrigen}>
+							value={origen} onChange={updateOrigen}>
 						</input>
 					</div>
 
@@ -112,4 +118,4 @@ const TransfModal = ({ cuentas, id, dis }) => {
 	)
 }
 
-export default TransfModal
+export default RegTransModal;

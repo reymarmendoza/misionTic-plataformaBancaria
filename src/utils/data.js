@@ -10,7 +10,7 @@ let data = [{
 	cuentas: [{
 			idCuenta: 1,
 			saldo: 100,
-			activa: true,
+			estado: "activa",
             transferencias: [{
                 idTransf: 101,
                 fecha: "2021-10-12",
@@ -48,12 +48,12 @@ let data = [{
 		{
 			idCuenta: 2,
 			saldo: 943000,
-			activa: true
+			estado: "activa",
 		},
 		{
 			idCuenta: 3,
 			saldo: 2456789,
-			activa: false
+			estado: "activa",
 		},
 	]
 }]

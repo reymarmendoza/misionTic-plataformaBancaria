@@ -13,7 +13,7 @@ import { NavBar } from './components/NavBar';
 import { Error } from './components/ErrorPage';
 import { TableFull } from './components/TableFull';
 import { Cuentas } from './components/Cuentas';
-import { Transferencias } from './components/Transferencias';
+import RegTransModal from './components/RegTransModal';
 import { Registro } from './components/Registro';
 
 import appStyles from './styles/root.module.css'
@@ -52,7 +52,7 @@ export default function App() {
 						<Route path='Transferencias'
 							element={
 								<div className="col-8">
-									<Transferencias data={data} />
+									<RegTransModal data={data} />
 								</div>}
 						/>
 						<Route path='Reclamos'
