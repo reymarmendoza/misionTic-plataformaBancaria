@@ -5,12 +5,15 @@ import {
 
 import { TableSide } from './TableSide';
 
-export function TableFull() {
+export function TableFull({ fechaInicio, fechaFin, idCuenta, onUpdate }) {
 	return (
 		// <BrowserRouter>
 		<div className="row">
 			<div className="col-4">
-				<TableSide />
+				<TableSide 
+					fechaInicio={fechaInicio} fechaFin={fechaFin} 
+					idCuenta={idCuenta} onUpdate={onUpdate} 
+				/>
 			</div>
 			<Outlet />
 		</div>

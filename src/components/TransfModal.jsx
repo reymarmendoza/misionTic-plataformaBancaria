@@ -59,7 +59,6 @@ const TransfModal = ({ cuentas, id, dis }) => {
 	}, [saldo, totalADescontar])
 
 	function sendMoney(e) {
-		alert(`Se te descontará ${totalADescontar} para transferir ${montoTransf} debido a la comisión del 1% del banco`)
 		let ctaOrigen = cuentas.find(cta => cta.idCuenta === origen);
 		let ctaDestino = cuentas.find(cta => cta.idCuenta === destino);
 		if (ctaOrigen && ctaDestino && saldo >= totalADescontar && totalADescontar >= 0 ){
@@ -68,6 +67,7 @@ const TransfModal = ({ cuentas, id, dis }) => {
 		} else {
 			alert('No podemos procesar tu solicitud');
 		}
+		alert(`Se te descontará ${totalADescontar} para transferir ${montoTransf} debido a la comisión del 1% del banco`)
 		closeModal();
 		e.preventDefault();
 	}

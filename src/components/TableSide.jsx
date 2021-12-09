@@ -15,7 +15,7 @@ const user = [
 
 const tipoUsr = 'cliente'; // Este valor debe venir de la BD
 
-export function TableSide() {
+export function TableSide({ fechaInicio, fechaFin, idCuenta, onUpdate }) {
 	return (
 		<div className="d-flex flex-column flex-shrink-0 p-3 bg-light">
 			<p1 className="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
@@ -29,7 +29,10 @@ export function TableSide() {
 						if (u.user === tipoUsr) {
 							return u.select.map((s) => {
 								if(s === 'Transferencias') {
-									return (<RegTransModal tipoUsr={tipoUsr} s={s} />);
+									return (<RegTransModal tipoUsr={tipoUsr} s={s}
+										fechaInicio={fechaInicio} fechaFin={fechaFin} 
+										idCuenta={idCuenta} onUpdate={onUpdate}/>
+									);
 								} else {
 									return(
 										<li>
