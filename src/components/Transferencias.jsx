@@ -1,20 +1,20 @@
 import React, { useState } from 'react';
 import TransfModal from './TransfModal';
 
-const Transferencias = ({ data }) => {
+const Transferencias = ({ data, fechaInicio, fechaFin, idCuenta }) => {
 	const [showModal, setShowModal] = useState(false);
 
-	const handleShowModal = (event) => {
+	const handleReclamo = (event) => {
+	// 	setShowModal(true);
+	// 	console.log(showModal);
+	// 	console.log('showModal');
 		event.preventDefault();
-		setShowModal(true);
-		console.log(showModal);
-		console.log('showModal');
 	};
 
 	return (
 		<div>
 			<p>
-				Transferencias de cuenta # {data[0].cuentas[0].idCuenta} desde dd/mm/aaaaa al dd/mm/aaaa
+				Transferencias de cuenta # {idCuenta} desde {fechaInicio} al {fechaFin}
 			</p>
 			<br />
 			<table className="table table-striped table-hover">
@@ -38,8 +38,7 @@ const Transferencias = ({ data }) => {
 								<td>{e.ctaDestino}</td>
 								<td>$ {e.monto}</td>
 								<td>
-									<button type="button" class="btn btn-warning" onClick={handleShowModal}>Reclamar</button>
-									{showModal ? <TransfModal /> : null}
+									<button type="button" class="btn btn-warning" onClick={handleReclamo}>Reclamar</button>
 								</td>
 							</tr>
 						))

@@ -1,5 +1,8 @@
 import React from "react";
+
 import { Link, useLocation } from 'react-router-dom';
+import RegTransModal from './RegTransModal';
+
 
 const user = [
 	{
@@ -16,9 +19,9 @@ const user = [
 	}
 ];
 
-export function TableSide() {
-	const tipoUsr = useLocation().state || localStorage.getItem("banAgrario")
-	console.log(tipoUsr)
+const tipoUsr = 'cliente'; // Este valor debe venir de la BD
+
+export function TableSide({ fechaInicio, fechaFin, idCuenta, onUpdate }) {
 
 	return (
 		<div className="d-flex flex-column flex-shrink-0 p-3 bg-light">
@@ -31,17 +34,26 @@ export function TableSide() {
 				<ul className="nav nav-pills flex-column mb-auto">
 					{user.map((u) => {
 						if (u.user === tipoUsr) {
-							return u.select.map((s) => (
-								<li>
-									<Link to={`/${tipoUsr}/${s.replace(/ /g, '')}`}>
-										<a href={`/${tipoUsr}/${s.replace(/ /g, '')}`} className="nav-link link-dark">
-											<svg className="bi me-2" width="16" height="16"><use></use></svg>
-											{s}
-										</a>
-									</Link>
-								</li>
-							))
-						} else { return null }
+							return u.select.map((s) => {
+								if(s === 'Transferencias') {
+									return (<RegTransModal tipoUsr={tipoUsr} s={s}
+										fechaInicio={fechaInicio} fechaFin={fechaFin} 
+										idCuenta={idCuenta} onUpdate={onUpdate}/>
+									);
+								} else {
+									return(
+										<li>
+											<Link to={`/${tipoUsr}/${s.replace(/ /g, '')}`}>
+												<a href={`/${tipoUsr}/${s.replace(/ /g, '')}`} className="nav-link link-dark">
+													<svg className="bi me-2" width="16" height="16"><use></use></svg>
+													{s}
+												</a>
+											</Link>
+										</li>
+									)
+								}
+							})
+						} else {return null}
 					})
 					}
 				</ul>
