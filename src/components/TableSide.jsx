@@ -19,9 +19,8 @@ const user = [
 	}
 ];
 
-const tipoUsr = 'cliente'; // Este valor debe venir de la BD
-
 export function TableSide({ fechaInicio, fechaFin, idCuenta, onUpdate }) {
+	const tipoUsr = useLocation().state || localStorage.getItem("banAgrario")
 
 	return (
 		<div className="d-flex flex-column flex-shrink-0 p-3 bg-light">
@@ -35,13 +34,13 @@ export function TableSide({ fechaInicio, fechaFin, idCuenta, onUpdate }) {
 					{user.map((u) => {
 						if (u.user === tipoUsr) {
 							return u.select.map((s) => {
-								if(s === 'Transferencias') {
+								if (s === 'Transferencias') {
 									return (<RegTransModal tipoUsr={tipoUsr} s={s}
-										fechaInicio={fechaInicio} fechaFin={fechaFin} 
-										idCuenta={idCuenta} onUpdate={onUpdate}/>
+										fechaInicio={fechaInicio} fechaFin={fechaFin}
+										idCuenta={idCuenta} onUpdate={onUpdate} />
 									);
 								} else {
-									return(
+									return (
 										<li>
 											<Link to={`/${tipoUsr}/${s.replace(/ /g, '')}`}>
 												<a href={`/${tipoUsr}/${s.replace(/ /g, '')}`} className="nav-link link-dark">
@@ -53,7 +52,7 @@ export function TableSide({ fechaInicio, fechaFin, idCuenta, onUpdate }) {
 									)
 								}
 							})
-						} else {return null}
+						} else { return null }
 					})
 					}
 				</ul>
