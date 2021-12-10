@@ -1,6 +1,8 @@
 import React from "react";
-import { Link } from 'react-router-dom';
+
+import { Link, useLocation } from 'react-router-dom';
 import RegTransModal from './RegTransModal';
+
 
 const user = [
 	{
@@ -10,12 +12,17 @@ const user = [
 	{
 		user: 'empleado',
 		select: ['Depositos', 'Cuentas', 'Reclamos']
+	},
+	{
+		user: 'administrador',
+		select: ['Gestionar Empleado']
 	}
 ];
 
 const tipoUsr = 'cliente'; // Este valor debe venir de la BD
 
 export function TableSide({ fechaInicio, fechaFin, idCuenta, onUpdate }) {
+
 	return (
 		<div className="d-flex flex-column flex-shrink-0 p-3 bg-light">
 			<p1 className="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
