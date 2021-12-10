@@ -16,8 +16,9 @@ const user = [
 	}
 ];
 
-const tipoUsr = 'administrador'; // Este valor debe venir de la BD
-
+/*************************************************** */
+const tipoUsr = 'cliente'; // Este valor debe venir de la BD
+/*************************************************** */
 export function TableSide() {
 	return (
 		<div className="d-flex flex-column flex-shrink-0 p-3 bg-light">
@@ -40,7 +41,7 @@ export function TableSide() {
 									</Link>
 								</li>
 							))
-						} else {return null}
+						} else { return null }
 					})
 					}
 				</ul>
