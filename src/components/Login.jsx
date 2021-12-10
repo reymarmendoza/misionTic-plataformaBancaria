@@ -26,12 +26,17 @@ const Login = () => {
 		})
 			.then((response) => {
 				if (response.status === 200) {
-					navigate(`${response.data.url}`)
+					localStorage.setItem("banAgrario", response.data.url)
+					navigate(
+						`/${response.data.url}`, {
+						state: response.data.url
+					})
 				} else {
 					setErrGral(`Error: ${response.data.result}`)
 				}
 			})
 			.catch((error) => {
+				setErrGral("Usuario y/o contraseña incorrectos")
 				console.log("E: " + error)
 			})
 	}

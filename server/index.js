@@ -18,21 +18,22 @@ async function loginDataMatch(client, { user, pass }) {
 			pwd: pass
 		})
 
-	return result
+	return result ? result.tipoUsuario : "noExiste"
 }
 
 app.post("/routeUser", async (req, res) => {
 	const client = new MongoClient(URL)
 	try {
 		await client.connect()
-		const matches = await loginDataMatch(client, req.body)
-		switch (matches.tipoUsuario) {
+		const usuarioLogIn = await loginDataMatch(client, req.body)
+
+		switch (usuarioLogIn) {
 			case "cliente":
-				return res.status(200).send({ result: 'redirect', url: '/cliente' })
+				return res.status(200).send({ result: "redirect", url: "cliente" })
 			case "empleado":
-				return res.status(200).send({ result: 'redirect', url: '/empleado' })
+				return res.status(200).send({ result: "redirect", url: "empleado" })
 			case "administrador":
-				return res.status(200).send({ result: 'redirect', url: '/administrador' })
+				return res.status(200).send({ result: "redirect", url: "administrador" })
 			default:
 				return res.status(401).send({ result: "Usuario y/o contraseña no validos" })
 		}
