@@ -19,27 +19,26 @@ const Login = () => {
 
 	const submitHandler = async (event) => {
 		event.preventDefault()
-		let credentialsMatch = false
 
-		await Axios.get(`${process.env.REACT_APP_URL}/getUsers`)
+		await Axios.post(`${process.env.REACT_APP_URL}/routeUser`, {
+			user: email,
+			pass: pwd
+		})
 			.then((response) => {
-				response.data.forEach((userLog) => {
-					if (userLog.correo === email && userLog.pwd === pwd) {
-						console.log(userLog.correo, userLog.pwd)
-						credentialsMatch = true
-					}
-				})
+				if (response.status === 200) {
+					localStorage.setItem("banAgrario", response.data.url)
+					navigate(
+						`/${response.data.url}`, {
+						state: response.data.url
+					})
+				} else {
+					setErrGral(`Error: ${response.data.result}`)
+				}
 			})
 			.catch((error) => {
-				console.log(error)
+				setErrGral("Usuario y/o contraseña incorrectos")
+				console.log("E: " + error)
 			})
-
-		if (!credentialsMatch) {
-			setErrGral('Usuario y/o contraseña incorrecta')
-		} else {
-			console.log("Datos correctos")
-			navigate('/cliente')
-		}
 	}
 
 	return (

@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 const user = [
 	{
@@ -16,9 +16,10 @@ const user = [
 	}
 ];
 
-const tipoUsr = 'administrador'; // Este valor debe venir de la BD
-
 export function TableSide() {
+	const tipoUsr = useLocation().state || localStorage.getItem("banAgrario")
+	console.log(tipoUsr)
+
 	return (
 		<div className="d-flex flex-column flex-shrink-0 p-3 bg-light">
 			<p1 className="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
@@ -40,7 +41,7 @@ export function TableSide() {
 									</Link>
 								</li>
 							))
-						} else {return null}
+						} else { return null }
 					})
 					}
 				</ul>
