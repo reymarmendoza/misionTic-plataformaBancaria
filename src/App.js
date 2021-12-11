@@ -42,9 +42,7 @@ export default function App() {
 	return (
 		<>
 			<BrowserRouter>
-				<div className="App" className={appStyles.root}>
-					<NavBar className={navStyles.prueba} />
-				</div>
+				<NavBar className={navStyles.prueba} />
 
 				<Routes>
 					<Route path="/" element={

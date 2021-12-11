@@ -1,12 +1,16 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
+function cleanStorage() {
+	localStorage.setItem("banAgrario", "")
+}
+
 export function NavBar() {
 	return (
 		<nav class="navbar navbar-dark bg-dark">
 			<div class="container-fluid">
 				<Link to="/">
-					<a class="navbar-brand" href="/">
+					<a class="navbar-brand" href="/" onClick={cleanStorage}>
 						<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Banco_Agrario_de_Colombia_logo.svg/100px-Banco_Agrario_de_Colombia_logo.svg.png" width="30" height="30" alt="" class="d-inline-block align-text-top" />
 						Banagrario
 					</a>

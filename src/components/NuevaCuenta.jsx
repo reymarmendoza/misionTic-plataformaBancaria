@@ -18,10 +18,10 @@ export function NuevaCuenta() {
 			balance: initialBalance
 		})
 			.then((response) => {
-				console.log(`Nueva cuenta SUCCESS: ${response.data}`)
+				console.log("NuevaCuenta" + response.data)
 			})
 			.catch((error) => {
-				console.log(`Nueva cuenta ERROR: ${error}`)
+				console.log("NuevaCuenta" + error)
 			})
 	}
 

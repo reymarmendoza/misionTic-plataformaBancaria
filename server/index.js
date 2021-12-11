@@ -2,6 +2,7 @@ require('dotenv').config()
 
 const express = require("express")
 const cors = require("cors")
+const mongoose = require("mongoose")
 const { MongoClient } = require('mongodb')
 
 const { CuentasModel } = require("./models/Cuentas")
@@ -49,13 +50,14 @@ app.post("/routeUser", async (req, res) => {
 app.post("/createUser", async (req, res) => {
 	const user = req.body
 	const newUser = new RegistroModel(user)
+	let result
 
 	try {
 		await newUser.save()
-		result = "Saving account succeed"
+		result = "Creating User succeed"
 	} catch (e) {
 		result = "Saving account failed"
-		console.log("CreateUser Error: " + e)
+		console.log("Creating User Error: " + e)
 	}
 
 	res.send(result)
@@ -79,15 +81,11 @@ app.post("/createAccount", async (req, res) => {
 	const newAcc = new CuentasModel(acc)
 	let result
 
+	mongoose.connect(URL)
+
 	try {
 		// await newAcc.save() sin then y catch
-		newAcc.save()
-			.then((r) => {
-				console.log("newAcc OK:", r)
-			})
-			.catch((e) => {
-				console.log("newAcc FAIL:", e)
-			})
+		await newAcc.save()
 		result = "Saving account succeed"
 	} catch (e) {
 		result = "Saving account failed"
