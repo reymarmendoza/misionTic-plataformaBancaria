@@ -14,6 +14,7 @@ import { Error } from './components/ErrorPage';
 import { TableFull } from './components/TableFull';
 import { Cuentas } from './components/Cuentas';
 import { Transferencias } from './components/Transferencias';
+import { NuevaCuenta } from './components/NuevaCuenta';
 import { Registro } from './components/Registro';
 import { GestionarEmpleado } from './components/GestionarEmpleado';
 
@@ -85,7 +86,7 @@ export default function App() {
 						<Route path='NuevaCuenta'
 							element={
 								<div className="col-8">
-									Nueva Cuenta
+									<NuevaCuenta />
 								</div>}
 						/>
 					</Route>

@@ -4,7 +4,7 @@ const express = require("express")
 const cors = require("cors")
 const { MongoClient } = require('mongodb')
 
-const { TransaccionesModel } = require("./models/Transacciones")
+const { CuentasModel } = require("./models/Cuentas")
 const { RegistroModel } = require("./models/Registro")
 const URL = `mongodb+srv://${process.env.REACT_APP_USER}:${process.env.REACT_APP_PASSWORD}@banagrario.57kdk.mongodb.net/${process.env.REACT_APP_DB}?retryWrites=true&w=majority`
 const app = express()
@@ -24,6 +24,7 @@ async function loginDataMatch(client, { user, pass }) {
 
 app.post("/routeUser", async (req, res) => {
 	const client = new MongoClient(URL)
+
 	try {
 		await client.connect()
 		const usuarioLogIn = await loginDataMatch(client, req.body)
@@ -51,11 +52,13 @@ app.post("/createUser", async (req, res) => {
 
 	try {
 		await newUser.save()
+		result = "Saving account succeed"
 	} catch (e) {
+		result = "Saving account failed"
 		console.log("CreateUser Error: " + e)
 	}
 
-	res.json(user)
+	res.send(result)
 })
 /*
 app.post("/createTransaction", async (req, res) => {
@@ -70,18 +73,30 @@ app.post("/createTransaction", async (req, res) => {
 
 	res.json(tran)
 })
-
+*/
 app.post("/createAccount", async (req, res) => {
 	const acc = req.body
-	const newAcc = new AccountModel(acc)
+	const newAcc = new CuentasModel(acc)
+	let result
 
 	try {
-		await newAcc.save()
+		// await newAcc.save() sin then y catch
+		newAcc.save()
+			.then((r) => {
+				console.log("newAcc OK:", r)
+			})
+			.catch((e) => {
+				console.log("newAcc FAIL:", e)
+			})
+		result = "Saving account succeed"
 	} catch (e) {
+		result = "Saving account failed"
 		console.log("Account failed: " + e)
 	}
+
+	res.send(result)
 })
-*/
+
 app.listen(3001, () => {
 	console.log("Server is running")
 })

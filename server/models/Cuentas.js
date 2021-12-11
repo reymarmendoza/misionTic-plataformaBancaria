@@ -1,4 +1,4 @@
-const mongoose = require("mongoose")
+const mongoose = require('mongoose')
 
 const schema = new mongoose.Schema({
 	numDoc: {
@@ -6,12 +6,12 @@ const schema = new mongoose.Schema({
 		required: true
 	},
 	numCuenta: {
-		type: Number,
+		type: String,
 		required: true
 	},
 	estado: {
 		type: String,
-		enum: ['Activa', 'Desactivada', 'Pendiente', 'Rechazada'],
+		enum: ['activa', 'desactivada', 'pendiente', 'rechazada'],
 		required: true
 	},
 	balance: {
@@ -20,6 +20,6 @@ const schema = new mongoose.Schema({
 	}
 })
 
-const CuentasModel = mongoose.model("Cuentas", schema)
+const CuentasModel = mongoose.model("cuentas", schema)
 
 module.exports = { CuentasModel }
