@@ -1,4 +1,4 @@
-const mongoose = require('mongoose')
+const mongoose = require("mongoose")
 
 const schema = new mongoose.Schema({
 	nombre: {
@@ -45,7 +45,19 @@ const schema = new mongoose.Schema({
 	fechaNacimiento: {
 		type: Date,
 		required: true
-	}
+	},
+	// data del back
+	fechaCreacion: {
+		type: Date,
+		default: () => Date.now(),
+		immutable: true
+	},
+	tipoUsuario: {
+		type: String,
+		enum: ['Cliente', 'Colaborador', 'Administrador'],
+		default: () => "Cliente"
+	},
+	cuentas: [Number]
 })
 
 const RegistroModel = mongoose.model("clientes", schema)

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
 	BrowserRouter,
 	Routes,
@@ -16,12 +16,28 @@ import { TableFull } from './components/TableFull';
 import { Cuentas } from './components/Cuentas';
 import { Transferencias } from './components/Transferencias';
 import { Registro } from './components/Registro';
+import { GestionarEmpleado } from './components/GestionarEmpleado';
 
 import appStyles from './styles/root.module.css'
 import navStyles from './styles/navbar.module.css'
 import logStyles from './styles/login.module.css'
 
 export default function App() {
+	const [fechaInicio, setFechaInicio] = useState('');
+	const [fechaFin, setFechaFin] = useState('');
+	const [idCuenta, setIdCuenta] = useState(0);
+
+	const updateHandler = (newFechaInicio, newFechaFin, newIdCuenta) => {
+		setFechaInicio(newFechaInicio);
+		setFechaFin(newFechaFin);
+		setIdCuenta(newIdCuenta);
+	}
+
+	useEffect(() => {
+		setFechaInicio(fechaInicio);
+		setFechaFin(fechaFin);
+		setIdCuenta(idCuenta);
+	}, [fechaInicio, fechaFin, idCuenta])
 
 	return (
 		<>
@@ -39,11 +55,16 @@ export default function App() {
 
 					<Route path="/login" element={
 						<div className="row">
-							<Login />
-							<Registro />
+							<div className="col-12 col-lg-6">
+								<Login />
+							</div>
+							<div className="col-12 col-lg-6">
+								<Registro />
+							</div>
 						</div>
 					} />
-					<Route path="/cliente/*" element={<TableFull />} >
+					<Route path="/cliente/*" element={<TableFull onUpdate={updateHandler}
+						fechaInicio={fechaInicio} fechaFin={fechaFin} idCuenta={idCuenta} />} >
 						<Route path='Cuentas'
 							element={
 								<div className="col-8">
@@ -53,7 +74,7 @@ export default function App() {
 						<Route path='Transferencias'
 							element={
 								<div className="col-8">
-									<Transferencias data={data} />
+									<Transferencias data={data} fechaInicio={fechaInicio} fechaFin={fechaFin} idCuenta={idCuenta} />
 								</div>}
 						/>
 						<Route path='Reclamos'
@@ -87,6 +108,15 @@ export default function App() {
 							element={
 								<div className="col-8">
 									Reclamos
+								</div>}
+						/>
+					</Route>
+
+					<Route path="/administrador/" element={<TableFull />}>
+						<Route path='GestionarEmpleado'
+							element={
+								<div className="col-8">
+									<GestionarEmpleado />
 								</div>}
 						/>
 					</Route>
