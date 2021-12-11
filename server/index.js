@@ -52,13 +52,16 @@ app.post("/createUser", async (req, res) => {
 	const newUser = new RegistroModel(user)
 	let result
 
+	mongoose.connect(URL)
+
 	try {
 		await newUser.save()
 		result = "Creating User succeed"
 	} catch (e) {
 		result = "Saving account failed"
-		console.log("Creating User Error: " + e)
 	}
+
+	mongoose.connection.close()
 
 	res.send(result)
 })
@@ -91,6 +94,8 @@ app.post("/createAccount", async (req, res) => {
 		result = "Saving account failed"
 		console.log("Account failed: " + e)
 	}
+
+	mongoose.connection.close()
 
 	res.send(result)
 })
