@@ -2,15 +2,6 @@ import Axios from 'axios'
 
 export function NuevaCuenta() {
 	function submitData(initialBalance) {
-		// console.log(
-		// 	JSON.parse(localStorage.getItem("banAgrario")).userSession
-		// )
-		// console.log(
-		// 	Math.floor(Math.random() * (1000000 - 1)).toString(),
-		// )
-		// console.log(
-		// 	initialBalance
-		// )
 		Axios.post(`${process.env.REACT_APP_URL}/createAccount`, {
 			numDoc: JSON.parse(localStorage.getItem("banAgrario")).userSession,
 			numCuenta: Math.floor(Math.random() * (1000000 - 1)).toString(),

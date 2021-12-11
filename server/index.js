@@ -61,8 +61,6 @@ app.post("/createUser", async (req, res) => {
 		result = "Saving account failed"
 	}
 
-	mongoose.connection.close()
-
 	res.send(result)
 })
 /*
@@ -87,15 +85,12 @@ app.post("/createAccount", async (req, res) => {
 	mongoose.connect(URL)
 
 	try {
-		// await newAcc.save() sin then y catch
 		await newAcc.save()
 		result = "Saving account succeed"
 	} catch (e) {
 		result = "Saving account failed"
 		console.log("Account failed: " + e)
 	}
-
-	mongoose.connection.close()
 
 	res.send(result)
 })
