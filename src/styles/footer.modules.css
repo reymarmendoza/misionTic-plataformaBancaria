@@ -1,0 +1,45 @@
+.footerContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  width: 100vw;
+  height: fit-content;
+  background-color: rgb(42, 42, 42);
+}
+.footerColumn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 33%;
+  padding: 20px 5px
+}
+.footerTitle, .footerList, .footerColumn p {
+  color: white;
+  font-family: "Roboto", sans-serif;
+  list-style-type: none;
+}
+.footerTitle {
+  font-size: calc(100vw * (26 / 1366));
+  font-weight: 900;
+  text-decoration: underline;
+  margin-bottom: 20px;
+}
+.footerList li {
+  font-size: calc(100vw * (18 / 1366));
+}
+.footerList li a {
+  text-decoration: none;
+  color: white;
+}
+.footerList li a:hover {
+  color: green;
+  text-decoration: underline;
+}
+.bankLogoFooter {
+  width: 70px;
+  height: 70px;
+}
+.footerColumn p {
+  font-size: calc(100vw * (16 / 1366));
+}
