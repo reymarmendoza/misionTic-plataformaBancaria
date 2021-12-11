@@ -8,6 +8,7 @@ import {
 import data from './utils/data';
 
 import { Landing } from './components/Landing';
+import { Footer } from './components/Footer';
 import { Login } from './components/Login';
 import { NavBar } from './components/NavBar';
 import { Error } from './components/ErrorPage';
@@ -89,6 +90,27 @@ export default function App() {
 								</div>}
 						/>
 					</Route>
+					
+					<Route path="/empleado/*" element={<TableFull />} >
+						<Route path='Depositos'
+							element={
+								<div className="col-8">
+									<Cuentas data={data} />
+								</div>}
+						/>
+						<Route path='Cuentas'
+							element={
+								<div className="col-8">
+									<Transferencias data={data} />
+								</div>}
+						/>
+						<Route path='Reclamos'
+							element={
+								<div className="col-8">
+									Reclamos
+								</div>}
+						/>
+					</Route>
 
 					<Route path="/administrador/" element={<TableFull />}>
 						<Route path='GestionarEmpleado'
@@ -102,8 +124,7 @@ export default function App() {
 					<Route path="*" element={<Error />} />
 
 				</Routes>
-
-				<NavBar className={navStyles.prueba} />
+				<Footer/>
 			</BrowserRouter>
 		</>
 	);
