@@ -20,7 +20,9 @@ const user = [
 ];
 
 export function TableSide({ fechaInicio, fechaFin, idCuenta, onUpdate }) {
-	const tipoUsr = useLocation().state || localStorage.getItem("banAgrario")
+	const userActive = JSON.parse(localStorage.getItem("banAgrario"))
+	// userSession, url
+	const tipoUsr = useLocation().state || userActive.url
 
 	return (
 		<div className="d-flex flex-column flex-shrink-0 p-3 bg-light">
@@ -57,6 +59,7 @@ export function TableSide({ fechaInicio, fechaFin, idCuenta, onUpdate }) {
 					}
 				</ul>
 			</>
+
 		</div>
 	)
 }

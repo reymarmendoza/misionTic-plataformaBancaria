@@ -1,16 +1,17 @@
-const mongoose = require("mongoose")
+const mongoose = require('mongoose')
 
-const schema = new mongoose.schema({
+const schema = new mongoose.Schema({
 	numDoc: {
 		type: Number,
 		required: true
 	},
 	numCuenta: {
-		type: Number,
+		type: String,
 		required: true
 	},
 	estado: {
-		enum: ['Activa', 'Desactivada', 'Pendiente', 'Rechazada'],
+		type: String,
+		enum: ['activa', 'desactivada', 'pendiente', 'rechazada'],
 		required: true
 	},
 	balance: {
@@ -19,6 +20,6 @@ const schema = new mongoose.schema({
 	}
 })
 
-const CuentasModel = mongoose.model("Cuentas", schema)
+const CuentasModel = mongoose.model("cuentas", schema)
 
-export { CuentasModel }
+module.exports = { CuentasModel }
