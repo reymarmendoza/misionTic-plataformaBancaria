@@ -6,21 +6,48 @@ import { Link } from 'react-router-dom';
 const RegTransModal = ({ tipoUsr, s, fechaInicio, fechaFin, idCuenta, onUpdate }) => {
 	const [isOpenModal, openModal, closeModal] = useModal(false)
 	const [aviso, setAviso] = useState('');
+	const [inicio, setInicio] = useState(new Date());
+	const [fin, setFin] = useState(new Date());
 
 	function changeFechaInicioHandler(e) {
 		onUpdate(e.target.value, fechaFin, idCuenta);
 	}
 
+	useEffect(() => {
+		let anio = parseInt(fechaInicio.slice(0,4));
+		let mes = parseInt(fechaInicio.slice(5,7));
+		let dia = parseInt(fechaInicio.slice(-2));
+		setInicio(new Date(anio, mes - 1, dia));
+	}, [fechaInicio])
+
 	function changeFechaFinHandler(e) {
 		onUpdate(fechaInicio, e.target.value, idCuenta);
 	}
+
+	useEffect(() => {
+		let anio = parseInt(fechaFin.slice(0,4));
+		let mes = parseInt(fechaFin.slice(5,7));
+		let dia = parseInt(fechaFin.slice(-2));
+		setFin(new Date(anio, mes - 1, dia));
+	}, [fechaFin])
+	
+	useEffect(() => {
+		let oneMonth = 1000 * 60 * 60 * 24 * 30;
+		let threeMonths = 1000 * 60 * 60 * 24 * 30 * 3;
+		let lapso = fin - inicio;
+		if (lapso >= oneMonth && lapso <= threeMonths) {
+			setAviso('')
+		} else {
+			setAviso('El lapso de consulta debe estar entre 30 y 90 dias');
+		}
+	}, [inicio, fin])
 
 	function changeIdCuentaHandler(e) {
 		onUpdate(fechaInicio, fechaFin, e.target.value);
 	}
 
 	function searchTransfers(e) {
-		alert(`Se buscará desde ${fechaInicio} hasta ${fechaFin} de la cuenta ${idCuenta}`)
+		alert(`Se buscará desde ${inicio} hasta ${fin} de la cuenta ${idCuenta}`)
 	// 	let ctaOrigen = cuentas.find(cta => cta.idCuenta === origen);
 	// 	let ctaDestino = cuentas.find(cta => cta.idCuenta === destino);
 	// 	if (ctaOrigen && ctaDestino && saldo >= totalADescontar && totalADescontar >= 0 ){
