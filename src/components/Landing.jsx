@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import styles from "../styles/landing.module.css"
 
@@ -9,7 +9,7 @@ export const Landing = () => {
         <img
           src="https://www.bancoagrario.gov.co/images/ig2015/logo-banco-agrario-colombia.png"
           alt="Logo Banco Agrario"
-          className={styles.bankLoogo}
+          className={styles.bankLogo}
         />
         <Link to="/login">
           <button class="btn btn-success my-2 my-sm-0" type="submit">
