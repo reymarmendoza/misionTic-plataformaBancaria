@@ -1,6 +1,6 @@
 const mongoose = require("mongoose")
 
-const schema = new mongoose.schema({
+const schema = new mongoose.Schema({
 	numDoc: {
 		type: Number,
 		required: true
@@ -10,6 +10,7 @@ const schema = new mongoose.schema({
 		required: true
 	},
 	estado: {
+		type: String,
 		enum: ['Activa', 'Desactivada', 'Pendiente', 'Rechazada'],
 		required: true
 	},
@@ -21,4 +22,4 @@ const schema = new mongoose.schema({
 
 const CuentasModel = mongoose.model("Cuentas", schema)
 
-export { CuentasModel }
+module.exports = { CuentasModel }
