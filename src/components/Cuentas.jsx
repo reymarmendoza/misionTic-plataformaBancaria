@@ -58,7 +58,7 @@ const Cuentas = ({ data }) => {
 									<th scope="row">{e.cuenta}</th>
 									<td>$ {e.saldo.toFixed(2)}</td>
 									<td>
-										<TransfModal cuentas={cuentasUser} id={e.cuenta} dis={dis} />
+										<TransfModal cuentas={cuentasUser} ctaOrigen={e.cuenta} dis={dis} />
 									</td>
 									<td>
 										<CancelCtaModal cuenta={e} dis={dis} />

@@ -153,6 +153,23 @@ app.post("/exeChangeState", async (req, res) => {
 	res.send(resMsg)
 })
 
+app.post("/existAccount", async (req, res) => {
+	mongoose.connect(URL)
+	let exist = false
+
+	try {
+		await CuentasModel.findOne({ numCuenta: req.body.searchAccount }).exec()
+			.then((response) => {
+				exist = true
+				console.log("existAccount S", response)
+			})
+	} catch (error) {
+		console.log("existAccount E", error)
+	}
+
+	res.send(exist)
+})
+
 app.listen(3001, () => {
 	console.log("Server is running")
 })
