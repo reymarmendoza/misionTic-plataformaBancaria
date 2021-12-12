@@ -129,12 +129,19 @@ app.post("/getAccounts", async (req, res) => {
 
 app.post("/exeChangeState", async (req, res) => {
 	mongoose.connect(URL)
+	let nuevoEstado = ''
 	let resMsg = ''
+
+	if (req.body.action === "aprobar") {
+		nuevoEstado = "activa"
+	} else {
+		nuevoEstado = "rechazada"
+	}
 
 	try {
 		await CuentasModel.updateOne(
 			{ _id: req.body.id },
-			{ $set: { estado: "activa" } }
+			{ $set: { estado: nuevoEstado } }
 		)
 			.then((response) => {
 				resMsg = response.modifiedCount

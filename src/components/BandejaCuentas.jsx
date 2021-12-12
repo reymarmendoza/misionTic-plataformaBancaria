@@ -36,17 +36,24 @@ export function CuentasPorAprovar({ data }) {
 
 	async function handleAprobar(id) {
 		const opeOut = await Axios.post(`${process.env.REACT_APP_URL}/exeChangeState`, {
-			id
+			id,
+			estado: "aprobar"
 		})
 
 		if (opeOut === 1) {
 			userAccounts()
 		}
-		// console.log(opeOut.data)
 	}
 
-	function handleDenegar() {
+	async function handleRechazar(id) {
+		const opeOut = await Axios.post(`${process.env.REACT_APP_URL}/exeChangeState`, {
+			id,
+			estado: "rechazar"
+		})
 
+		if (opeOut === 1) {
+			userAccounts()
+		}
 	}
 
 	// const handleReclamo = (event) => {
@@ -81,7 +88,7 @@ export function CuentasPorAprovar({ data }) {
 									<button type="button" class="btn btn-warning" onClick={() => handleAprobar(acc.id)}>Aprobar</button>
 								</td>
 								<td>
-									<button type="button" class="btn btn-warning" onClick={handleDenegar}>Denegar</button>
+									<button type="button" class="btn btn-warning" onClick={() => handleRechazar(acc.id)}>Denegar</button>
 								</td>
 							</tr>
 						))
