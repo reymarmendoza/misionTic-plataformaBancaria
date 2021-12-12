@@ -1,18 +1,49 @@
-import TransfModal from './TransfModal';
+import { useEffect, useState } from 'react'
+import Axios from 'axios'
+
+import TransfModal from './TransfModal'
+import CancelCtaModal from './CancelCtaModal'
 
 const Cuentas = ({ data }) => {
-	const handleCancelar = (event) => {
-		event.preventDefault();
-		console.log("cancel");
-	}
+	const [cuentasUser, setCuentasUser] = useState([])
+
+	useEffect(() => {
+		const activeUser = JSON.parse(localStorage.getItem("banAgrario")).userSession
+		// (function(){
+		// 	// some code…
+		//  })();
+		async function userAccounts() {
+			const accounts = await Axios.post(`${process.env.REACT_APP_URL}/getAccountsByUser`, {
+				activeUser
+			})
+
+			let cont = 0
+			let listaCuentas = []
+			accounts.data.forEach(e => {
+				// SE DEBE CAMBIAR POR EL CONTRARIO ES SOLO PARA PRUEBAS ************************
+				if (e.estado === "pendiente") {
+					listaCuentas[cont++] = {
+						cuenta: e.numCuenta,
+						saldo: e.balance,
+						id: e._id
+					}
+				}
+			})
+
+			setCuentasUser(listaCuentas)
+		}
+
+		userAccounts()
+
+	}, [])
 
 	return (
 		<div>
-			<p>
-				Cuentas de {data[0].datos.nombre}
-			</p>
+			{/* <p>
+				Cuentas de PEPE
+			</p> */}
 			<br />
-			<table className="table table-striped table-hover">
+			<table className="table table-hover">
 				<thead>
 					<tr>
 						<th scope="col"># Cuenta</th>
@@ -23,23 +54,35 @@ const Cuentas = ({ data }) => {
 				</thead>
 				<tbody>
 					{
-						data[0].cuentas.map((e) => (
-							<tr>
-								<th scope="row">{e.idCuenta}</th>
-								<td>$ {e.saldo}</td>
-								<td>
-									<TransfModal cuenta={e.idCuenta} saldo={e.saldo} />
-								</td>
-								<td>
-									<button type="button" class="btn btn-danger" onClick={handleCancelar}>Cancelar</button>
-								</td>
-							</tr>
-						))
+						cuentasUser.map((e) => {
+							let opacity = 100, dis = false;
+							// SE DEBE CAMBIAR POR EL CONTRARIO ES SOLO PARA PRUEBAS ************************
+							// if (e.estado !== "activa") {
+							if (e.estado === "activa") {
+								opacity = 25;
+								dis = true;
+							}
+
+							return (
+								<tr className={`text-body text-opacity-${opacity}`}>
+									{/* <tr> */}
+									<th scope="row">{e.cuenta}</th>
+									<td>$ {e.saldo.toFixed(2)}</td>
+									<td>
+										<TransfModal cuentas={cuentasUser} id={e.cuenta} dis={dis} />
+									</td>
+									<td>
+										<CancelCtaModal cuenta={e} dis={dis} />
+									</td>
+								</tr>
+							);
+							// }
+						})
 					}
 				</tbody>
 			</table>
 		</div>
 	)
-};
+}
 
-export { Cuentas };
+export { Cuentas }
