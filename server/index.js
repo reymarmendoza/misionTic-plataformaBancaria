@@ -13,6 +13,56 @@ const app = express()
 app.use(express.json())
 app.use(cors())
 
+app.post("/createUser", async (req, res) => {
+	const user = req.body
+	const newUser = new RegistroModel(user)
+	let result
+
+	mongoose.connect(URL)
+
+	try {
+		await newUser.save().then(() => {
+			result = "Creating User succeed"
+		})
+	} catch (e) {
+		result = "Saving account failed"
+	}
+
+	res.send(result)
+})
+/*
+app.post("/createTransaction", async (req, res) => {
+	const tran = req.body
+	const newTran = new TransaccionesModel(tran)
+
+	try {
+		await newTran.save()
+	} catch (e) {
+		console.log("Transaction Failed: " + e)
+	}
+
+	res.json(tran)
+})
+*/
+app.post("/createAccount", async (req, res) => {
+	const acc = req.body
+	const newAcc = new CuentasModel(acc)
+	let result
+
+	mongoose.connect(URL)
+
+	try {
+		await newAcc.save().then(() => {
+			result = "Saving account succeed"
+		})
+	} catch (e) {
+		result = "Saving account failed"
+		console.log("Account failed: " + e)
+	}
+
+	res.send(result)
+})
+
 async function loginDataMatch(client, { user, pass }) {
 	const result = await client.db(process.env.REACT_APP_DB).collection("clientes")
 		.findOne({
@@ -47,52 +97,24 @@ app.post("/routeUser", async (req, res) => {
 	}
 })
 
-app.post("/createUser", async (req, res) => {
-	const user = req.body
-	const newUser = new RegistroModel(user)
-	let result
+app.post("/getAccountsByUser", async (req, res) => {
+	const activeUser = req.body.activeUser
+	let datadb
 
 	mongoose.connect(URL)
 
 	try {
-		await newUser.save()
-		result = "Creating User succeed"
+		await CuentasModel.find({ numDoc: activeUser }).exec()
+			.then((result) => {
+				console.log("getAccountsByUser succeed")
+				datadb = result
+			})
 	} catch (e) {
-		result = "Saving account failed"
+		console.log("getAccountsByUser failed: " + e)
 	}
 
-	res.send(result)
-})
-/*
-app.post("/createTransaction", async (req, res) => {
-	const tran = req.body
-	const newTran = new TransaccionesModel(tran)
-
-	try {
-		await newTran.save()
-	} catch (e) {
-		console.log("Transaction Failed: " + e)
-	}
-
-	res.json(tran)
-})
-*/
-app.post("/createAccount", async (req, res) => {
-	const acc = req.body
-	const newAcc = new CuentasModel(acc)
-	let result
-
-	mongoose.connect(URL)
-
-	try {
-		await newAcc.save()
-		result = "Saving account succeed"
-	} catch (e) {
-		result = "Saving account failed"
-		console.log("Account failed: " + e)
-	}
-
-	res.send(result)
+	console.log("activeUser2...", datadb)
+	res.json(datadb)
 })
 
 app.listen(3001, () => {
