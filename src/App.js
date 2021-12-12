@@ -17,6 +17,7 @@ import { Cuentas } from './components/Cuentas';
 import { Transferencias } from './components/Transferencias';
 import { Registro } from './components/Registro';
 import { GestionarEmpleado } from './components/GestionarEmpleado';
+import { Reclamos } from './components/Reclamos';
 
 import appStyles from './styles/root.module.css'
 import navStyles from './styles/navbar.module.css'
@@ -80,7 +81,7 @@ export default function App() {
 						<Route path='Reclamos'
 							element={
 								<div className="col-8">
-									Reclamos
+									<Reclamos data={data} />
 								</div>}
 						/>
 						<Route path='NuevaCuenta'

@@ -32,8 +32,8 @@ const RegTransModal = ({ tipoUsr, s, fechaInicio, fechaFin, idCuenta, onUpdate }
 	}, [fechaFin])
 	
 	useEffect(() => {
-		let oneMonth = 1000 * 60 * 60 * 24 * 30;
-		let threeMonths = 1000 * 60 * 60 * 24 * 30 * 3;
+		let oneMonth = 1000 * 60 * 60 * 24 * 30; // en milisegundos
+		let threeMonths = 1000 * 60 * 60 * 24 * 30 * 3; // en milisegundos
 		let lapso = fin - inicio;
 		if (lapso >= oneMonth && lapso <= threeMonths) {
 			setAviso('')
@@ -45,6 +45,17 @@ const RegTransModal = ({ tipoUsr, s, fechaInicio, fechaFin, idCuenta, onUpdate }
 	function changeIdCuentaHandler(e) {
 		onUpdate(fechaInicio, fechaFin, e.target.value);
 	}
+
+	// useEffect(() => {
+	// 	let cuenta = cuentas.find(cta => cta.idCuenta === origen)
+		
+	// 	if (cuenta) {
+	// 		setSaldo(cuenta.saldo)
+	// 		setAviso('')
+	// 	} else {
+	// 		setAviso('No existe esa cuenta de origen');
+	// 	}
+	// }, [idCuentas])
 
 	function searchTransfers(e) {
 		alert(`Se buscará desde ${inicio} hasta ${fin} de la cuenta ${idCuenta}`)
