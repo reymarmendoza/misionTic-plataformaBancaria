@@ -89,7 +89,7 @@ export default function App() {
 								</div>}
 						/>
 					</Route>
-					
+
 					<Route path="/empleado/*" element={<TableFull />} >
 						<Route path='Depositos'
 							element={
@@ -109,6 +109,12 @@ export default function App() {
 									Reclamos
 								</div>}
 						/>
+						<Route path='BandejaCuentas'
+							element={
+								<div className="col-8">
+									BandejaCuentas
+								</div>}
+						/>
 					</Route>
 
 					<Route path="/administrador/" element={<TableFull />}>
@@ -123,7 +129,7 @@ export default function App() {
 					<Route path="*" element={<Error />} />
 
 				</Routes>
-				<Footer/>
+				<Footer />
 			</BrowserRouter>
 		</>
 	);
