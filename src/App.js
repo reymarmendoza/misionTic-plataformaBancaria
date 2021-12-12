@@ -16,6 +16,7 @@ import { TableFull } from './components/TableFull';
 import { Cuentas } from './components/Cuentas';
 import { Transferencias } from './components/Transferencias';
 import { NuevaCuenta } from './components/NuevaCuenta';
+import { CuentasPorAprovar } from './components/BandejaCuentas';
 import { Registro } from './components/Registro';
 import { GestionarEmpleado } from './components/GestionarEmpleado';
 
@@ -112,7 +113,7 @@ export default function App() {
 						<Route path='BandejaCuentas'
 							element={
 								<div className="col-8">
-									BandejaCuentas
+									<CuentasPorAprovar data={data} />
 								</div>}
 						/>
 					</Route>

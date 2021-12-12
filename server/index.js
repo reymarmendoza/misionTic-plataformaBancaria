@@ -97,23 +97,35 @@ app.post("/routeUser", async (req, res) => {
 	}
 })
 
-app.post("/getAccountsByUser", async (req, res) => {
+app.post("/getAccounts", async (req, res) => {
 	const activeUser = req.body.activeUser
+	const DBField = req.body.fetchBy
 	let datadb
 
 	mongoose.connect(URL)
 
-	try {
-		await CuentasModel.find({ numDoc: activeUser }).exec()
-			.then((result) => {
-				console.log("getAccountsByUser succeed")
-				datadb = result
-			})
-	} catch (e) {
-		console.log("getAccountsByUser failed: " + e)
+	if (DBField === "documento") {
+		try {
+			await CuentasModel.find({ numDoc: activeUser }).exec()
+				.then((result) => {
+					console.log("getAccountsByDocumento succeed")
+					datadb = result
+				})
+		} catch (e) {
+			console.log("getAccountsByDocumento failed: " + e)
+		}
+	} else if (DBField === "estado") {
+		try {
+			await CuentasModel.find({ estado: "pendiente" }).exec()
+				.then((result) => {
+					console.log("getAccountsByEstado succeed")
+					datadb = result
+				})
+		} catch (e) {
+			console.log("getAccountsByEstado failed: " + e)
+		}
 	}
 
-	console.log("activeUser2...", datadb)
 	res.json(datadb)
 })
 
