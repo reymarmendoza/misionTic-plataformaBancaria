@@ -1,10 +1,8 @@
 import { useState, useEffect } from 'react'
-// import TransfModal from './TransfModal'
 
 import Axios from 'axios'
 
 export function CuentasPorAprovar({ data }) {
-	// const [showModal, setShowModal] = useState(false)
 	const [accPend, setAccPend] = useState([])
 
 	async function userAccounts() {
@@ -55,13 +53,6 @@ export function CuentasPorAprovar({ data }) {
 			userAccounts()
 		}
 	}
-
-	// const handleReclamo = (event) => {
-	// 	// 	setShowModal(true)
-	// 	// 	console.log(showModal)
-	// 	// 	console.log('showModal')
-	// 	event.preventDefault()
-	// }
 
 	return (
 		<div>
