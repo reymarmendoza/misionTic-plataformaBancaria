@@ -55,23 +55,25 @@ const Cuentas = ({ data }) => {
 				<tbody>
 					{
 						cuentasUser.map((e) => {
-							// let opacity = 100, dis = false;
+							let opacity = 100, dis = false;
+							// SE DEBE CAMBIAR POR EL CONTRARIO ES SOLO PARA PRUEBAS ************************
 							// if (e.estado !== "activa") {
-							// 	opacity = 25;
-							// 	dis = true;
-							// }
+							if (e.estado === "activa") {
+								opacity = 25;
+								dis = true;
+							}
 
 							return (
-								// <tr className={`text-body text-opacity-${opacity}`}>
-								<tr>
+								<tr className={`text-body text-opacity-${opacity}`}>
+									{/* <tr> */}
 									<th scope="row">{e.cuenta}</th>
 									<td>$ {e.saldo.toFixed(2)}</td>
-									{/* <td>
-										<TransfModal cuentas={data[0].cuentas} id={e.cuenta} dis={dis} />
+									<td>
+										<TransfModal cuentas={cuentasUser} id={e.cuenta} dis={dis} />
 									</td>
 									<td>
 										<CancelCtaModal cuenta={e} dis={dis} />
-									</td> */}
+									</td>
 								</tr>
 							);
 							// }
