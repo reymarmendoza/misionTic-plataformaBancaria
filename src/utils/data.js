@@ -17,7 +17,7 @@ let data = [{
                 ctaOrigen: 2,
                 ctaDestino: 3,		
                 monto: 650,
-                reclamo: false
+                estadoReclamo: null
             },
             {
                 idTransf: 102,
@@ -25,7 +25,7 @@ let data = [{
                 ctaOrigen: 2,
                 ctaDestino: 1,		
                 monto: 45850,
-                reclamo: false
+                estadoReclamo: 'Pendiente'
             },
             {
                 idTransf: 105,
@@ -33,7 +33,7 @@ let data = [{
                 ctaOrigen: 1,
                 ctaDestino: 2,		
                 monto: 6500000,
-                reclamo: false
+                estadoReclamo: 'Aprobado'
             },
             {
                 idTransf: 113,
@@ -41,7 +41,7 @@ let data = [{
                 ctaOrigen: 3,
                 ctaDestino: 1,		
                 monto: 48700000,
-                reclamo: false
+                estadoReclamo: 'Rechazado'
             },
         ]
 		},
