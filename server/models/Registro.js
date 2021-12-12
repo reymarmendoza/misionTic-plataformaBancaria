@@ -46,7 +46,6 @@ const schema = new mongoose.Schema({
 		type: Date,
 		required: true
 	},
-	// data del back
 	fechaCreacion: {
 		type: Date,
 		default: () => Date.now(),
@@ -54,10 +53,9 @@ const schema = new mongoose.Schema({
 	},
 	tipoUsuario: {
 		type: String,
-		enum: ['Cliente', 'Colaborador', 'Administrador'],
-		default: () => "Cliente"
-	},
-	cuentas: [Number]
+		enum: ['cliente', 'empleado', 'administrador'],
+		default: () => "cliente"
+	}
 })
 
 const RegistroModel = mongoose.model("clientes", schema)

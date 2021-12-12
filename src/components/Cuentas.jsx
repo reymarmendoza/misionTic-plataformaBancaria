@@ -1,13 +1,47 @@
+import { useEffect, useState } from 'react'
+import Axios from 'axios'
+
 import TransfModal from './TransfModal'
 import CancelCtaModal from './CancelCtaModal'
 
 const Cuentas = ({ data }) => {
+	const [cuentasUser, setCuentasUser] = useState([])
+
+	useEffect(() => {
+		const activeUser = JSON.parse(localStorage.getItem("banAgrario")).userSession
+		// (function(){
+		// 	// some code…
+		//  })();
+		async function userAccounts() {
+			const accounts = await Axios.post(`${process.env.REACT_APP_URL}/getAccountsByUser`, {
+				activeUser
+			})
+
+			let cont = 0
+			let listaCuentas = []
+			accounts.data.forEach(e => {
+				// SE DEBE CAMBIAR POR EL CONTRARIO ES SOLO PARA PRUEBAS ************************
+				if (e.estado === "pendiente") {
+					listaCuentas[cont++] = {
+						cuenta: e.numCuenta,
+						saldo: e.balance,
+						id: e._id
+					}
+				}
+			})
+
+			setCuentasUser(listaCuentas)
+		}
+
+		userAccounts()
+
+	}, [])
 
 	return (
 		<div>
-			<p>
-				Cuentas de {data[0].datos.nombre}
-			</p>
+			{/* <p>
+				Cuentas de PEPE
+			</p> */}
 			<br />
 			<table className="table table-hover">
 				<thead>
@@ -20,19 +54,22 @@ const Cuentas = ({ data }) => {
 				</thead>
 				<tbody>
 					{
-						data[0].cuentas.map((e) => {
+						cuentasUser.map((e) => {
 							let opacity = 100, dis = false;
-							if (e.estado !== "activa") {
-								opacity =  25;
+							// SE DEBE CAMBIAR POR EL CONTRARIO ES SOLO PARA PRUEBAS ************************
+							// if (e.estado !== "activa") {
+							if (e.estado === "activa") {
+								opacity = 25;
 								dis = true;
 							}
-							
+
 							return (
 								<tr className={`text-body text-opacity-${opacity}`}>
-									<th scope="row">{e.idCuenta}</th>
+									{/* <tr> */}
+									<th scope="row">{e.cuenta}</th>
 									<td>$ {e.saldo.toFixed(2)}</td>
 									<td>
-										<TransfModal cuentas={data[0].cuentas} id={e.idCuenta} dis={dis} />
+										<TransfModal cuentas={cuentasUser} id={e.cuenta} dis={dis} />
 									</td>
 									<td>
 										<CancelCtaModal cuenta={e} dis={dis} />
@@ -46,6 +83,6 @@ const Cuentas = ({ data }) => {
 			</table>
 		</div>
 	)
-};
+}
 
-export { Cuentas };
+export { Cuentas }

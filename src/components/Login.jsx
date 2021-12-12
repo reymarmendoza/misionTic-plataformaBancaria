@@ -26,7 +26,7 @@ const Login = () => {
 		})
 			.then((response) => {
 				if (response.status === 200) {
-					localStorage.setItem("banAgrario", response.data.url)
+					localStorage.setItem("banAgrario", JSON.stringify(response.data))
 					navigate(
 						`/${response.data.url}`, {
 						state: response.data.url
