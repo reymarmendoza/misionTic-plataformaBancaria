@@ -108,7 +108,6 @@ app.post("/getAccounts", async (req, res) => {
 		try {
 			await CuentasModel.find({ numDoc: activeUser }).exec()
 				.then((result) => {
-					console.log("getAccountsByDocumento succeed")
 					datadb = result
 				})
 		} catch (e) {
@@ -118,7 +117,6 @@ app.post("/getAccounts", async (req, res) => {
 		try {
 			await CuentasModel.find({ estado: "pendiente" }).exec()
 				.then((result) => {
-					console.log("getAccountsByEstado succeed")
 					datadb = result
 				})
 		} catch (e) {
@@ -127,6 +125,25 @@ app.post("/getAccounts", async (req, res) => {
 	}
 
 	res.json(datadb)
+})
+
+app.post("/exeChangeState", async (req, res) => {
+	mongoose.connect(URL)
+	let resMsg = ''
+
+	try {
+		await CuentasModel.updateOne(
+			{ _id: req.body.id },
+			{ $set: { estado: "activa" } }
+		)
+			.then((response) => {
+				resMsg = "exeChangeState succeed"
+			})
+	} catch (error) {
+		resMsg = "exeChangeState failed"
+	}
+
+	res.send(resMsg)
 })
 
 app.listen(3001, () => {
