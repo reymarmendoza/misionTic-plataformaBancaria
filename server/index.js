@@ -137,7 +137,7 @@ app.post("/exeChangeState", async (req, res) => {
 			{ $set: { estado: "activa" } }
 		)
 			.then((response) => {
-				resMsg = "exeChangeState succeed"
+				resMsg = response.modifiedCount
 			})
 	} catch (error) {
 		resMsg = "exeChangeState failed"

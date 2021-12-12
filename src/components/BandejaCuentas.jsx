@@ -7,35 +7,31 @@ export function CuentasPorAprovar({ data }) {
 	// const [showModal, setShowModal] = useState(false)
 	const [accPend, setAccPend] = useState([])
 
-	useEffect(() => {
-		// (function(){
-		// 	// some code…
-		//  })();
-		async function userAccounts() {
-			const accounts = await Axios.post(`${process.env.REACT_APP_URL}/getAccounts`, {
-				activeUser: JSON.parse(localStorage.getItem("banAgrario")).userSession,
-				fetchBy: "estado"
-			})
+	async function userAccounts() {
+		const accounts = await Axios.post(`${process.env.REACT_APP_URL}/getAccounts`, {
+			activeUser: JSON.parse(localStorage.getItem("banAgrario")).userSession,
+			fetchBy: "estado"
+		})
 
-			let cont = 0
-			let listaCuentas = []
-			accounts.data.forEach(e => {
-				if (e.estado === "pendiente") {
-					listaCuentas[cont++] = {
-						cliente: e.numDoc,
-						fecha: e.fecha,
-						cuenta: e.numCuenta,
-						saldo: e.balance,
-						id: e._id
-					}
+		let cont = 0
+		let listaCuentas = []
+		accounts.data.forEach(e => {
+			if (e.estado === "pendiente") {
+				listaCuentas[cont++] = {
+					cliente: e.numDoc,
+					fecha: e.fecha,
+					cuenta: e.numCuenta,
+					saldo: e.balance,
+					id: e._id
 				}
-			})
+			}
+		})
 
-			setAccPend(listaCuentas)
-		}
+		setAccPend(listaCuentas)
+	}
 
+	useEffect(() => {
 		userAccounts()
-
 	}, [])
 
 	async function handleAprobar(id) {
@@ -43,6 +39,9 @@ export function CuentasPorAprovar({ data }) {
 			id
 		})
 
+		if (opeOut === 1) {
+			userAccounts()
+		}
 		// console.log(opeOut.data)
 	}
 
