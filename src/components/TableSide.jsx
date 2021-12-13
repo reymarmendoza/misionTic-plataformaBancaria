@@ -11,7 +11,7 @@ const user = [
 	},
 	{
 		user: 'empleado',
-		select: ['Depositos', 'Manejo de Cuentas', 'Reclamos']
+		select: ['Depositos', 'Manejo de Cuentas', 'Reclamos', 'Bandeja Cuentas']
 	},
 	{
 		user: 'administrador',
