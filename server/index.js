@@ -153,21 +153,39 @@ app.post("/exeChangeState", async (req, res) => {
 	res.send(resMsg)
 })
 
-app.post("/existAccount", async (req, res) => {
+app.post("/fetchAccountData", async (req, res) => {
 	mongoose.connect(URL)
-	let exist = false
+	let accData = null
 
 	try {
-		await CuentasModel.findOne({ numCuenta: req.body.searchAccount }).exec()
+		await CuentasModel.findOne({ numCuenta: req.body.acc }).exec()
 			.then((response) => {
-				exist = true
-				console.log("existAccount S", response)
+				accData = response
 			})
 	} catch (error) {
 		console.log("existAccount E", error)
 	}
 
-	res.send(exist)
+	res.json(accData)
+})
+
+app.post("/exeChangeBalance", async (req, res) => {
+	mongoose.connect(URL)
+	let resMsg = 0
+
+	try {
+		await CuentasModel.updateOne(
+			{ _id: req.body.id },
+			{ $set: { balance: req.body.newBalance } }
+		)
+			.then((response) => {
+				resMsg = response.modifiedCount
+			})
+	} catch (error) {
+		resMsg = "exeChangeBalance failed"
+	}
+
+	res.json({ result: resMsg })
 })
 
 app.listen(3001, () => {

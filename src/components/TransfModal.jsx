@@ -11,37 +11,16 @@ const TransfModal = ({ cuentas, ctaOrigen, dis }) => {
 	const [montoTransf, setMontoTransf] = useState(0)
 	const [totalADescontar, setTotalADescontar] = useState(0)
 	const [aviso, setAviso] = useState('')
-	const [saldo, setSaldo] = useState(0)
 
 	function updateOrigen(e) {
 		setOrigen(parseInt(e.target.value))
 	}
 
-	useEffect(() => {
-		let cuenta = cuentas.find(cta => cta.idCuenta === origen)
-
-		if (cuenta) {
-			setSaldo(cuenta.saldo)
-			setAviso('')
-		} else {
-			setAviso('No existe esa cuenta de origen')
-		}
-	}, [cuentas, origen])
-
 	function updateDestino(e) {
 		setDestino(parseInt(e.target.value))
 	}
 
-	async function accountExists() {
-		const accounts = await Axios.post(`${process.env.REACT_APP_URL}/existAccount`, {
-			searchAccount: ctaOrigen
-		})
-	}
-
 	useEffect(() => {
-		// REVISAR SI LA CUENTA INGRESADA EXISTE
-		const accExists = accountExists()
-
 		let cuenta = cuentas.find(cta => cta.idCuenta === destino)
 
 		if (!cuenta) {
@@ -59,28 +38,74 @@ const TransfModal = ({ cuentas, ctaOrigen, dis }) => {
 		setTotalADescontar(montoTransf * 1.01)
 	}, [montoTransf])
 
-	useEffect(() => {
-		if (saldo < totalADescontar) {
+	async function fetchAccountData(acc) {
+		let accData = {}
+
+		try {
+			await Axios.post(`${process.env.REACT_APP_URL}/	fetchAccountData`, {
+				acc
+			})
+				.then((response) => {
+					accData = response.data
+				})
+		} catch (error) {
+			console.log("fetchAccountData", error)
+		}
+
+		return accData
+	}
+
+	async function sendMoney(e) {
+		e.preventDefault()
+
+		const origin = await fetchAccountData(ctaOrigen)
+		const target = await fetchAccountData(destino)
+
+		if (origin.balance < totalADescontar) {
 			setAviso('No posees saldo suficiente (comision = 1%)')
 		} else if (totalADescontar < 0) {
 			setAviso('No puedes transferir montos menores a cero')
 		} else {
 			setAviso('')
 		}
-	}, [saldo, totalADescontar])
 
-	function sendMoney(e) {
-		let ctaOrigen = cuentas.find(cta => cta.idCuenta === origen)
-		let ctaDestino = cuentas.find(cta => cta.idCuenta === destino)
-		if (ctaOrigen && ctaDestino && saldo >= totalADescontar && totalADescontar >= 0) {
-			ctaOrigen.saldo -= totalADescontar
-			ctaDestino.saldo += montoTransf
-		} else {
-			alert('No podemos procesar tu solicitud')
+		if (origin && target && origin.balance >= totalADescontar && totalADescontar >= 0) {
+			let transfer = 0
+
+			const calcOrigen = origin.balance - totalADescontar
+			const calcTarget = target.balance + montoTransf
+
+			try {
+				await Axios.post(`${process.env.REACT_APP_URL}/	exeChangeBalance`, {
+					id: origin._id,
+					newBalance: calcOrigen
+				})
+					.then((response) => {
+						transfer += 1
+					})
+
+				await Axios.post(`${process.env.REACT_APP_URL}/	exeChangeBalance`, {
+					id: target._id,
+					newBalance: calcTarget
+				})
+					.then((response) => {
+						transfer += 1
+					})
+			} catch (error) {
+				console.log("newBalance: ", error)
+			}
+
+			if (transfer === 2) {
+				alert(`Se te descontará ${totalADescontar} para transferir ${montoTransf} debido a la comisión del 1% del banco`)
+			} else {
+				alert('No podemos procesar tu solicitud')
+			}
+
+			setOrigen(calcOrigen)
+			setDestino(calcTarget)
 		}
-		alert(`Se te descontará ${totalADescontar} para transferir ${montoTransf} debido a la comisión del 1% del banco`)
+
 		closeModal()
-		e.preventDefault()
 	}
 
 	return (
@@ -94,8 +119,7 @@ const TransfModal = ({ cuentas, ctaOrigen, dis }) => {
 				<form onSubmit={sendMoney}>
 					<div className="row">
 						<label htmlFor="origen" className="form-label">Por favor confirme la cuenta origen</label>
-						<input type="number" className="form-control" name="origen"
-							value={origen} placeholder={ctaOrigen} onChange={updateOrigen}>
+						<input type="number" className="form-control" name="origen" value={origen} placeholder={ctaOrigen} onChange={updateOrigen} readOnly>
 						</input>
 					</div>
 
