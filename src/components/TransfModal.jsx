@@ -64,7 +64,7 @@ const TransfModal = ({ cuentas, ctaOrigen, dis }) => {
 			}
 		}
 
-		if (origin && target && origin.balance >= totalADescontar && totalADescontar >= 0) {
+		if (accTo && origin.balance >= totalADescontar && totalADescontar >= 0) {
 			let transfer = 0
 
 			const calcOrigen = origin.balance - totalADescontar
@@ -91,6 +91,23 @@ const TransfModal = ({ cuentas, ctaOrigen, dis }) => {
 			}
 
 			if (transfer === 2) {
+
+				try {
+					await Axios.post(`${process.env.REACT_APP_URL}/	recordTransaction`, {
+						docFuente: origin.numDoc,
+						docDestino: target.numDoc,
+						fuente: origin.numCuenta,
+						destino: target.numCuenta,
+						monto: montoTransf,
+						cobroBanco: montoTransf * 0.01
+					})
+						.then((response) => {
+							console.log("recordTransaction", response.data)
+						})
+				} catch (error) {
+					console.log("recordTransaction", error)
+				}
+
 				alert(`Se te descontará ${totalADescontar} para transferir ${montoTransf} debido a la comisión del 1% del banco`)
 			} else {
 				alert('No podemos procesar tu solicitud')

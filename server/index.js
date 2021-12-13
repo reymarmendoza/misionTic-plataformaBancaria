@@ -5,8 +5,9 @@ const cors = require("cors")
 const mongoose = require("mongoose")
 const { MongoClient } = require('mongodb')
 
-const { CuentasModel } = require("./models/Cuentas")
 const { RegistroModel } = require("./models/Registro")
+const { CuentasModel } = require("./models/Cuentas")
+const { TransaccionesModel } = require("./models/Transacciones")
 const URL = `mongodb+srv://${process.env.REACT_APP_USER}:${process.env.REACT_APP_PASSWORD}@banagrario.57kdk.mongodb.net/${process.env.REACT_APP_DB}?retryWrites=true&w=majority`
 const app = express()
 
@@ -186,6 +187,25 @@ app.post("/exeChangeBalance", async (req, res) => {
 	}
 
 	res.json({ result: resMsg })
+})
+
+app.post("/recordTransaction", async (req, res) => {
+	const tran = req.body
+	const newTran = new TransaccionesModel(tran)
+	let result
+
+	mongoose.connect(URL)
+
+	try {
+		await newTran.save().then(() => {
+			result = "Transaccion succeed"
+		})
+	} catch (e) {
+		console.log("TransaccionesModel", e)
+		result = "Transaccion failed"
+	}
+
+	res.send(result)
 })
 
 app.listen(3001, () => {
