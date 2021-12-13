@@ -98,7 +98,7 @@ export default function App() {
 									<Cuentas data={data} />
 								</div>}
 						/>
-						<Route path='Cuentas'
+						<Route path='ManejodeCuentas'
 							element={
 								<div className="col-8">
 									<Transferencias data={data} />
