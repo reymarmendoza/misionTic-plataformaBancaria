@@ -20,6 +20,7 @@ import { CuentasPorAprovar } from './components/BandejaCuentas';
 import { Registro } from './components/Registro';
 import { GestionarEmpleado } from './components/GestionarEmpleado';
 import { Reclamos } from './components/Reclamos';
+import { ManejoCuentas } from './components/ManejoCuentas';
 
 import appStyles from './styles/root.module.css'
 import navStyles from './styles/navbar.module.css'
@@ -102,7 +103,7 @@ export default function App() {
 						<Route path='ManejodeCuentas'
 							element={
 								<div className="col-8">
-									<Transferencias data={data} />
+									<ManejoCuentas />
 								</div>}
 						/>
 						<Route path='Reclamos'
