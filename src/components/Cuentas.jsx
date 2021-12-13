@@ -7,42 +7,33 @@ import CancelCtaModal from './CancelCtaModal'
 const Cuentas = ({ data }) => {
 	const [cuentasUser, setCuentasUser] = useState([])
 
-	useEffect(() => {
-		// (function(){
-		// 	// some code…
-		//  })();
-		async function userAccounts() {
-			const accounts = await Axios.post(`${process.env.REACT_APP_URL}/getAccounts`, {
-				activeUser: JSON.parse(localStorage.getItem("banAgrario")).userSession,
-				fetchBy: "documento"
-			})
+	async function userAccounts() {
+		const accounts = await Axios.post(`${process.env.REACT_APP_URL}/getAccounts`, {
+			activeUser: JSON.parse(localStorage.getItem("banAgrario")).userSession,
+			fetchBy: "documento"
+		})
 
-			let cont = 0
-			let listaCuentas = []
-			accounts.data.forEach(e => {
-				// SE DEBE CAMBIAR POR EL CONTRARIO ES SOLO PARA PRUEBAS ************************
-				if (e.estado === "pendiente") {
-					listaCuentas[cont++] = {
-						cuenta: e.numCuenta,
-						saldo: e.balance,
-						id: e._id
-					}
+		let cont = 0
+		let listaCuentas = []
+		accounts.data.forEach(e => {
+			if (e.estado === "activa") {
+				listaCuentas[cont++] = {
+					cuenta: e.numCuenta,
+					saldo: e.balance,
+					id: e._id
 				}
-			})
+			}
+		})
 
-			setCuentasUser(listaCuentas)
-		}
+		setCuentasUser(listaCuentas)
+	}
 
+	useEffect(() => {
 		userAccounts()
-
 	}, [])
 
 	return (
 		<div>
-			{/* <p>
-				Cuentas de PEPE
-			</p> */}
-			<br />
 			<table className="table table-hover">
 				<thead>
 					<tr>
@@ -56,8 +47,7 @@ const Cuentas = ({ data }) => {
 					{
 						cuentasUser.map((e) => {
 							let opacity = 100, dis = false;
-							// SE DEBE CAMBIAR POR EL CONTRARIO ES SOLO PARA PRUEBAS ************************
-							// if (e.estado !== "activa") {
+
 							if (e.estado === "activa") {
 								opacity = 25;
 								dis = true;
@@ -65,18 +55,16 @@ const Cuentas = ({ data }) => {
 
 							return (
 								<tr className={`text-body text-opacity-${opacity}`}>
-									{/* <tr> */}
 									<th scope="row">{e.cuenta}</th>
 									<td>$ {e.saldo.toFixed(2)}</td>
 									<td>
-										<TransfModal cuentas={cuentasUser} id={e.cuenta} dis={dis} />
+										<TransfModal cuentas={cuentasUser} ctaOrigen={e.cuenta} dis={dis} />
 									</td>
 									<td>
 										<CancelCtaModal cuenta={e} dis={dis} />
 									</td>
 								</tr>
 							);
-							// }
 						})
 					}
 				</tbody>

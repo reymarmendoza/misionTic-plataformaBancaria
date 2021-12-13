@@ -5,8 +5,9 @@ const cors = require("cors")
 const mongoose = require("mongoose")
 const { MongoClient } = require('mongodb')
 
-const { CuentasModel } = require("./models/Cuentas")
 const { RegistroModel } = require("./models/Registro")
+const { CuentasModel } = require("./models/Cuentas")
+const { TransaccionesModel } = require("./models/Transacciones")
 const URL = `mongodb+srv://${process.env.REACT_APP_USER}:${process.env.REACT_APP_PASSWORD}@banagrario.57kdk.mongodb.net/${process.env.REACT_APP_DB}?retryWrites=true&w=majority`
 const app = express()
 
@@ -151,6 +152,60 @@ app.post("/exeChangeState", async (req, res) => {
 	}
 
 	res.send(resMsg)
+})
+
+app.post("/fetchAccountData", async (req, res) => {
+	mongoose.connect(URL)
+	let accData = null
+
+	try {
+		await CuentasModel.findOne({ numCuenta: req.body.acc }).exec()
+			.then((response) => {
+				accData = response
+			})
+	} catch (error) {
+		console.log("existAccount E", error)
+	}
+
+	res.json(accData)
+})
+
+app.post("/exeChangeBalance", async (req, res) => {
+	mongoose.connect(URL)
+	let resMsg = 0
+
+	try {
+		await CuentasModel.updateOne(
+			{ _id: req.body.id },
+			{ $set: { balance: req.body.newBalance } }
+		)
+			.then((response) => {
+				resMsg = response.modifiedCount
+			})
+	} catch (error) {
+		resMsg = "exeChangeBalance failed"
+	}
+
+	res.json({ result: resMsg })
+})
+
+app.post("/recordTransaction", async (req, res) => {
+	const tran = req.body
+	const newTran = new TransaccionesModel(tran)
+	let result
+
+	mongoose.connect(URL)
+
+	try {
+		await newTran.save().then(() => {
+			result = "Transaccion succeed"
+		})
+	} catch (e) {
+		console.log("TransaccionesModel", e)
+		result = "Transaccion failed"
+	}
+
+	res.send(result)
 })
 
 app.listen(3001, () => {
