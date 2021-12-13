@@ -63,9 +63,9 @@ const ManejoCuentas = ({ data }) => {
 											{(()=>{if (e.estado === 'activa') {
 												return (<button>Cancelar</button>);
 											} else if (e.estado === 'pendiente'){
-												return (<button>Activar</button>);
-											} else if (e.estado === 'pendiente'){
-												return null;
+												return (<><button>Aprobar</button><button>Denegar</button></>);
+											} else if (e.estado === 'cancelada'){
+												return (<button>Reactivar</button>);
 											}})()}
 										</td>
 									</tr>
