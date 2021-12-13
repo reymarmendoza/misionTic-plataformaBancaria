@@ -17,6 +17,11 @@ const schema = new mongoose.Schema({
 	balance: {
 		type: Number,
 		required: true
+	},
+	fecha: {
+		type: Date,
+		default: () => Date.now(),
+		immutable: true
 	}
 })
 

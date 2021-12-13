@@ -8,13 +8,13 @@ const Cuentas = ({ data }) => {
 	const [cuentasUser, setCuentasUser] = useState([])
 
 	useEffect(() => {
-		const activeUser = JSON.parse(localStorage.getItem("banAgrario")).userSession
 		// (function(){
 		// 	// some code…
 		//  })();
 		async function userAccounts() {
-			const accounts = await Axios.post(`${process.env.REACT_APP_URL}/getAccountsByUser`, {
-				activeUser
+			const accounts = await Axios.post(`${process.env.REACT_APP_URL}/getAccounts`, {
+				activeUser: JSON.parse(localStorage.getItem("banAgrario")).userSession,
+				fetchBy: "documento"
 			})
 
 			let cont = 0

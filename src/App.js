@@ -16,6 +16,7 @@ import { TableFull } from './components/TableFull';
 import { Cuentas } from './components/Cuentas';
 import { Transferencias } from './components/Transferencias';
 import { NuevaCuenta } from './components/NuevaCuenta';
+import { CuentasPorAprovar } from './components/BandejaCuentas';
 import { Registro } from './components/Registro';
 import { GestionarEmpleado } from './components/GestionarEmpleado';
 import { Reclamos } from './components/Reclamos';
@@ -90,7 +91,7 @@ export default function App() {
 								</div>}
 						/>
 					</Route>
-					
+
 					<Route path="/empleado/*" element={<TableFull />} >
 						<Route path='Depositos'
 							element={
@@ -110,6 +111,12 @@ export default function App() {
 									Reclamos
 								</div>}
 						/>
+						<Route path='BandejaCuentas'
+							element={
+								<div className="col-8">
+									<CuentasPorAprovar data={data} />
+								</div>}
+						/>
 					</Route>
 
 					<Route path="/administrador/" element={<TableFull />}>
@@ -124,7 +131,7 @@ export default function App() {
 					<Route path="*" element={<Error />} />
 
 				</Routes>
-				<Footer/>
+				<Footer />
 			</BrowserRouter>
 		</>
 	);

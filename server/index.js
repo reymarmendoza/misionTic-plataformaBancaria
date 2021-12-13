@@ -97,24 +97,60 @@ app.post("/routeUser", async (req, res) => {
 	}
 })
 
-app.post("/getAccountsByUser", async (req, res) => {
+app.post("/getAccounts", async (req, res) => {
 	const activeUser = req.body.activeUser
+	const DBField = req.body.fetchBy
 	let datadb
 
 	mongoose.connect(URL)
 
-	try {
-		await CuentasModel.find({ numDoc: activeUser }).exec()
-			.then((result) => {
-				console.log("getAccountsByUser succeed")
-				datadb = result
-			})
-	} catch (e) {
-		console.log("getAccountsByUser failed: " + e)
+	if (DBField === "documento") {
+		try {
+			await CuentasModel.find({ numDoc: activeUser }).exec()
+				.then((result) => {
+					datadb = result
+				})
+		} catch (e) {
+			console.log("getAccountsByDocumento failed: " + e)
+		}
+	} else if (DBField === "estado") {
+		try {
+			await CuentasModel.find({ estado: "pendiente" }).exec()
+				.then((result) => {
+					datadb = result
+				})
+		} catch (e) {
+			console.log("getAccountsByEstado failed: " + e)
+		}
 	}
 
-	console.log("activeUser2...", datadb)
 	res.json(datadb)
+})
+
+app.post("/exeChangeState", async (req, res) => {
+	mongoose.connect(URL)
+	let nuevoEstado = ''
+	let resMsg = ''
+
+	if (req.body.action === "aprobar") {
+		nuevoEstado = "activa"
+	} else {
+		nuevoEstado = "rechazada"
+	}
+
+	try {
+		await CuentasModel.updateOne(
+			{ _id: req.body.id },
+			{ $set: { estado: nuevoEstado } }
+		)
+			.then((response) => {
+				resMsg = response.modifiedCount
+			})
+	} catch (error) {
+		resMsg = "exeChangeState failed"
+	}
+
+	res.send(resMsg)
 })
 
 app.listen(3001, () => {
