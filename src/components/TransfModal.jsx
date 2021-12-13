@@ -20,16 +20,6 @@ const TransfModal = ({ cuentas, ctaOrigen, dis }) => {
 		setDestino(parseInt(e.target.value))
 	}
 
-	useEffect(() => {
-		let cuenta = cuentas.find(cta => cta.idCuenta === destino)
-
-		if (!cuenta) {
-			setAviso('No existe esa cuenta de destino')
-		} else {
-			setAviso('')
-		}
-	}, [cuentas, destino])
-
 	function updateMontoTransf(e) {
 		setMontoTransf(parseFloat(e.target.value))
 	}
@@ -60,13 +50,18 @@ const TransfModal = ({ cuentas, ctaOrigen, dis }) => {
 
 		const origin = await fetchAccountData(ctaOrigen)
 		const target = await fetchAccountData(destino)
+		const accTo = await fetchAccountData(e.target.destino.value)
 
-		if (origin.balance < totalADescontar) {
-			setAviso('No posees saldo suficiente (comision = 1%)')
-		} else if (totalADescontar < 0) {
-			setAviso('No puedes transferir montos menores a cero')
+		if (!accTo) {
+			setAviso('No existe esa cuenta de destino')
 		} else {
-			setAviso('')
+			if (origin.balance < totalADescontar) {
+				setAviso('No posees saldo suficiente (comision = 1%)')
+			} else if (totalADescontar < 0) {
+				setAviso('No puedes transferir montos menores a cero')
+			} else {
+				setAviso('')
+			}
 		}
 
 		if (origin && target && origin.balance >= totalADescontar && totalADescontar >= 0) {
@@ -125,8 +120,7 @@ const TransfModal = ({ cuentas, ctaOrigen, dis }) => {
 
 					<div className="row">
 						<label htmlFor="destino" className="form-label">Por favor confirme la cuenta destino</label>
-						<input type="number" className="form-control" name="destino"
-							value={destino} onChange={updateDestino}>
+						<input type="number" className="form-control" name="destino" value={destino} onChange={updateDestino}>
 						</input>
 					</div>
 
