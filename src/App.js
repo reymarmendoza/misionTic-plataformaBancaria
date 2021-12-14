@@ -101,6 +101,12 @@ export default function App() {
 					</Route>
 
 					<Route path="/empleado/*" element={<TableFull />} >
+						<Route path=''
+							element={
+								<div className="col-9">
+									<HomePanel />
+								</div>}
+						/>
 						<Route path='Depositos'
 							element={
 								<div className="col-8">
@@ -128,6 +134,12 @@ export default function App() {
 					</Route>
 
 					<Route path="/administrador/" element={<TableFull />}>
+						<Route path=''
+							element={
+								<div className="col-9">
+									<HomePanel />
+								</div>}
+						/>
 						<Route path='GestionarEmpleado'
 							element={
 								<div className="col-8">
