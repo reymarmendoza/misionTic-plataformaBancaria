@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import Axios from 'axios'
 
-const ManejoCuentas = ({ data }) => {
+const ManejoCuentas = () => {
 	const [aviso, setAviso] = useState('ok');
 	const [cuentas, setCuentas] = useState([])
 
@@ -10,16 +10,15 @@ const ManejoCuentas = ({ data }) => {
 			activeUser: documento,
 			fetchBy: "documento"
 		})
-		
+
 		let listaCuentas = []
 		accounts.data.forEach(e => {
-		// 	// SE DEBE CAMBIAR POR EL CONTRARIO ES SOLO PARA PRUEBAS ***********************
 			listaCuentas.push({
 				cuenta: e.numCuenta,
 				saldo: e.balance,
 				id: e._id,
 				estado: e.estado
-			})			
+			})
 		})
 		setCuentas(listaCuentas);
 	}
@@ -40,7 +39,7 @@ const ManejoCuentas = ({ data }) => {
 					<button type="submit">Solicitar cuentas del cliente</button>
 				</form>
 			</div>
-			{Boolean(aviso) && 
+			{Boolean(aviso) &&
 				<div>
 					<div className="form-text">{aviso}</div>
 					<table className="table table-hover">
@@ -60,13 +59,15 @@ const ManejoCuentas = ({ data }) => {
 										<td>$ {e.saldo.toFixed(2)}</td>
 										<td>{e.estado}</td>
 										<td>
-											{(()=>{if (e.estado === 'activa') {
-												return (<button>Cancelar</button>);
-											} else if (e.estado === 'pendiente'){
-												return (<><button>Aprobar</button><button>Denegar</button></>);
-											} else if (e.estado === 'cancelada'){
-												return (<button>Reactivar</button>);
-											}})()}
+											{(() => {
+												if (e.estado === 'activa') {
+													return (<button>Cancelar</button>);
+												} else if (e.estado === 'pendiente') {
+													return (<><button>Aprobar</button><button>Denegar</button></>);
+												} else if (e.estado === 'cancelada') {
+													return (<button>Reactivar</button>);
+												}
+											})()}
 										</td>
 									</tr>
 								)
@@ -75,7 +76,7 @@ const ManejoCuentas = ({ data }) => {
 					</table>
 				</div>
 			}
-			
+
 		</div>
 	)
 }

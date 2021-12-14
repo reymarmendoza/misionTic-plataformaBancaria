@@ -93,7 +93,7 @@ const TransfModal = ({ cuentas, ctaOrigen, dis }) => {
 			if (transfer === 2) {
 
 				try {
-					await Axios.post(`${process.env.REACT_APP_URL}/	recordTransaction`, {
+					await Axios.post(`${process.env.REACT_APP_URL}/	createTransaction`, {
 						docFuente: origin.numDoc,
 						docDestino: target.numDoc,
 						fuente: origin.numCuenta,
@@ -102,10 +102,10 @@ const TransfModal = ({ cuentas, ctaOrigen, dis }) => {
 						cobroBanco: montoTransf * 0.01
 					})
 						.then((response) => {
-							console.log("recordTransaction", response.data)
+							console.log("createTransaction", response.data)
 						})
 				} catch (error) {
-					console.log("recordTransaction", error)
+					console.log("createTransaction", error)
 				}
 
 				alert(`Se te descontará ${totalADescontar} para transferir ${montoTransf} debido a la comisión del 1% del banco`)

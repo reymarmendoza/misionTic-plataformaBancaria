@@ -31,20 +31,26 @@ app.post("/createUser", async (req, res) => {
 
 	res.send(result)
 })
-/*
+
 app.post("/createTransaction", async (req, res) => {
 	const tran = req.body
 	const newTran = new TransaccionesModel(tran)
+	let result
+
+	mongoose.connect(URL)
 
 	try {
-		await newTran.save()
+		await newTran.save().then(() => {
+			result = "Transaccion succeed"
+		})
 	} catch (e) {
-		console.log("Transaction Failed: " + e)
+		console.log("TransaccionesModel", e)
+		result = "Transaccion failed"
 	}
 
-	res.json(tran)
+	res.send(result)
 })
-*/
+
 app.post("/createAccount", async (req, res) => {
 	const acc = req.body
 	const newAcc = new CuentasModel(acc)
@@ -189,23 +195,78 @@ app.post("/exeChangeBalance", async (req, res) => {
 	res.json({ result: resMsg })
 })
 
-app.post("/recordTransaction", async (req, res) => {
-	const tran = req.body
-	const newTran = new TransaccionesModel(tran)
-	let result
+app.post("/getTransactions", async (req, res) => {
+	const doc = req.body.doc
+	const acc = req.body.acc
+	let trans = {}
 
 	mongoose.connect(URL)
 
 	try {
-		await newTran.save().then(() => {
-			result = "Transaccion succeed"
+		trans = await TransaccionesModel.find({
+			$and: [
+				{
+					$or: [
+						{ docFuente: doc },
+						{ docDestino: doc }
+					]
+				},
+				{
+					$or: [
+						{ fuente: acc },
+						{ destino: acc }
+					]
+				}
+			]
 		})
-	} catch (e) {
-		console.log("TransaccionesModel", e)
-		result = "Transaccion failed"
+
+		let count = 0
+		let aux = []
+		trans.map((t) => {
+			aux[count++] = t.docFuente === doc ? "Enviada" : "Recibida"
+		})
+		trans["tipoTrans"] = aux
+		// trans["tipoTrans"] = trans.docFuente === doc ? "Enviada" : "Recibida"
+
+	} catch (error) {
+		console.log("getTransactions", error)
+	}
+	console.log("trans", trans)
+	res.json(trans)
+})
+
+app.post("/getAccounts", async (req, res) => {
+	const activeUser = req.body.activeUser
+	const DBField = req.body.fetchBy
+	let datadb
+
+	mongoose.connect(URL)
+
+	if (DBField === "documento") {
+
+
+		try {
+			await CuentasModel.find({ numDoc: activeUser }).exec()
+				.then((result) => {
+					datadb = result
+				})
+		} catch (e) {
+			console.log("getAccountsByDocumento failed: " + e)
+		}
+
+
+	} else if (DBField === "estado") {
+		try {
+			await CuentasModel.find({ estado: "pendiente" }).exec()
+				.then((result) => {
+					datadb = result
+				})
+		} catch (e) {
+			console.log("getAccountsByEstado failed: " + e)
+		}
 	}
 
-	res.send(result)
+	res.json(datadb)
 })
 
 app.listen(3001, () => {
