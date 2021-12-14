@@ -9,7 +9,7 @@ export function TableFull({ fechaInicio, fechaFin, idCuenta, onUpdate }) {
 	return (
 		// <BrowserRouter>
 		<div className="row">
-			<div className="col-4">
+			<div className="col-3">
 				<TableSide 
 					fechaInicio={fechaInicio} fechaFin={fechaFin} 
 					idCuenta={idCuenta} onUpdate={onUpdate} 

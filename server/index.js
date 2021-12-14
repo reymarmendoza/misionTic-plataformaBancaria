@@ -71,7 +71,7 @@ async function loginDataMatch(client, { user, pass }) {
 			pwd: pass
 		})
 
-	return result ? { typeUser: result.tipoUsuario, userSession: result.numDoc } : { typeUser: "noExiste" }
+	return result ? { typeUser: result.tipoUsuario, userSession: result.numDoc, name: result.nombre } : { typeUser: "noExiste" }
 }
 
 app.post("/routeUser", async (req, res) => {
@@ -83,7 +83,7 @@ app.post("/routeUser", async (req, res) => {
 
 		switch (usuarioLogIn.typeUser) {
 			case "cliente":
-				return res.status(200).send({ userSession: usuarioLogIn.userSession, url: "cliente" })
+				return res.status(200).send({ userSession: usuarioLogIn.userSession, url: "cliente", name: usuarioLogIn.name })
 			case "empleado":
 				return res.status(200).send({ userSession: usuarioLogIn.userSession, url: "empleado" })
 			case "administrador":
