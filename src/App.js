@@ -21,6 +21,7 @@ import { Registro } from './components/Registro';
 import { GestionarEmpleado } from './components/GestionarEmpleado';
 import { Reclamos } from './components/Reclamos';
 import { ManejoCuentas } from './components/ManejoCuentas';
+import { HomePanel } from './components/HomePanel';
 
 import appStyles from './styles/root.module.css'
 import navStyles from './styles/navbar.module.css'
@@ -67,6 +68,12 @@ export default function App() {
 					} />
 					<Route path="/cliente/*" element={<TableFull onUpdate={updateHandler}
 						fechaInicio={fechaInicio} fechaFin={fechaFin} idCuenta={idCuenta} />} >
+						<Route path=''
+							element={
+								<div className="col-9">
+									<HomePanel />
+								</div>}
+						/>
 						<Route path='Cuentas'
 							element={
 								<div className="col-8">
