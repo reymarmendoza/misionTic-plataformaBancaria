@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import styles from '../styles/registro.module.css'
 import Axios from 'axios'
 
-const Login = () => {
+const Login = ({ onChange }) => {
 	const navigate = useNavigate()
 
 	const [email, setEmail] = useState('')
@@ -32,6 +32,7 @@ const Login = () => {
 						`/${response.data.url}`, {
 						state: response.data.url
 					})
+					onChange('on');
 				} else {
 					setErrGral(`Error: ${response.data.result}`)
 				}
