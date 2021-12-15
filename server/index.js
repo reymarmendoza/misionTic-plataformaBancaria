@@ -5,8 +5,9 @@ const cors = require("cors")
 const mongoose = require("mongoose")
 const { MongoClient } = require('mongodb')
 
-const { CuentasModel } = require("./models/Cuentas")
 const { RegistroModel } = require("./models/Registro")
+const { CuentasModel } = require("./models/Cuentas")
+const { TransaccionesModel } = require("./models/Transacciones")
 const URL = `mongodb+srv://${process.env.REACT_APP_USER}:${process.env.REACT_APP_PASSWORD}@banagrario.57kdk.mongodb.net/${process.env.REACT_APP_DB}?retryWrites=true&w=majority`
 const app = express()
 
@@ -70,7 +71,7 @@ async function loginDataMatch(client, { user, pass }) {
 			pwd: pass
 		})
 
-	return result ? { typeUser: result.tipoUsuario, userSession: result.numDoc } : { typeUser: "noExiste" }
+	return result ? { typeUser: result.tipoUsuario, userSession: result.numDoc, name: result.nombre } : { typeUser: "noExiste" }
 }
 
 app.post("/routeUser", async (req, res) => {
@@ -82,11 +83,11 @@ app.post("/routeUser", async (req, res) => {
 
 		switch (usuarioLogIn.typeUser) {
 			case "cliente":
-				return res.status(200).send({ userSession: usuarioLogIn.userSession, url: "cliente" })
+				return res.status(200).send({ userSession: usuarioLogIn.userSession, url: "cliente", name: usuarioLogIn.name })
 			case "empleado":
-				return res.status(200).send({ userSession: usuarioLogIn.userSession, url: "empleado" })
+				return res.status(200).send({ userSession: usuarioLogIn.userSession, url: "empleado", name: usuarioLogIn.name })
 			case "administrador":
-				return res.status(200).send({ userSession: usuarioLogIn.userSession, url: "administrador" })
+				return res.status(200).send({ userSession: usuarioLogIn.userSession, url: "administrador", name: usuarioLogIn.name })
 			default:
 				return res.status(401).send({ userSession: "Usuario y/o contraseña no validos" })
 		}
@@ -97,24 +98,114 @@ app.post("/routeUser", async (req, res) => {
 	}
 })
 
-app.post("/getAccountsByUser", async (req, res) => {
+app.post("/getAccounts", async (req, res) => {
 	const activeUser = req.body.activeUser
+	const DBField = req.body.fetchBy
 	let datadb
 
 	mongoose.connect(URL)
 
-	try {
-		await CuentasModel.find({ numDoc: activeUser }).exec()
-			.then((result) => {
-				console.log("getAccountsByUser succeed")
-				datadb = result
-			})
-	} catch (e) {
-		console.log("getAccountsByUser failed: " + e)
+	if (DBField === "documento") {
+		try {
+			await CuentasModel.find({ numDoc: activeUser }).exec()
+				.then((result) => {
+					datadb = result
+				})
+		} catch (e) {
+			console.log("getAccountsByDocumento failed: " + e)
+		}
+	} else if (DBField === "estado") {
+		try {
+			await CuentasModel.find({ estado: "pendiente" }).exec()
+				.then((result) => {
+					datadb = result
+				})
+		} catch (e) {
+			console.log("getAccountsByEstado failed: " + e)
+		}
 	}
 
-	console.log("activeUser2...", datadb)
 	res.json(datadb)
+})
+
+app.post("/exeChangeState", async (req, res) => {
+	mongoose.connect(URL)
+	let nuevoEstado = ''
+	let resMsg = ''
+
+	if (req.body.action === "aprobar") {
+		nuevoEstado = "activa"
+	} else {
+		nuevoEstado = "rechazada"
+	}
+
+	try {
+		await CuentasModel.updateOne(
+			{ _id: req.body.id },
+			{ $set: { estado: nuevoEstado } }
+		)
+			.then((response) => {
+				resMsg = response.modifiedCount
+			})
+	} catch (error) {
+		resMsg = "exeChangeState failed"
+	}
+
+	res.send(resMsg)
+})
+
+app.post("/fetchAccountData", async (req, res) => {
+	mongoose.connect(URL)
+	let accData = null
+
+	try {
+		await CuentasModel.findOne({ numCuenta: req.body.acc }).exec()
+			.then((response) => {
+				accData = response
+			})
+	} catch (error) {
+		console.log("existAccount E", error)
+	}
+
+	res.json(accData)
+})
+
+app.post("/exeChangeBalance", async (req, res) => {
+	mongoose.connect(URL)
+	let resMsg = 0
+
+	try {
+		await CuentasModel.updateOne(
+			{ _id: req.body.id },
+			{ $set: { balance: req.body.newBalance } }
+		)
+			.then((response) => {
+				resMsg = response.modifiedCount
+			})
+	} catch (error) {
+		resMsg = "exeChangeBalance failed"
+	}
+
+	res.json({ result: resMsg })
+})
+
+app.post("/recordTransaction", async (req, res) => {
+	const tran = req.body
+	const newTran = new TransaccionesModel(tran)
+	let result
+
+	mongoose.connect(URL)
+
+	try {
+		await newTran.save().then(() => {
+			result = "Transaccion succeed"
+		})
+	} catch (e) {
+		console.log("TransaccionesModel", e)
+		result = "Transaccion failed"
+	}
+
+	res.send(result)
 })
 
 app.listen(3001, () => {
