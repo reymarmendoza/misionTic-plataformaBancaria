@@ -5,7 +5,11 @@ function cleanStorage() {
 	localStorage.setItem("banAgrario", "")
 }
 
-export function NavBar() {
+export function NavBar({ session, onChange }) {
+
+	function closeSession(){
+		onChange('off')		
+	}
 	return (
 		<nav class="navbar navbar-dark bg-dark">
 			<div class="container-fluid">
@@ -15,11 +19,25 @@ export function NavBar() {
 						Banagrario
 					</a>
 				</Link>
-				<Link to="/login">
-					<button class="btn btn-success my-2 my-sm-0" type="submit">
-						Ingresar
-					</button>
-				</Link>
+				{(() => {
+					if (session === 'off') {
+						return (
+							<Link to="/login">
+								<button class="btn btn-success my-2 my-sm-0" type="submit">
+									Ingresar
+								</button>
+							</Link>
+						)
+					} else {
+						return (
+							<Link to="/">
+								<button class="btn btn-danger my-2 my-sm-0" type="submit" onClick={closeSession}>
+									Cerrar Sesion
+								</button>
+							</Link>
+						)
+					}
+				})()}
 			</div>
 		</nav>
 	)

@@ -31,11 +31,16 @@ export default function App() {
 	const [fechaInicio, setFechaInicio] = useState('');
 	const [fechaFin, setFechaFin] = useState('');
 	const [idCuenta, setIdCuenta] = useState(0);
+	const [session, setSession] = useState('off');
 
 	const updateHandler = (newFechaInicio, newFechaFin, newIdCuenta) => {
 		setFechaInicio(newFechaInicio);
 		setFechaFin(newFechaFin);
 		setIdCuenta(newIdCuenta);
+	}
+
+	const sessionHandler = (estado) => {
+		setSession(estado);
 	}
 
 	useEffect(() => {
@@ -47,7 +52,7 @@ export default function App() {
 	return (
 		<>
 			<BrowserRouter>
-				<NavBar className={navStyles.prueba} />
+				<NavBar className={navStyles.prueba} session={session} onChange={sessionHandler}/>
 
 				<Routes>
 					<Route path="/" element={
@@ -59,10 +64,10 @@ export default function App() {
 					<Route path="/login" element={
 						<div className="row m-0">
 							<div className="col-12 col-lg-6">
-								<Login />
+								<Login session={session} onChange={sessionHandler}/>
 							</div>
 							<div className="col-12 col-lg-6">
-								<Registro />
+								<Registro session={session} onChange={sessionHandler}/>
 							</div>
 						</div>
 					} />
