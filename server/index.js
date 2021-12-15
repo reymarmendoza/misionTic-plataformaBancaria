@@ -203,7 +203,7 @@ app.post("/getTransactions", async (req, res) => {
 	mongoose.connect(URL)
 
 	try {
-		trans = await TransaccionesModel.find({
+		const fetchData = await TransaccionesModel.find({
 			$and: [
 				{
 					$or: [
@@ -220,18 +220,26 @@ app.post("/getTransactions", async (req, res) => {
 			]
 		})
 
-		let count = 0
-		let aux = []
-		trans.map((t) => {
-			aux[count++] = t.docFuente === doc ? "Enviada" : "Recibida"
+		trans = fetchData.map((t) => {
+			return {
+				cobroBanco: t.cobroBanco,
+				destino: t.destino,
+				docDestino: t.docDestino,
+				docFuente: t.docFuente,
+				estado: t.estado,
+				fecha: t.fecha,
+				fuente: t.fuente,
+				monto: t.monto,
+				__v: t.__v,
+				_id: t._id,
+				tipoTrans: t.docFuente === doc ? "Enviada" : "Recibida"
+			}
 		})
-		trans["tipoTrans"] = aux
-		// trans["tipoTrans"] = trans.docFuente === doc ? "Enviada" : "Recibida"
 
 	} catch (error) {
 		console.log("getTransactions", error)
 	}
-	console.log("trans", trans)
+
 	res.json(trans)
 })
 
