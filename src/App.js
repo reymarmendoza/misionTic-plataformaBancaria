@@ -22,6 +22,7 @@ import { GestionarEmpleado } from './components/GestionarEmpleado';
 import { Reclamos } from './components/Reclamos';
 import { ManejoCuentas } from './components/ManejoCuentas';
 import { HomePanel } from './components/HomePanel';
+import { Depositos } from './components/Depositos';
 
 import appStyles from './styles/root.module.css'
 import navStyles from './styles/navbar.module.css'
@@ -64,7 +65,7 @@ export default function App() {
 					<Route path="/login" element={
 						<div className="row m-0">
 							<div className="col-12 col-lg-6">
-								<Login session={session} onChange={sessionHandler}/>
+								<Login onChange={sessionHandler}/>
 							</div>
 							<div className="col-12 col-lg-6">
 								<Registro session={session} onChange={sessionHandler}/>
@@ -115,7 +116,7 @@ export default function App() {
 						<Route path='Depositos'
 							element={
 								<div className="col-9">
-									<Cuentas data={data} />
+									<Depositos />
 								</div>}
 						/>
 						<Route path='ManejodeCuentas'
