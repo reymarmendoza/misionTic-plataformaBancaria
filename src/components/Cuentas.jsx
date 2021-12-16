@@ -30,7 +30,7 @@ const Cuentas = ({ data }) => {
 
 	useEffect(() => {
 		userAccounts()
-	}, [])
+	}, [cuentasUser])
 
 	return (
 		<div>

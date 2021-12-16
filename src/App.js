@@ -40,15 +40,16 @@ export default function App() {
 		setIdCuenta(newIdCuenta)
 	}
 
-	const sessionHandler = (estado) => {
-		setSession(estado)
-	}
-
 	useEffect(() => {
 		setFechaInicio(fechaInicio)
 		setFechaFin(fechaFin)
 		setIdCuenta(idCuenta)
 	}, [fechaInicio, fechaFin, idCuenta])
+
+
+	const sessionHandler = (estado) => {
+		setSession(estado)
+	}
 
 	return (
 		<>
@@ -126,11 +127,6 @@ export default function App() {
 								Reclamos
 							</div>}
 						/>
-						<Route path='BandejaCuentas' element={
-							<div className="col-9">
-								<CuentasPorAprovar data={data} />
-							</div>}
-						/>
 					</Route>
 
 					<Route path="/administrador/" element={<TableFull />}>
@@ -139,7 +135,22 @@ export default function App() {
 								<HomePanel />
 							</div>}
 						/>
-						<Route path='GestionarEmpleado' element={
+						<Route path='Depositos' element={
+							<div className="col-9">
+								<Depositos />
+							</div>}
+						/>
+						<Route path='ManejodeCuentas' element={
+							<div className="col-9">
+								<ManejoCuentas />
+							</div>}
+						/>
+						<Route path='Reclamos' element={
+							<div className="col-9">
+								Reclamos
+							</div>}
+						/>
+						<Route path='GestionarPersonal' element={
 							<div className="col-9">
 								<GestionarEmpleado />
 							</div>}

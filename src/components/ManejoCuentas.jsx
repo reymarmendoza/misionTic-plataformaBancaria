@@ -3,9 +3,8 @@ import { useState } from 'react'
 import Axios from 'axios'
 
 const ManejoCuentas = () => {
-	// const [aviso, setAviso] = useState('ok')
-	const [aviso] = useState('ok')
-	const [cuentas, setCuentas] = useState([])
+	const [aviso, setAviso] = useState('');
+	const [cuentas, setCuentas] = useState([]);
 
 	let submitData = async (documento) => {
 		const accounts = await Axios.post(`${process.env.REACT_APP_URL}/getAccounts`, {
@@ -22,7 +21,13 @@ const ManejoCuentas = () => {
 				estado: e.estado
 			})
 		})
-		setCuentas(listaCuentas);
+
+		if (listaCuentas.length > 0) {
+			setAviso(`Cuentas del cliente con documento ${documento}`);
+			setCuentas(listaCuentas);
+		} else {
+			setAviso('Error: Cliente no encontrado')
+		}
 	}
 
 	let submitHandler = (event) => {
@@ -51,10 +56,10 @@ const ManejoCuentas = () => {
 						</div>
 					</div>
 				</form>
+				<div className="form-text">{aviso}</div>
 			</div>
-			{Boolean(aviso) &&
-				<div>
-					<div className="form-text">{aviso}</div>
+			{Boolean(aviso[0] === 'C') &&
+				<div>					
 					<table className="table table-hover">
 						<thead>
 							<tr>
@@ -74,11 +79,11 @@ const ManejoCuentas = () => {
 										<td>
 											{(() => {
 												if (e.estado === 'activa') {
-													return (<button>Cancelar</button>)
+													return (<button className='btn btn-danger'>Cancelar</button>)
 												} else if (e.estado === 'pendiente') {
-													return (<><button>Aprobar</button><button>Denegar</button></>)
+													return (<><button className='btn btn-success'>Aprobar</button><button className='btn btn-danger'>Denegar</button></>)
 												} else if (e.estado === 'cancelada') {
-													return (<button>Reactivar</button>)
+													return (<button className='btn btn-success'>Reactivar</button>)
 												}
 											})()}
 										</td>
