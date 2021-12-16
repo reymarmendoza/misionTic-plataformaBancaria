@@ -126,11 +126,6 @@ export default function App() {
 								Reclamos
 							</div>}
 						/>
-						<Route path='BandejaCuentas' element={
-							<div className="col-9">
-								<CuentasPorAprovar data={data} />
-							</div>}
-						/>
 					</Route>
 
 					<Route path="/administrador/" element={<TableFull />}>
