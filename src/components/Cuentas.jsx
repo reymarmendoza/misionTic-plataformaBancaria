@@ -46,11 +46,11 @@ const Cuentas = ({ data }) => {
 				<tbody>
 					{
 						cuentasUser.map((e) => {
-							let opacity = 100, dis = false;
+							let opacity = 100, dis = false
 
 							if (e.estado === "activa") {
-								opacity = 25;
-								dis = true;
+								opacity = 25
+								dis = true
 							}
 
 							return (
@@ -64,7 +64,7 @@ const Cuentas = ({ data }) => {
 										<CancelCtaModal cuenta={e} dis={dis} />
 									</td>
 								</tr>
-							);
+							)
 						})
 					}
 				</tbody>

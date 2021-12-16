@@ -1,16 +1,17 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
+
 import Axios from 'axios'
 
 export function NuevaCuenta() {
-	const [cuentas, setCuentas] = useState([]);
-	const [aviso, setAviso] = useState('');
+	const [cuentas, setCuentas] = useState([])
+	const [aviso, setAviso] = useState('')
 
 	let requireData = async () => {
 		const accounts = await Axios.post(`${process.env.REACT_APP_URL}/getAccounts`, {
 			activeUser: JSON.parse(localStorage.getItem("banAgrario")).userSession,
 			fetchBy: "documento"
 		})
-		
+
 		let listaCuentas = []
 		accounts.data.forEach(e => {
 			listaCuentas.push({
@@ -18,10 +19,10 @@ export function NuevaCuenta() {
 				saldo: e.balance,
 				id: e._id,
 				estado: e.estado
-			})			
+			})
 		})
-		setCuentas(listaCuentas);
-		setAviso('Cuenta creada exitosamente. Aguarde la aprobación de uno de nuestros asesores');
+		setCuentas(listaCuentas)
+		setAviso('Cuenta creada exitosamente. Aguarde la aprobación de uno de nuestros asesores')
 	}
 
 	// useEffect(() => {
@@ -47,7 +48,7 @@ export function NuevaCuenta() {
 		event.preventDefault()
 		const ammount = event.target.ammount.value
 		submitData(ammount);
-		document.getElementById('ammount').value = null;
+		document.getElementById('ammount').value = null
 		requireData();
 	}
 

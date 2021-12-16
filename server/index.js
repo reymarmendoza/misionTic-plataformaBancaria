@@ -9,6 +9,7 @@ const { RegistroModel } = require("./models/Registro")
 const { CuentasModel } = require("./models/Cuentas")
 const { TransaccionesModel } = require("./models/Transacciones")
 const { AutoIncModel } = require("./models/AutoIncremental")
+const { ReclamosModel } = require("./models/Reclamos")
 
 const NUM_TRAN = "61b94da73eec120a384b90ef"
 const NUM_RECL = "61b94dd51ff22b3ee1283ab2"
@@ -19,35 +20,18 @@ const app = express()
 app.use(express.json())
 app.use(cors())
 
-app.post("/createUser", async (req, res) => {
-	const user = req.body
-	const newUser = new RegistroModel(user)
-	let result
-
-	mongoose.connect(URL)
-
-	try {
-		await newUser.save().then(() => {
-			result = "Creating User succeed"
-		})
-	} catch (e) {
-		result = "Saving account failed"
-	}
-
-	res.send(result)
-})
-
 async function getTransCount() {
 	let resUpd = {
 		num: 0,
 		res: false
 	}
 
-	try {
-		mongoose.connect(URL)
+	mongoose.connect(URL)
 
+	try {
 		const currCount = await AutoIncModel.findOne({ _id: NUM_TRAN })
 		const newCount = resUpd.num = currCount.numTransaccion + 1
+
 		await AutoIncModel.updateOne(
 			{ _id: NUM_TRAN },
 			{ $set: { numTransaccion: newCount } }
@@ -64,46 +48,33 @@ async function getTransCount() {
 	return resUpd
 }
 
-app.post("/createTransaction", async (req, res) => {
-	let tran = req.body
-	let result
-
-	const transCount = await getTransCount()
-	tran.numTransf = transCount.res ? transCount.num : "Error"
-	const newTran = new TransaccionesModel(tran)
+async function getReclCount() {
+	let resUpd = {
+		num: 0,
+		res: false
+	}
 
 	mongoose.connect(URL)
 
 	try {
-		await newTran.save().then(() => {
-			result = "Transaccion succeed"
-		})
-	} catch (e) {
-		console.log("TransaccionesModel", e)
-		result = "Transaccion failed"
+		const currCount = await AutoIncModel.findOne({ _id: NUM_RECL })
+		const newCount = resUpd.num = currCount.numReclamo + 1
+
+		await AutoIncModel.updateOne(
+			{ _id: NUM_RECL },
+			{ $set: { numReclamo: newCount } }
+		)
+			.then(() => {
+				resUpd.num = newCount
+				resUpd.res = true
+			})
+
+	} catch (error) {
+		console.log("getTransCount", error)
 	}
 
-	res.send(result)
-})
-
-app.post("/createAccount", async (req, res) => {
-	const acc = req.body
-	const newAcc = new CuentasModel(acc)
-	let result
-
-	mongoose.connect(URL)
-
-	try {
-		await newAcc.save().then(() => {
-			result = "Saving account succeed"
-		})
-	} catch (e) {
-		result = "Saving account failed"
-		console.log("Account failed: " + e)
-	}
-
-	res.send(result)
-})
+	return resUpd
+}
 
 async function loginDataMatch(client, { user, pass }) {
 	const result = await client.db(process.env.REACT_APP_DB).collection("clientes")
@@ -113,6 +84,10 @@ async function loginDataMatch(client, { user, pass }) {
 		})
 
 	return result ? { typeUser: result.tipoUsuario, userSession: result.numDoc, name: result.nombre } : { typeUser: "noExiste" }
+}
+
+function extraerFechaFromDBField(fecha) {
+	return `${fecha.getMonth()}-${fecha.getDate()}-${fecha.getFullYear()}`
 }
 
 app.post("/routeUser", async (req, res) => {
@@ -137,6 +112,110 @@ app.post("/routeUser", async (req, res) => {
 	} finally {
 		await client.close()
 	}
+})
+
+app.post("/createUser", async (req, res) => {
+	const user = req.body
+	const newUser = new RegistroModel(user)
+	let result = ''
+
+	mongoose.connect(URL)
+
+	try {
+		await newUser.save().then(() => {
+			result = "Creating User succeed"
+		})
+	} catch (e) {
+		result = "Saving account failed"
+	}
+
+	res.send(result)
+})
+
+app.post("/createTransaction", async (req, res) => {
+	let tran = req.body
+	let result = ''
+
+	const transCount = await getTransCount()
+	tran.numTransf = transCount.res ? transCount.num : "Error"
+	const newTran = new TransaccionesModel(tran)
+
+	mongoose.connect(URL)
+
+	try {
+		await newTran.save().then(() => {
+			result = "Transaccion succeed"
+		})
+	} catch (e) {
+		console.log("TransaccionesModel", e)
+		result = "Transaccion failed"
+	}
+
+	res.send(result)
+})
+
+app.post("/createAccount", async (req, res) => {
+	const acc = req.body
+	const newAcc = new CuentasModel(acc)
+	let result = ''
+
+	mongoose.connect(URL)
+
+	try {
+		await newAcc.save().then(() => {
+			result = "Saving account succeed"
+		})
+	} catch (e) {
+		result = "Saving account failed"
+		console.log("Account failed: " + e)
+	}
+
+	res.send(result)
+})
+
+app.post("/createReclamo", async (req, res) => {
+	let result = ''
+
+	mongoose.connect(URL)
+
+	try {
+		const reclCount = await getReclCount()
+		const newRec = new ReclamosModel({
+			numReclamo: reclCount.res ? reclCount.num : "Error",
+			numTransf: req.body.numTransf
+		})
+
+		await newRec.save()
+			.then(() => {
+				result = "succeed"
+				// console.log("createReclamo succeed")
+			})
+	} catch (e) {
+		console.log("createReclamo failed:", e)
+		result = "failed"
+	}
+
+	res.send(result)
+})
+
+app.post("/updateTransfEstado", async (req, res) => {
+	let result = ''
+
+	mongoose.connect(URL)
+
+	try {
+		await TransaccionesModel.updateOne(
+			{ numTransf: req.body.numTransf },
+			{ $set: { estado: "Disputa" } }
+		)
+			.then((response) => {
+				result = response.modifiedCount === 1 ? "succeed" : "failed"
+			})
+	} catch (error) {
+		result = "exeChangeState failed"
+	}
+
+	res.send(result)
 })
 
 app.post("/getAccounts", async (req, res) => {
@@ -170,9 +249,10 @@ app.post("/getAccounts", async (req, res) => {
 })
 
 app.post("/exeChangeState", async (req, res) => {
-	mongoose.connect(URL)
 	let nuevoEstado = ''
 	let resMsg = ''
+
+	mongoose.connect(URL)
 
 	if (req.body.action === "aprobar") {
 		nuevoEstado = "activa"
@@ -232,7 +312,7 @@ app.post("/exeChangeBalance", async (req, res) => {
 
 app.post("/getTransactions", async (req, res) => {
 	const doc = req.body.doc
-	const acc = req.body.acc
+	const acc = parseInt(req.body.acc)
 	let trans = {}
 
 	mongoose.connect(URL)
@@ -257,18 +337,17 @@ app.post("/getTransactions", async (req, res) => {
 
 		trans = fetchData.map((t) => {
 			return {
-				_id: t._id,
+				id: t._id,
 				cobroBanco: t.cobroBanco,
 				destino: t.destino,
 				docDestino: t.docDestino,
 				docFuente: t.docFuente,
 				estado: t.estado,
-				fecha: t.fecha,
+				fecha: extraerFechaFromDBField(t.fecha),
 				fuente: t.fuente,
 				monto: t.monto,
 				numTransf: t.numTransf,
-				tipoTrans: t.docFuente === doc ? "Enviada" : "Recibida",
-				__v: t.__v
+				tipoTrans: t.fuente === acc ? "Enviada" : "Recibida"
 			}
 		})
 
@@ -308,6 +387,7 @@ app.post("/getAccounts", async (req, res) => {
 
 	res.json(datadb)
 })
+
 
 app.listen(3001, () => {
 	console.log("Server is running")

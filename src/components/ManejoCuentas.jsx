@@ -1,8 +1,10 @@
 import { useState } from 'react'
+
 import Axios from 'axios'
 
 const ManejoCuentas = () => {
-	const [aviso, setAviso] = useState('ok');
+	// const [aviso, setAviso] = useState('ok')
+	const [aviso] = useState('ok')
 	const [cuentas, setCuentas] = useState([])
 
 	let submitData = async (documento) => {
@@ -36,9 +38,9 @@ const ManejoCuentas = () => {
 					<div className="row mt-2">
 						<div className='col'>
 							<label className="form-label" htmlFor="documento">Ingrese el documento del cliente:</label>
-						</div>	
+						</div>
 					</div>
-					
+
 					<div className='row'>
 						<div className="col-4">
 							<input className="form-control" type="number" name="documento" id="documento" min="0" required>
@@ -72,11 +74,11 @@ const ManejoCuentas = () => {
 										<td>
 											{(() => {
 												if (e.estado === 'activa') {
-													return (<button>Cancelar</button>);
+													return (<button>Cancelar</button>)
 												} else if (e.estado === 'pendiente') {
-													return (<><button>Aprobar</button><button>Denegar</button></>);
+													return (<><button>Aprobar</button><button>Denegar</button></>)
 												} else if (e.estado === 'cancelada') {
-													return (<button>Reactivar</button>);
+													return (<button>Reactivar</button>)
 												}
 											})()}
 										</td>
