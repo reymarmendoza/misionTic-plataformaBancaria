@@ -150,7 +150,7 @@ export default function App() {
 								Reclamos
 							</div>}
 						/>
-						<Route path='GestionarEmpleado' element={
+						<Route path='GestionarPersonal' element={
 							<div className="col-9">
 								<GestionarEmpleado />
 							</div>}

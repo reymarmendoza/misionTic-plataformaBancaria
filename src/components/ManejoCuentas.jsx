@@ -3,9 +3,8 @@ import { useState } from 'react'
 import Axios from 'axios'
 
 const ManejoCuentas = () => {
-	// const [aviso, setAviso] = useState('ok')
-	const [aviso] = useState('ok')
-	const [cuentas, setCuentas] = useState([])
+	const [aviso, setAviso] = useState('ok');
+	const [cuentas, setCuentas] = useState([]);
 
 	let submitData = async (documento) => {
 		const accounts = await Axios.post(`${process.env.REACT_APP_URL}/getAccounts`, {
@@ -74,7 +73,7 @@ const ManejoCuentas = () => {
 										<td>
 											{(() => {
 												if (e.estado === 'activa') {
-													return (<button>Cancelar</button>)
+													return (<button className='danger'>Cancelar</button>)
 												} else if (e.estado === 'pendiente') {
 													return (<><button>Aprobar</button><button>Denegar</button></>)
 												} else if (e.estado === 'cancelada') {
