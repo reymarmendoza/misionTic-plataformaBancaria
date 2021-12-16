@@ -18,7 +18,8 @@ const ManejoCuentas = () => {
 				cuenta: e.numCuenta,
 				saldo: e.balance,
 				id: e._id,
-				estado: e.estado
+				estado: e.estado,
+				doc: e.numDoc
 			})
 		})
 
@@ -34,6 +35,30 @@ const ManejoCuentas = () => {
 		const documento = event.target.documento.value;
 		submitData(documento)
 		event.preventDefault()
+	}
+
+	async function cancelCtaById (id, doc) {
+		const opeOut = await Axios.post(`${process.env.REACT_APP_URL}/exeChangeState`, {
+			id,
+			estado: "cancelada"
+		})
+		submitData(doc)
+	}
+
+	async function activateCtaById (id, doc) {
+		const opeOut = await Axios.post(`${process.env.REACT_APP_URL}/exeChangeState`, {
+			id,
+			estado: "activa"
+		})
+		submitData(doc)
+	}
+
+	async function rejectCtaById (id, doc) {
+		const opeOut = await Axios.post(`${process.env.REACT_APP_URL}/exeChangeState`, {
+			id,
+			estado: "rechazada"
+		})
+		submitData(doc)
 	}
 
 	return (
@@ -79,11 +104,27 @@ const ManejoCuentas = () => {
 										<td>
 											{(() => {
 												if (e.estado === 'activa') {
-													return (<button className='btn btn-danger'>Cancelar</button>)
-												} else if (e.estado === 'pendiente') {
-													return (<><button className='btn btn-success'>Aprobar</button><button className='btn btn-danger'>Denegar</button></>)
+													return (<button className='btn btn-danger' onClick={() => cancelCtaById(e.id, e.doc)}>
+														Cancelar
+													</button>)
+												} else if (e.estado === 'pendiente apertura') {
+													return (<><button className='btn btn-success' onClick={() => activateCtaById(e.id, e.doc)}>
+														Abrir Cta
+													</button>
+													<button className='btn btn-danger' onClick={() => rejectCtaById(e.id, e.doc)}>
+														Denegar
+													</button></>)
+												} else if (e.estado === 'pendiente cierre') {
+													return (<><button className='btn btn-success' onClick={() => cancelCtaById(e.id, e.doc)}>
+														Cerrar Cta
+													</button>
+													<button className='btn btn-danger' onClick={() => activateCtaById(e.id, e.doc)}>
+														Denegar
+													</button></>)
 												} else if (e.estado === 'cancelada') {
-													return (<button className='btn btn-success'>Reactivar</button>)
+													return (<button className='btn btn-success' onClick={() => activateCtaById(e.id, e.doc)}>
+														Reactivar
+													</button>)
 												}
 											})()}
 										</td>
@@ -94,7 +135,6 @@ const ManejoCuentas = () => {
 					</table>
 				</div>
 			}
-
 		</div>
 	)
 }

@@ -2,19 +2,15 @@ import { useState, useEffect } from 'react'
 
 import Axios from 'axios'
 
-export function CuentasPorAprovar({ data }) {
+export function CuentasPendientes() {
 	const [accPend, setAccPend] = useState([])
 
 	async function userAccounts() {
-		const accounts = await Axios.post(`${process.env.REACT_APP_URL}/getAccounts`, {
-			activeUser: JSON.parse(localStorage.getItem("banAgrario")).userSession,
-			fetchBy: "estado"
-		})
-
+		const accounts = await Axios.post(`${process.env.REACT_APP_URL}/getAllAccounts`, {})
 		let cont = 0
 		let listaCuentas = []
 		accounts.data.forEach(e => {
-			if (e.estado === "pendiente") {
+			if (e.estado === "pendiente apertura" || e.estado === "pendiente cierre") {
 				listaCuentas[cont++] = {
 					cliente: e.numDoc,
 					fecha: e.fecha,
