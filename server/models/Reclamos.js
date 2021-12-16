@@ -15,7 +15,8 @@ const schema = new mongoose.Schema({
 		default: () => 'Pendiente'
 	},
 	mensaje: {
-		type: String
+		type: String,
+		default: () => "",
 	},
 	fecha: {
 		type: Date,

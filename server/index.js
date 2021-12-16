@@ -9,6 +9,7 @@ const { RegistroModel } = require("./models/Registro")
 const { CuentasModel } = require("./models/Cuentas")
 const { TransaccionesModel } = require("./models/Transacciones")
 const { AutoIncModel } = require("./models/AutoIncremental")
+const { ReclamosModel } = require("./models/Reclamos")
 
 const NUM_TRAN = "61b94da73eec120a384b90ef"
 const NUM_RECL = "61b94dd51ff22b3ee1283ab2"
@@ -25,14 +26,43 @@ async function getTransCount() {
 		res: false
 	}
 
-	try {
-		mongoose.connect(URL)
+	mongoose.connect(URL)
 
+	try {
 		const currCount = await AutoIncModel.findOne({ _id: NUM_TRAN })
 		const newCount = resUpd.num = currCount.numTransaccion + 1
+
 		await AutoIncModel.updateOne(
 			{ _id: NUM_TRAN },
 			{ $set: { numTransaccion: newCount } }
+		)
+			.then(() => {
+				resUpd.num = newCount
+				resUpd.res = true
+			})
+
+	} catch (error) {
+		console.log("getTransCount", error)
+	}
+
+	return resUpd
+}
+
+async function getReclCount() {
+	let resUpd = {
+		num: 0,
+		res: false
+	}
+
+	mongoose.connect(URL)
+
+	try {
+		const currCount = await AutoIncModel.findOne({ _id: NUM_RECL })
+		const newCount = resUpd.num = currCount.numReclamo + 1
+
+		await AutoIncModel.updateOne(
+			{ _id: NUM_RECL },
+			{ $set: { numReclamo: newCount } }
 		)
 			.then(() => {
 				resUpd.num = newCount
@@ -138,6 +168,29 @@ app.post("/createAccount", async (req, res) => {
 	} catch (e) {
 		result = "Saving account failed"
 		console.log("Account failed: " + e)
+	}
+
+	res.send(result)
+})
+
+app.post("/createReclamo", async (req, res) => {
+	let result
+	console.log("HELLO WORL")
+	mongoose.connect(URL)
+
+	try {
+		const reclCount = await getReclCount()
+		const newRec = new ReclamosModel({
+			numReclamo: reclCount.res ? reclCount.num : "Error",
+			numTransf: req.body.numTransf
+		})
+
+		await newRec.save().then(() => {
+			result = "createReclamo succeed"
+		})
+	} catch (e) {
+		result = "createReclamo failed"
+		console.log(result, e)
 	}
 
 	res.send(result)

@@ -27,7 +27,8 @@ const schema = new mongoose.Schema({
 	},
 	numTransf: {
 		type: Number,
-		required: true
+		required: true,
+		unique: true
 	},
 	fecha: {
 		type: Date,

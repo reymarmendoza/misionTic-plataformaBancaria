@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-// import TransfModal from './TransfModal'
+
 import Axios from 'axios'
 
 const Transferencias = ({ data, fechaInicio, fechaFin, idCuenta }) => {
@@ -18,15 +18,33 @@ const Transferencias = ({ data, fechaInicio, fechaFin, idCuenta }) => {
 		}
 	}
 
+	async function createReclamosTask(numTran) {
+		try {
+			const reclamo = await Axios.post(`${process.env.REACT_APP_URL}/createReclamo`, {
+				numTransf: numTran
+			})
+			createReclamosTask(numTran)
+		} catch (error) {
+			console.log("markClaimStatus", error)
+		}
+	}
+
+	async function markClaimStatus(numTran) {
+		try {
+			// updateTransaccionesStatus(numTran)
+			createReclamosTask(numTran)
+		} catch (error) {
+			console.log("markClaimStatus", error)
+		}
+	}
+
 	useEffect(() => {
 		getTransactions(JSON.parse(localStorage.getItem("banAgrario")))
 	}, [])
 
-	const handleReclamo = (event) => {
+	const handleReclamo = async (event) => {
 		event.preventDefault()
-		// 	setShowModal(true)
-		// 	console.log(showModal)
-		// 	console.log('showModal')
+		await markClaimStatus(event.target.id)
 	}
 
 	return (
@@ -54,7 +72,7 @@ const Transferencias = ({ data, fechaInicio, fechaFin, idCuenta }) => {
 								<td>$ {e.monto}</td>
 								<td>{e.tipoTrans}</td>
 								<td>
-									<button type="button" class="btn btn-warning" onClick={handleReclamo}>Reclamar</button>
+									<button type="button" class="btn btn-warning" id={e.numTransf} onClick={handleReclamo}>Reclamar</button>
 								</td>
 							</tr>
 						))

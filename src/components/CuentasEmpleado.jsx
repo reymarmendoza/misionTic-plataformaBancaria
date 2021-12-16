@@ -39,10 +39,6 @@ const CuentasEmpleado = ({ data }) => {
 
 	return (
 		<div>
-			{/* <p>
-				Cuentas de PEPE
-			</p> */}
-			<br />
 			<table className="table table-hover">
 				<thead>
 					<tr>
@@ -65,7 +61,6 @@ const CuentasEmpleado = ({ data }) => {
 
 							return (
 								<tr className={`text-body text-opacity-${opacity}`}>
-									{/* <tr> */}
 									<th scope="row">{e.cuenta}</th>
 									<td>$ {e.saldo.toFixed(2)}</td>
 									<td>
@@ -76,7 +71,6 @@ const CuentasEmpleado = ({ data }) => {
 									</td>
 								</tr>
 							);
-							// }
 						})
 					}
 				</tbody>
