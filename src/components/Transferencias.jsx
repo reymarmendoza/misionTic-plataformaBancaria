@@ -1,9 +1,9 @@
-import { useEffect } from 'react'
+import { useState, useEffect } from 'react'
 // import TransfModal from './TransfModal'
 import Axios from 'axios'
 
 const Transferencias = ({ data, fechaInicio, fechaFin, idCuenta }) => {
-	// const [showModal, setShowModal] = useState(false)
+	const [transferencias, setTransferencias] = useState([])
 
 	async function getTransactions(numDoc) {
 		try {
@@ -12,6 +12,7 @@ const Transferencias = ({ data, fechaInicio, fechaFin, idCuenta }) => {
 				acc: idCuenta
 			})
 
+			setTransferencias(accounts.data)
 			console.log("accounts", accounts.data)
 		} catch (error) {
 			console.log("getTransactions", error)
@@ -31,10 +32,6 @@ const Transferencias = ({ data, fechaInicio, fechaFin, idCuenta }) => {
 
 	return (
 		<div>
-			<p>
-				Transferencias de cuenta # {idCuenta} desde {fechaInicio} al {fechaFin}
-			</p>
-			<br />
 			<table className="table table-striped table-hover">
 				<thead>
 					<tr>
@@ -49,19 +46,19 @@ const Transferencias = ({ data, fechaInicio, fechaFin, idCuenta }) => {
 				</thead>
 				<tbody>
 					{
-						// data[0].cuentas[0].transferencias.map((e) => (
-						// 	<tr>
-						// 		<th scope="row">{e.idTransf}</th>
-						// 		<td>{e.fecha}</td>
-						// 		<td>{e.ctaOrigen}</td>
-						// 		<td>{e.ctaDestino}</td>
-						// 		<td>$ {e.monto}</td>
-						// 		<td>Recibido</td>
-						// 		<td>
-						// 			<button type="button" class="btn btn-warning" onClick={handleReclamo}>Reclamar</button>
-						// 		</td>
-						// 	</tr>
-						// ))
+						transferencias.map((e) => (
+							<tr>
+								<td>{e.numTransf}</td>
+								<td>{(e.fecha).substring(0, (e.fecha).indexOf('T'))}</td>
+								<td>{e.fuente}</td>
+								<td>{e.destino}</td>
+								<td>$ {e.monto}</td>
+								<td>{e.tipoTrans}</td>
+								<td>
+									<button type="button" class="btn btn-warning" onClick={handleReclamo}>Reclamar</button>
+								</td>
+							</tr>
+						))
 					}
 				</tbody>
 			</table>

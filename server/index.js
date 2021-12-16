@@ -8,6 +8,11 @@ const { MongoClient } = require('mongodb')
 const { RegistroModel } = require("./models/Registro")
 const { CuentasModel } = require("./models/Cuentas")
 const { TransaccionesModel } = require("./models/Transacciones")
+const { AutoIncModel } = require("./models/AutoIncremental")
+
+const NUM_TRAN = "61b94da73eec120a384b90ef"
+const NUM_RECL = "61b94dd51ff22b3ee1283ab2"
+
 const URL = `mongodb+srv://${process.env.REACT_APP_USER}:${process.env.REACT_APP_PASSWORD}@banagrario.57kdk.mongodb.net/${process.env.REACT_APP_DB}?retryWrites=true&w=majority`
 const app = express()
 
@@ -32,10 +37,40 @@ app.post("/createUser", async (req, res) => {
 	res.send(result)
 })
 
+async function getTransCount() {
+	let resUpd = {
+		num: 0,
+		res: false
+	}
+
+	try {
+		mongoose.connect(URL)
+
+		const currCount = await AutoIncModel.findOne({ _id: NUM_TRAN })
+		const newCount = resUpd.num = currCount.numTransaccion + 1
+		await AutoIncModel.updateOne(
+			{ _id: NUM_TRAN },
+			{ $set: { numTransaccion: newCount } }
+		)
+			.then(() => {
+				resUpd.num = newCount
+				resUpd.res = true
+			})
+
+	} catch (error) {
+		console.log("getTransCount", error)
+	}
+
+	return resUpd
+}
+
 app.post("/createTransaction", async (req, res) => {
-	const tran = req.body
-	const newTran = new TransaccionesModel(tran)
+	let tran = req.body
 	let result
+
+	const transCount = await getTransCount()
+	tran.numTransf = transCount.res ? transCount.num : "Error"
+	const newTran = new TransaccionesModel(tran)
 
 	mongoose.connect(URL)
 
@@ -222,6 +257,7 @@ app.post("/getTransactions", async (req, res) => {
 
 		trans = fetchData.map((t) => {
 			return {
+				_id: t._id,
 				cobroBanco: t.cobroBanco,
 				destino: t.destino,
 				docDestino: t.docDestino,
@@ -230,9 +266,9 @@ app.post("/getTransactions", async (req, res) => {
 				fecha: t.fecha,
 				fuente: t.fuente,
 				monto: t.monto,
-				__v: t.__v,
-				_id: t._id,
-				tipoTrans: t.docFuente === doc ? "Enviada" : "Recibida"
+				numTransf: t.numTransf,
+				tipoTrans: t.docFuente === doc ? "Enviada" : "Recibida",
+				__v: t.__v
 			}
 		})
 
@@ -251,8 +287,6 @@ app.post("/getAccounts", async (req, res) => {
 	mongoose.connect(URL)
 
 	if (DBField === "documento") {
-
-
 		try {
 			await CuentasModel.find({ numDoc: activeUser }).exec()
 				.then((result) => {
@@ -261,8 +295,6 @@ app.post("/getAccounts", async (req, res) => {
 		} catch (e) {
 			console.log("getAccountsByDocumento failed: " + e)
 		}
-
-
 	} else if (DBField === "estado") {
 		try {
 			await CuentasModel.find({ estado: "pendiente" }).exec()

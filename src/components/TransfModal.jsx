@@ -4,7 +4,7 @@ import { useModal } from "../utils/useModal"
 
 import Axios from 'axios'
 
-const TransfModal = ({ cuentas, ctaOrigen, dis }) => {
+const TransfModal = ({ ctaOrigen, dis }) => {
 	const [isOpenModal, openModal, closeModal] = useModal(false)
 	const [origen, setOrigen] = useState(ctaOrigen)
 	const [destino, setDestino] = useState('')
@@ -32,7 +32,7 @@ const TransfModal = ({ cuentas, ctaOrigen, dis }) => {
 		let accData = {}
 
 		try {
-			await Axios.post(`${process.env.REACT_APP_URL}/	fetchAccountData`, {
+			await Axios.post(`${process.env.REACT_APP_URL}/fetchAccountData`, {
 				acc
 			})
 				.then((response) => {
@@ -51,6 +51,7 @@ const TransfModal = ({ cuentas, ctaOrigen, dis }) => {
 		const origin = await fetchAccountData(ctaOrigen)
 		const target = await fetchAccountData(destino)
 		const accTo = await fetchAccountData(e.target.destino.value)
+		console.log('TEST', target, accTo)
 
 		if (!accTo) {
 			setAviso('No existe esa cuenta de destino')
@@ -71,19 +72,19 @@ const TransfModal = ({ cuentas, ctaOrigen, dis }) => {
 			const calcTarget = target.balance + montoTransf
 
 			try {
-				await Axios.post(`${process.env.REACT_APP_URL}/	exeChangeBalance`, {
+				await Axios.post(`${process.env.REACT_APP_URL}/exeChangeBalance`, {
 					id: origin._id,
 					newBalance: calcOrigen
 				})
-					.then((response) => {
+					.then(() => {
 						transfer += 1
 					})
 
-				await Axios.post(`${process.env.REACT_APP_URL}/	exeChangeBalance`, {
+				await Axios.post(`${process.env.REACT_APP_URL}/exeChangeBalance`, {
 					id: target._id,
 					newBalance: calcTarget
 				})
-					.then((response) => {
+					.then(() => {
 						transfer += 1
 					})
 			} catch (error) {
@@ -93,7 +94,7 @@ const TransfModal = ({ cuentas, ctaOrigen, dis }) => {
 			if (transfer === 2) {
 
 				try {
-					await Axios.post(`${process.env.REACT_APP_URL}/	createTransaction`, {
+					await Axios.post(`${process.env.REACT_APP_URL}/createTransaction`, {
 						docFuente: origin.numDoc,
 						docDestino: target.numDoc,
 						fuente: origin.numCuenta,
@@ -113,8 +114,9 @@ const TransfModal = ({ cuentas, ctaOrigen, dis }) => {
 				alert('No podemos procesar tu solicitud')
 			}
 
-			setOrigen(calcOrigen)
-			setDestino(calcTarget)
+			setDestino(0)
+			setMontoTransf(0)
+			setTotalADescontar(0)
 		}
 
 		closeModal()
