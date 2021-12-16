@@ -1,7 +1,11 @@
 const mongoose = require("mongoose")
 
 const schema = new mongoose.Schema({
-	numDoc: {
+	docFuente: {
+		type: Number,
+		required: true
+	},
+	docDestino: {
 		type: Number,
 		required: true
 	},
@@ -13,18 +17,27 @@ const schema = new mongoose.Schema({
 		type: Number,
 		required: true
 	},
-	fecha: {
-		type: Date,
-		default: () => Date.now(),
-	},
 	monto: {
 		type: Number,
 		required: true
 	},
+	cobroBanco: {
+		type: Number,
+		required: true
+	},
+	numTransf: {
+		type: Number,
+		required: true,
+		unique: true
+	},
+	fecha: {
+		type: Date,
+		default: () => Date.now(),
+	},
 	estado: {
 		type: String,
 		enum: ['Aceptada', 'Rechazada', 'Disputa'],
-		required: true
+		default: () => 'Aceptada'
 	}
 })
 

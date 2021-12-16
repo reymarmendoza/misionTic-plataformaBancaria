@@ -11,17 +11,16 @@ const user = [
 	},
 	{
 		user: 'empleado',
-		select: ['Depositos', 'Cuentas', 'Reclamos']
+		select: ['Depositos', 'Cuentas Pendientes', 'Manejo de Cuentas', 'Reclamos']
 	},
 	{
 		user: 'administrador',
-		select: ['Gestionar Empleado']
+		select: ['Depositos', 'Cuentas Pendientes', 'Manejo de Cuentas', 'Reclamos', 'Gestionar Personal']
 	}
 ];
 
 export function TableSide({ fechaInicio, fechaFin, idCuenta, onUpdate }) {
 	const userActive = JSON.parse(localStorage.getItem("banAgrario"))
-	// userSession, url
 	const tipoUsr = useLocation().state || userActive.url
 
 	return (

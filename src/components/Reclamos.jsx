@@ -5,7 +5,7 @@ const Reclamos = ({ data }) => {
 	return (
 		<div>
 			<p>
-				Estos son todos tus reclamos, {data[0].datos.nombre}
+				Estos son todos tus reclamos, {JSON.parse(localStorage.getItem("banAgrario")).name.replace(/\w+/g, function(w){return w[0].toUpperCase() + w.slice(1).toLowerCase()})}
 			</p>
 			<br />
 			<table className="table table-striped table-hover">

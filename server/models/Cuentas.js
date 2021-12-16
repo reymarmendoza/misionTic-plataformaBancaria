@@ -11,12 +11,17 @@ const schema = new mongoose.Schema({
 	},
 	estado: {
 		type: String,
-		enum: ['activa', 'desactivada', 'pendiente', 'rechazada'],
+		enum: ['activa', 'desactivada', 'pendActivacion', 'pendCancelacion', 'rechazada'],
 		required: true
 	},
 	balance: {
 		type: Number,
 		required: true
+	},
+	fecha: {
+		type: Date,
+		default: () => Date.now(),
+		immutable: true
 	}
 })
 
