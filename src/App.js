@@ -134,6 +134,21 @@ export default function App() {
 								<HomePanel />
 							</div>}
 						/>
+						<Route path='Depositos' element={
+							<div className="col-9">
+								<Depositos />
+							</div>}
+						/>
+						<Route path='ManejodeCuentas' element={
+							<div className="col-9">
+								<ManejoCuentas />
+							</div>}
+						/>
+						<Route path='Reclamos' element={
+							<div className="col-9">
+								Reclamos
+							</div>}
+						/>
 						<Route path='GestionarEmpleado' element={
 							<div className="col-9">
 								<GestionarEmpleado />
