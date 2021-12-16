@@ -8,6 +8,11 @@ const { MongoClient } = require('mongodb')
 const { RegistroModel } = require("./models/Registro")
 const { CuentasModel } = require("./models/Cuentas")
 const { TransaccionesModel } = require("./models/Transacciones")
+const { AutoIncModel } = require("./models/AutoIncremental")
+
+const NUM_TRAN = "61b94da73eec120a384b90ef"
+const NUM_RECL = "61b94dd51ff22b3ee1283ab2"
+
 const URL = `mongodb+srv://${process.env.REACT_APP_USER}:${process.env.REACT_APP_PASSWORD}@banagrario.57kdk.mongodb.net/${process.env.REACT_APP_DB}?retryWrites=true&w=majority`
 const app = express()
 
@@ -31,20 +36,56 @@ app.post("/createUser", async (req, res) => {
 
 	res.send(result)
 })
-/*
-app.post("/createTransaction", async (req, res) => {
-	const tran = req.body
-	const newTran = new TransaccionesModel(tran)
 
-	try {
-		await newTran.save()
-	} catch (e) {
-		console.log("Transaction Failed: " + e)
+async function getTransCount() {
+	let resUpd = {
+		num: 0,
+		res: false
 	}
 
-	res.json(tran)
+	try {
+		mongoose.connect(URL)
+
+		const currCount = await AutoIncModel.findOne({ _id: NUM_TRAN })
+		const newCount = resUpd.num = currCount.numTransaccion + 1
+		await AutoIncModel.updateOne(
+			{ _id: NUM_TRAN },
+			{ $set: { numTransaccion: newCount } }
+		)
+			.then(() => {
+				resUpd.num = newCount
+				resUpd.res = true
+			})
+
+	} catch (error) {
+		console.log("getTransCount", error)
+	}
+
+	return resUpd
+}
+
+app.post("/createTransaction", async (req, res) => {
+	let tran = req.body
+	let result
+
+	const transCount = await getTransCount()
+	tran.numTransf = transCount.res ? transCount.num : "Error"
+	const newTran = new TransaccionesModel(tran)
+
+	mongoose.connect(URL)
+
+	try {
+		await newTran.save().then(() => {
+			result = "Transaccion succeed"
+		})
+	} catch (e) {
+		console.log("TransaccionesModel", e)
+		result = "Transaccion failed"
+	}
+
+	res.send(result)
 })
-*/
+
 app.post("/createAccount", async (req, res) => {
 	const acc = req.body
 	const newAcc = new CuentasModel(acc)
@@ -189,23 +230,83 @@ app.post("/exeChangeBalance", async (req, res) => {
 	res.json({ result: resMsg })
 })
 
-app.post("/recordTransaction", async (req, res) => {
-	const tran = req.body
-	const newTran = new TransaccionesModel(tran)
-	let result
+app.post("/getTransactions", async (req, res) => {
+	const doc = req.body.doc
+	const acc = req.body.acc
+	let trans = {}
 
 	mongoose.connect(URL)
 
 	try {
-		await newTran.save().then(() => {
-			result = "Transaccion succeed"
+		const fetchData = await TransaccionesModel.find({
+			$and: [
+				{
+					$or: [
+						{ docFuente: doc },
+						{ docDestino: doc }
+					]
+				},
+				{
+					$or: [
+						{ fuente: acc },
+						{ destino: acc }
+					]
+				}
+			]
 		})
-	} catch (e) {
-		console.log("TransaccionesModel", e)
-		result = "Transaccion failed"
+
+		trans = fetchData.map((t) => {
+			return {
+				_id: t._id,
+				cobroBanco: t.cobroBanco,
+				destino: t.destino,
+				docDestino: t.docDestino,
+				docFuente: t.docFuente,
+				estado: t.estado,
+				fecha: t.fecha,
+				fuente: t.fuente,
+				monto: t.monto,
+				numTransf: t.numTransf,
+				tipoTrans: t.docFuente === doc ? "Enviada" : "Recibida",
+				__v: t.__v
+			}
+		})
+
+	} catch (error) {
+		console.log("getTransactions", error)
 	}
 
-	res.send(result)
+	res.json(trans)
+})
+
+app.post("/getAccounts", async (req, res) => {
+	const activeUser = req.body.activeUser
+	const DBField = req.body.fetchBy
+	let datadb
+
+	mongoose.connect(URL)
+
+	if (DBField === "documento") {
+		try {
+			await CuentasModel.find({ numDoc: activeUser }).exec()
+				.then((result) => {
+					datadb = result
+				})
+		} catch (e) {
+			console.log("getAccountsByDocumento failed: " + e)
+		}
+	} else if (DBField === "estado") {
+		try {
+			await CuentasModel.find({ estado: "pendiente" }).exec()
+				.then((result) => {
+					datadb = result
+				})
+		} catch (e) {
+			console.log("getAccountsByEstado failed: " + e)
+		}
+	}
+
+	res.json(datadb)
 })
 
 app.listen(3001, () => {

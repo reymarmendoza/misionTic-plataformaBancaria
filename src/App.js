@@ -24,9 +24,9 @@ import { ManejoCuentas } from './components/ManejoCuentas';
 import { HomePanel } from './components/HomePanel';
 import { Depositos } from './components/Depositos';
 
-import appStyles from './styles/root.module.css'
+// import appStyles from './styles/root.module.css'
 import navStyles from './styles/navbar.module.css'
-import logStyles from './styles/login.module.css'
+// import logStyles from './styles/login.module.css'
 
 export default function App() {
 	const [fechaInicio, setFechaInicio] = useState('');

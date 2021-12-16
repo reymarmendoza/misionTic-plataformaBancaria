@@ -25,6 +25,10 @@ const schema = new mongoose.Schema({
 		type: Number,
 		required: true
 	},
+	numTransf: {
+		type: Number,
+		required: true
+	},
 	fecha: {
 		type: Date,
 		default: () => Date.now(),
