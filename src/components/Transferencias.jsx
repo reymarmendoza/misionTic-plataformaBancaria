@@ -13,7 +13,6 @@ const Transferencias = ({ data, fechaInicio, fechaFin, idCuenta }) => {
 			})
 
 			setTransferencias(accounts.data)
-			console.log("accounts", accounts.data)
 		} catch (error) {
 			console.log("getTransactions", error)
 		}
@@ -49,7 +48,7 @@ const Transferencias = ({ data, fechaInicio, fechaFin, idCuenta }) => {
 						transferencias.map((e) => (
 							<tr>
 								<td>{e.numTransf}</td>
-								<td>{(e.fecha).substring(0, (e.fecha).indexOf('T'))}</td>
+								<td>{e.fecha}</td>
 								<td>{e.fuente}</td>
 								<td>{e.destino}</td>
 								<td>$ {e.monto}</td>

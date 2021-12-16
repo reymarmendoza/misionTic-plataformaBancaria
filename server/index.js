@@ -19,24 +19,6 @@ const app = express()
 app.use(express.json())
 app.use(cors())
 
-app.post("/createUser", async (req, res) => {
-	const user = req.body
-	const newUser = new RegistroModel(user)
-	let result
-
-	mongoose.connect(URL)
-
-	try {
-		await newUser.save().then(() => {
-			result = "Creating User succeed"
-		})
-	} catch (e) {
-		result = "Saving account failed"
-	}
-
-	res.send(result)
-})
-
 async function getTransCount() {
 	let resUpd = {
 		num: 0,
@@ -63,6 +45,62 @@ async function getTransCount() {
 
 	return resUpd
 }
+
+async function loginDataMatch(client, { user, pass }) {
+	const result = await client.db(process.env.REACT_APP_DB).collection("clientes")
+		.findOne({
+			correo: user,
+			pwd: pass
+		})
+
+	return result ? { typeUser: result.tipoUsuario, userSession: result.numDoc, name: result.nombre } : { typeUser: "noExiste" }
+}
+
+function extraerFechaFromDBField(fecha) {
+	return `${fecha.getMonth()}-${fecha.getDate()}-${fecha.getFullYear()}`
+}
+
+app.post("/routeUser", async (req, res) => {
+	const client = new MongoClient(URL)
+
+	try {
+		await client.connect()
+		const usuarioLogIn = await loginDataMatch(client, req.body)
+
+		switch (usuarioLogIn.typeUser) {
+			case "cliente":
+				return res.status(200).send({ userSession: usuarioLogIn.userSession, url: "cliente", name: usuarioLogIn.name })
+			case "empleado":
+				return res.status(200).send({ userSession: usuarioLogIn.userSession, url: "empleado", name: usuarioLogIn.name })
+			case "administrador":
+				return res.status(200).send({ userSession: usuarioLogIn.userSession, url: "administrador", name: usuarioLogIn.name })
+			default:
+				return res.status(401).send({ userSession: "Usuario y/o contraseña no validos" })
+		}
+	} catch (e) {
+		console.error(e)
+	} finally {
+		await client.close()
+	}
+})
+
+app.post("/createUser", async (req, res) => {
+	const user = req.body
+	const newUser = new RegistroModel(user)
+	let result
+
+	mongoose.connect(URL)
+
+	try {
+		await newUser.save().then(() => {
+			result = "Creating User succeed"
+		})
+	} catch (e) {
+		result = "Saving account failed"
+	}
+
+	res.send(result)
+})
 
 app.post("/createTransaction", async (req, res) => {
 	let tran = req.body
@@ -103,40 +141,6 @@ app.post("/createAccount", async (req, res) => {
 	}
 
 	res.send(result)
-})
-
-async function loginDataMatch(client, { user, pass }) {
-	const result = await client.db(process.env.REACT_APP_DB).collection("clientes")
-		.findOne({
-			correo: user,
-			pwd: pass
-		})
-
-	return result ? { typeUser: result.tipoUsuario, userSession: result.numDoc, name: result.nombre } : { typeUser: "noExiste" }
-}
-
-app.post("/routeUser", async (req, res) => {
-	const client = new MongoClient(URL)
-
-	try {
-		await client.connect()
-		const usuarioLogIn = await loginDataMatch(client, req.body)
-
-		switch (usuarioLogIn.typeUser) {
-			case "cliente":
-				return res.status(200).send({ userSession: usuarioLogIn.userSession, url: "cliente", name: usuarioLogIn.name })
-			case "empleado":
-				return res.status(200).send({ userSession: usuarioLogIn.userSession, url: "empleado", name: usuarioLogIn.name })
-			case "administrador":
-				return res.status(200).send({ userSession: usuarioLogIn.userSession, url: "administrador", name: usuarioLogIn.name })
-			default:
-				return res.status(401).send({ userSession: "Usuario y/o contraseña no validos" })
-		}
-	} catch (e) {
-		console.error(e)
-	} finally {
-		await client.close()
-	}
 })
 
 app.post("/getAccounts", async (req, res) => {
@@ -263,7 +267,7 @@ app.post("/getTransactions", async (req, res) => {
 				docDestino: t.docDestino,
 				docFuente: t.docFuente,
 				estado: t.estado,
-				fecha: t.fecha,
+				fecha: extraerFechaFromDBField(t.fecha),
 				fuente: t.fuente,
 				monto: t.monto,
 				numTransf: t.numTransf,
@@ -308,6 +312,7 @@ app.post("/getAccounts", async (req, res) => {
 
 	res.json(datadb)
 })
+
 
 app.listen(3001, () => {
 	console.log("Server is running")
