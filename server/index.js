@@ -252,7 +252,7 @@ app.post("/getAccounts", async (req, res) => {
 				.then((result) => {
 					datadb = result
 				})
-				console.log(datadb);
+			console.log(datadb);
 		} catch (e) {
 			console.log("getAccountsByEstado failed: " + e)
 		}
@@ -361,37 +361,6 @@ app.post("/getTransactions", async (req, res) => {
 
 	res.json(trans)
 })
-
-// app.post("/getAccounts", async (req, res) => {
-// 	const activeUser = req.body.activeUser
-// 	const DBField = req.body.fetchBy
-// 	let datadb
-
-// 	mongoose.connect(URL)
-
-// 	if (DBField === "documento") {
-// 		try {
-// 			await CuentasModel.find({ numDoc: activeUser }).exec()
-// 				.then((result) => {
-// 					datadb = result
-// 				})
-// 		} catch (e) {
-// 			console.log("getAccountsByDocumento failed: " + e)
-// 		}
-// 	} else if (DBField === "estado") {
-// 		try {
-// 			await CuentasModel.find({ estado: "pendiente" }).exec()
-// 				.then((result) => {
-// 					datadb = result
-// 				})
-// 		} catch (e) {
-// 			console.log("getAccountsByEstado failed: " + e)
-// 		}
-// 	}
-
-// 	res.json(datadb)
-// })
-
 
 app.listen(3001, () => {
 	console.log("Server is running")

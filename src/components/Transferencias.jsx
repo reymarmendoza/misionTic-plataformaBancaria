@@ -35,7 +35,7 @@ const Transferencias = ({ data, fechaInicio, fechaFin, idCuenta }) => {
 
 		return res.data === "succeed" ? 1 : 0
 	}
-	/* ESTAMOS AQUI */
+
 	async function updateTransaccionesStatus(numTran) {
 		let res = ''
 
@@ -104,7 +104,7 @@ const Transferencias = ({ data, fechaInicio, fechaFin, idCuenta }) => {
 								<td>$ {e.monto}</td>
 								<td>{e.tipoTrans}</td>
 								<td>
-									<button type="button" class="btn btn-warning" id={e.numTransf} onClick={handleReclamo}>Reclamar</button>
+									<button type="button" class="btn btn-warning" id={e.numTransf} onClick={handleReclamo} disabled={e.estado === "Disputa"}>Reclamar</button>
 								</td>
 							</tr>
 						))
