@@ -5,6 +5,7 @@ const Depositos = () => {
 	const [aviso, setAviso] = useState('');
 	const [cuentas, setCuentas] = useState([]);
 	const [aviso2, setAviso2] = useState('');
+	const [doc, setDoc] = useState('');
 
 	let submitData = async (documento) => {
 		const accounts = await Axios.post(`${process.env.REACT_APP_URL}/getAccounts`, {
@@ -35,9 +36,52 @@ const Depositos = () => {
 		event.preventDefault()
 	}
 
+	let depositar = async (cuentaID, monto) => {
+		const origin = await fetchAccountData(cuentaID);
+		try {
+			await Axios.post(`${process.env.REACT_APP_URL}/	exeChangeBalance`, {
+				id: origin._id,
+				newBalance: (origin.balance + monto)
+			})
+		} catch (error) {
+			console.log("newBalance: ", error)
+		}
+		if (origin){
+			setAviso2('Deposito epsitoso');
+			setDoc(origin.numDoc);
+		} else {
+			setAviso2('No se encontró el numero de cuenta');
+			setAviso('No se encontró el numero de cuenta');
+		}		
+	}
+
+	useEffect(() => {
+		submitData(doc);
+		document.getElementById('documento').value = null;
+		// document.getElementById('cuentaID').value = null;
+		// document.getElementById('monto').value = null;
+	}, [aviso2, doc])
+
 	let clickHandler = (event) => {
-		
+		const cuentaID = parseInt(event.target.cuentaID.value);
+		const monto = parseFloat(event.target.monto.value);
+		depositar(cuentaID, monto)
 		event.preventDefault()
+	}
+
+	async function fetchAccountData(acc) {
+		let accData = {}
+		try {
+			await Axios.post(`${process.env.REACT_APP_URL}/	fetchAccountData`, {
+				acc
+			})
+				.then((response) => {
+					accData = response.data
+				})
+		} catch (error) {
+			console.log("fetchAccountData", error)
+		}
+		return accData;
 	}
 
 	return (
@@ -85,30 +129,30 @@ const Depositos = () => {
 					<form onSubmit={clickHandler}>
 						<div className="row mt-2">
 							<div className='col'>
-								<label className="form-label" htmlFor="documento">Ingrese el numero de cuenta a depositar:</label>
+								<label className="form-label" htmlFor="cuentaID">Ingrese el numero de cuenta a depositar:</label>
 							</div>	
 						</div>					
 						<div className='row'>
 							<div className="col-4">
-								<input className="form-control" type="number" name="documento" id="documento" min="0" required>
+								<input className="form-control" type="number" name="cuentaID" id="cuentaID" min="0" required>
 								</input>
 							</div>
 						</div>
 						<div className="row mt-2">
 							<div className='col'>
-								<label className="form-label" htmlFor="documento">Ingrese el monto:</label>
+								<label className="form-label" htmlFor="monto">Ingrese el monto:</label>
 							</div>	
 						</div>					
 						<div className='row'>
 							<div className="col-4">
-								<input className="form-control" type="number" name="documento" id="documento" min="0" required>
+								<input className="form-control" type="number" name="monto" id="monto" min="0" required>
 								</input>
 							</div>
 							<div className="col-8">
-									<button className="btn btn-primary" type="submit">Solicitar cuentas del cliente</button>
+									<button className="btn btn-primary" type="submit">Depositar</button>
 							</div>						
 						</div>
-						<div className='row'>
+						<div className="form-text">
 							 {aviso2}
 						</div>
 					</form>
