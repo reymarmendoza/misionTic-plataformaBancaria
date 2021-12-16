@@ -18,6 +18,10 @@ const Transferencias = ({ data, fechaInicio, fechaFin, idCuenta }) => {
 		}
 	}
 
+	useEffect(() => {
+		return null;
+	}, [transferencias])
+
 	async function createReclamosTask(numTran) {
 		let res = ''
 

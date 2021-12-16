@@ -40,15 +40,16 @@ export default function App() {
 		setIdCuenta(newIdCuenta)
 	}
 
-	const sessionHandler = (estado) => {
-		setSession(estado)
-	}
-
 	useEffect(() => {
 		setFechaInicio(fechaInicio)
 		setFechaFin(fechaFin)
 		setIdCuenta(idCuenta)
 	}, [fechaInicio, fechaFin, idCuenta])
+
+
+	const sessionHandler = (estado) => {
+		setSession(estado)
+	}
 
 	return (
 		<>
