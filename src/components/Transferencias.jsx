@@ -23,10 +23,10 @@ const Transferencias = ({ data, fechaInicio, fechaFin, idCuenta }) => {
 	}, [])
 
 	const handleReclamo = (event) => {
+		event.preventDefault()
 		// 	setShowModal(true)
 		// 	console.log(showModal)
 		// 	console.log('showModal')
-		event.preventDefault()
 	}
 
 	return (
@@ -46,7 +46,7 @@ const Transferencias = ({ data, fechaInicio, fechaFin, idCuenta }) => {
 				<tbody>
 					{
 						transferencias.map((e) => (
-							<tr>
+							<tr key={e.id}>
 								<td>{e.numTransf}</td>
 								<td>{e.fecha}</td>
 								<td>{e.fuente}</td>

@@ -236,7 +236,7 @@ app.post("/exeChangeBalance", async (req, res) => {
 
 app.post("/getTransactions", async (req, res) => {
 	const doc = req.body.doc
-	const acc = req.body.acc
+	const acc = parseInt(req.body.acc)
 	let trans = {}
 
 	mongoose.connect(URL)
@@ -261,7 +261,7 @@ app.post("/getTransactions", async (req, res) => {
 
 		trans = fetchData.map((t) => {
 			return {
-				_id: t._id,
+				id: t._id,
 				cobroBanco: t.cobroBanco,
 				destino: t.destino,
 				docDestino: t.docDestino,
@@ -271,8 +271,7 @@ app.post("/getTransactions", async (req, res) => {
 				fuente: t.fuente,
 				monto: t.monto,
 				numTransf: t.numTransf,
-				tipoTrans: t.docFuente === doc ? "Enviada" : "Recibida",
-				__v: t.__v
+				tipoTrans: t.fuente === acc ? "Enviada" : "Recibida"
 			}
 		})
 
