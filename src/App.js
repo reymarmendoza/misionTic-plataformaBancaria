@@ -16,7 +16,7 @@ import { TableFull } from './components/TableFull'
 import { Cuentas } from './components/Cuentas'
 import { Transferencias } from './components/Transferencias'
 import { NuevaCuenta } from './components/NuevaCuenta'
-import { CuentasPorAprovar } from './components/BandejaCuentas'
+import { CuentasPendientes } from './components/CuentasPendientes'
 import { Registro } from './components/Registro'
 import { GestionarEmpleado } from './components/GestionarEmpleado'
 import { Reclamos } from './components/Reclamos'
@@ -117,6 +117,11 @@ export default function App() {
 								<Depositos />
 							</div>}
 						/>
+						<Route path='CuentasPendientes' element={
+							<div className="col-9">
+								<CuentasPendientes />
+							</div>}
+						/>
 						<Route path='ManejodeCuentas' element={
 							<div className="col-9">
 								<ManejoCuentas />
@@ -138,6 +143,11 @@ export default function App() {
 						<Route path='Depositos' element={
 							<div className="col-9">
 								<Depositos />
+							</div>}
+						/>
+						<Route path='CuentasPendientes' element={
+							<div className="col-9">
+								<CuentasPendientes />
 							</div>}
 						/>
 						<Route path='ManejodeCuentas' element={

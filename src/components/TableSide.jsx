@@ -11,11 +11,11 @@ const user = [
 	},
 	{
 		user: 'empleado',
-		select: ['Depositos', 'Manejo de Cuentas', 'Reclamos', 'Bandeja Cuentas']
+		select: ['Depositos', 'Cuentas Pendientes', 'Manejo de Cuentas', 'Reclamos']
 	},
 	{
 		user: 'administrador',
-		select: ['Gestionar Empleado']
+		select: ['Depositos', 'Cuentas Pendientes', 'Manejo de Cuentas', 'Reclamos', 'Gestionar Personal']
 	}
 ];
 

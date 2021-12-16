@@ -218,6 +218,18 @@ app.post("/updateTransfEstado", async (req, res) => {
 	res.send(result)
 })
 
+app.post("/getAllAccounts", async (req, res) => {
+	try {
+		await CuentasModel.find({}).exec()
+			.then((response) => {
+				accData = response
+			})
+	} catch (error) {
+		console.log("existAccount E", error)
+	}
+	res.json(accData);
+})
+
 app.post("/getAccounts", async (req, res) => {
 	const activeUser = req.body.activeUser
 	const DBField = req.body.fetchBy
@@ -236,10 +248,11 @@ app.post("/getAccounts", async (req, res) => {
 		}
 	} else if (DBField === "estado") {
 		try {
-			await CuentasModel.find({ estado: "pendiente" }).exec()
+			await CuentasModel.find({ estado: "pendiente apertura" }).exec()
 				.then((result) => {
 					datadb = result
 				})
+				console.log(datadb);
 		} catch (e) {
 			console.log("getAccountsByEstado failed: " + e)
 		}
@@ -249,21 +262,12 @@ app.post("/getAccounts", async (req, res) => {
 })
 
 app.post("/exeChangeState", async (req, res) => {
-	let nuevoEstado = ''
-	let resMsg = ''
-
 	mongoose.connect(URL)
-
-	if (req.body.action === "aprobar") {
-		nuevoEstado = "activa"
-	} else {
-		nuevoEstado = "rechazada"
-	}
 
 	try {
 		await CuentasModel.updateOne(
 			{ _id: req.body.id },
-			{ $set: { estado: nuevoEstado } }
+			{ $set: { estado: req.body.estado } }
 		)
 			.then((response) => {
 				resMsg = response.modifiedCount
@@ -272,7 +276,7 @@ app.post("/exeChangeState", async (req, res) => {
 		resMsg = "exeChangeState failed"
 	}
 
-	res.send(resMsg)
+	res.sendStatus(200)
 })
 
 app.post("/fetchAccountData", async (req, res) => {
@@ -358,35 +362,35 @@ app.post("/getTransactions", async (req, res) => {
 	res.json(trans)
 })
 
-app.post("/getAccounts", async (req, res) => {
-	const activeUser = req.body.activeUser
-	const DBField = req.body.fetchBy
-	let datadb
+// app.post("/getAccounts", async (req, res) => {
+// 	const activeUser = req.body.activeUser
+// 	const DBField = req.body.fetchBy
+// 	let datadb
 
-	mongoose.connect(URL)
+// 	mongoose.connect(URL)
 
-	if (DBField === "documento") {
-		try {
-			await CuentasModel.find({ numDoc: activeUser }).exec()
-				.then((result) => {
-					datadb = result
-				})
-		} catch (e) {
-			console.log("getAccountsByDocumento failed: " + e)
-		}
-	} else if (DBField === "estado") {
-		try {
-			await CuentasModel.find({ estado: "pendiente" }).exec()
-				.then((result) => {
-					datadb = result
-				})
-		} catch (e) {
-			console.log("getAccountsByEstado failed: " + e)
-		}
-	}
+// 	if (DBField === "documento") {
+// 		try {
+// 			await CuentasModel.find({ numDoc: activeUser }).exec()
+// 				.then((result) => {
+// 					datadb = result
+// 				})
+// 		} catch (e) {
+// 			console.log("getAccountsByDocumento failed: " + e)
+// 		}
+// 	} else if (DBField === "estado") {
+// 		try {
+// 			await CuentasModel.find({ estado: "pendiente" }).exec()
+// 				.then((result) => {
+// 					datadb = result
+// 				})
+// 		} catch (e) {
+// 			console.log("getAccountsByEstado failed: " + e)
+// 		}
+// 	}
 
-	res.json(datadb)
-})
+// 	res.json(datadb)
+// })
 
 
 app.listen(3001, () => {
