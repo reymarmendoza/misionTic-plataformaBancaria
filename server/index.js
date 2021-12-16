@@ -112,7 +112,7 @@ async function loginDataMatch(client, { user, pass }) {
 			pwd: pass
 		})
 
-	return result ? { typeUser: result.tipoUsuario, userSession: result.numDoc } : { typeUser: "noExiste" }
+	return result ? { typeUser: result.tipoUsuario, userSession: result.numDoc, name: result.nombre } : { typeUser: "noExiste" }
 }
 
 app.post("/routeUser", async (req, res) => {
@@ -124,11 +124,11 @@ app.post("/routeUser", async (req, res) => {
 
 		switch (usuarioLogIn.typeUser) {
 			case "cliente":
-				return res.status(200).send({ userSession: usuarioLogIn.userSession, url: "cliente" })
+				return res.status(200).send({ userSession: usuarioLogIn.userSession, url: "cliente", name: usuarioLogIn.name })
 			case "empleado":
-				return res.status(200).send({ userSession: usuarioLogIn.userSession, url: "empleado" })
+				return res.status(200).send({ userSession: usuarioLogIn.userSession, url: "empleado", name: usuarioLogIn.name })
 			case "administrador":
-				return res.status(200).send({ userSession: usuarioLogIn.userSession, url: "administrador" })
+				return res.status(200).send({ userSession: usuarioLogIn.userSession, url: "administrador", name: usuarioLogIn.name })
 			default:
 				return res.status(401).send({ userSession: "Usuario y/o contraseña no validos" })
 		}

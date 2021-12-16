@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import styles from '../styles/registro.module.css'
 import Axios from 'axios'
 
-const Login = () => {
+const Login = ({ onChange }) => {
 	const navigate = useNavigate()
 
 	const [email, setEmail] = useState('')
@@ -31,6 +32,7 @@ const Login = () => {
 						`/${response.data.url}`, {
 						state: response.data.url
 					})
+					onChange('on');
 				} else {
 					setErrGral(`Error: ${response.data.result}`)
 				}
@@ -43,7 +45,7 @@ const Login = () => {
 
 	return (
 		<div>
-			<form className="p-3 my-3 mx-auto" onSubmit={submitHandler}>
+			<form className={styles.form} onSubmit={submitHandler}>
 
 				<div className="row">
 					<label htmlFor="email" className="col-12 col-form-label">E-mail:</label>

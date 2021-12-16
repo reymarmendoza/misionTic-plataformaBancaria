@@ -132,27 +132,33 @@ const TransfModal = ({ ctaOrigen, dis }) => {
 
 				<form onSubmit={sendMoney}>
 					<div className="row">
-						<label htmlFor="origen" className="form-label">Por favor confirme la cuenta origen</label>
-						<input type="number" className="form-control" name="origen" value={origen} placeholder={ctaOrigen} onChange={updateOrigen} readOnly>
-						</input>
+						<div className="col-12">
+							<label htmlFor="origen" className="form-label">Por favor confirme la cuenta origen</label>
+							<input type="number" className="form-control" name="origen" value={origen} placeholder={ctaOrigen} onChange={updateOrigen} readOnly>
+							</input>
+						</div>
 					</div>
 
 					<div className="row">
-						<label htmlFor="destino" className="form-label">Por favor confirme la cuenta destino</label>
-						<input type="number" className="form-control" name="destino" value={destino} onChange={updateDestino}>
-						</input>
+						<div className="col-12">
+							<label htmlFor="destino" className="form-label">Por favor confirme la cuenta destino</label>
+							<input type="number" className="form-control" name="destino" value={destino} onChange={updateDestino}>
+							</input>
+						</div>
 					</div>
 
 					<div className="row">
-						<label htmlFor="montoTransf" className="form-label">Monto a depositar</label>
-						<input type="number" className="form-control" name="montoTransf"
+						<div className="col-12">
+							<label htmlFor="montoTransf" className="form-label">Monto a depositar</label>
+							<input type="number" className="form-control" name="montoTransf"
 							value={montoTransf} onChange={updateMontoTransf}>
-						</input>
+							</input>
+						</div>
 					</div>
 
 					{Boolean(aviso) && <div className="form-text">{aviso}</div>}
 
-					<button type="submit">Enviar</button>
+					<button type="submit" className="btn btn-primary mt-2">Enviar</button>
 				</form>
 
 			</Modal>

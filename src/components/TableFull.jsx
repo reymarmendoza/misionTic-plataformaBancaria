@@ -8,8 +8,8 @@ import { TableSide } from './TableSide';
 export function TableFull({ fechaInicio, fechaFin, idCuenta, onUpdate }) {
 	return (
 		// <BrowserRouter>
-		<div className="row">
-			<div className="col-4">
+		<div className="row m-0">
+			<div className="col-3 p-0">
 				<TableSide 
 					fechaInicio={fechaInicio} fechaFin={fechaFin} 
 					idCuenta={idCuenta} onUpdate={onUpdate} 

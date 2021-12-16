@@ -21,6 +21,8 @@ import { Registro } from './components/Registro';
 import { GestionarEmpleado } from './components/GestionarEmpleado';
 import { Reclamos } from './components/Reclamos';
 import { ManejoCuentas } from './components/ManejoCuentas';
+import { HomePanel } from './components/HomePanel';
+import { Depositos } from './components/Depositos';
 
 // import appStyles from './styles/root.module.css'
 import navStyles from './styles/navbar.module.css'
@@ -30,11 +32,16 @@ export default function App() {
 	const [fechaInicio, setFechaInicio] = useState('');
 	const [fechaFin, setFechaFin] = useState('');
 	const [idCuenta, setIdCuenta] = useState(0);
+	const [session, setSession] = useState('off');
 
 	const updateHandler = (newFechaInicio, newFechaFin, newIdCuenta) => {
 		setFechaInicio(newFechaInicio);
 		setFechaFin(newFechaFin);
 		setIdCuenta(newIdCuenta);
+	}
+
+	const sessionHandler = (estado) => {
+		setSession(estado);
 	}
 
 	useEffect(() => {
@@ -46,7 +53,7 @@ export default function App() {
 	return (
 		<>
 			<BrowserRouter>
-				<NavBar className={navStyles.prueba} />
+				<NavBar className={navStyles.prueba} session={session} onChange={sessionHandler}/>
 
 				<Routes>
 					<Route path="/" element={
@@ -56,74 +63,92 @@ export default function App() {
 					} />
 
 					<Route path="/login" element={
-						<div className="row">
+						<div className="row m-0">
 							<div className="col-12 col-lg-6">
-								<Login />
+								<Login onChange={sessionHandler}/>
 							</div>
 							<div className="col-12 col-lg-6">
-								<Registro />
+								<Registro session={session} onChange={sessionHandler}/>
 							</div>
 						</div>
 					} />
 					<Route path="/cliente/*" element={<TableFull onUpdate={updateHandler}
 						fechaInicio={fechaInicio} fechaFin={fechaFin} idCuenta={idCuenta} />} >
+						<Route path=''
+							element={
+								<div className="col-9">
+									<HomePanel />
+								</div>}
+						/>
 						<Route path='Cuentas'
 							element={
-								<div className="col-8">
+								<div className="col-9">
 									<Cuentas data={data} />
 								</div>}
 						/>
 						<Route path='Transferencias'
 							element={
-								<div className="col-8">
+								<div className="col-9">
 									<Transferencias data={data} fechaInicio={fechaInicio} fechaFin={fechaFin} idCuenta={idCuenta} />
 								</div>}
 						/>
 						<Route path='Reclamos'
 							element={
-								<div className="col-8">
+								<div className="col-9">
 									<Reclamos data={data} />
 								</div>}
 						/>
 						<Route path='NuevaCuenta'
 							element={
-								<div className="col-8">
+								<div className="col-9">
 									<NuevaCuenta />
 								</div>}
 						/>
 					</Route>
 
 					<Route path="/empleado/*" element={<TableFull />} >
+						<Route path=''
+							element={
+								<div className="col-9">
+									<HomePanel />
+								</div>}
+						/>
 						<Route path='Depositos'
 							element={
-								<div className="col-8">
-									<Cuentas data={data} />
+								<div className="col-9">
+									<Depositos />
 								</div>}
 						/>
 						<Route path='ManejodeCuentas'
 							element={
-								<div className="col-8">
+								<div className="col-9">
 									<ManejoCuentas />
 								</div>}
 						/>
 						<Route path='Reclamos'
 							element={
-								<div className="col-8">
+								<div className="col-9">
 									Reclamos
 								</div>}
 						/>
 						<Route path='BandejaCuentas'
 							element={
-								<div className="col-8">
+								<div className="col-9">
 									<CuentasPorAprovar data={data} />
 								</div>}
 						/>
 					</Route>
 
 					<Route path="/administrador/" element={<TableFull />}>
+						<Route path=''
+							element={
+								<div className="col-9">
+									<HomePanel />
+								</div>}
+						/>
 						<Route path='GestionarEmpleado'
 							element={
-								<div className="col-8">
+								<div className="col-9">
 									<GestionarEmpleado />
 								</div>}
 						/>
