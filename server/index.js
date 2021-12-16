@@ -117,7 +117,7 @@ app.post("/routeUser", async (req, res) => {
 app.post("/createUser", async (req, res) => {
 	const user = req.body
 	const newUser = new RegistroModel(user)
-	let result
+	let result = ''
 
 	mongoose.connect(URL)
 
@@ -134,7 +134,7 @@ app.post("/createUser", async (req, res) => {
 
 app.post("/createTransaction", async (req, res) => {
 	let tran = req.body
-	let result
+	let result = ''
 
 	const transCount = await getTransCount()
 	tran.numTransf = transCount.res ? transCount.num : "Error"
@@ -157,7 +157,7 @@ app.post("/createTransaction", async (req, res) => {
 app.post("/createAccount", async (req, res) => {
 	const acc = req.body
 	const newAcc = new CuentasModel(acc)
-	let result
+	let result = ''
 
 	mongoose.connect(URL)
 
@@ -174,8 +174,8 @@ app.post("/createAccount", async (req, res) => {
 })
 
 app.post("/createReclamo", async (req, res) => {
-	let result
-	console.log("HELLO WORL")
+	let result = ''
+
 	mongoose.connect(URL)
 
 	try {
@@ -185,12 +185,34 @@ app.post("/createReclamo", async (req, res) => {
 			numTransf: req.body.numTransf
 		})
 
-		await newRec.save().then(() => {
-			result = "createReclamo succeed"
-		})
+		await newRec.save()
+			.then(() => {
+				result = "succeed"
+				// console.log("createReclamo succeed")
+			})
 	} catch (e) {
-		result = "createReclamo failed"
-		console.log(result, e)
+		console.log("createReclamo failed:", e)
+		result = "failed"
+	}
+
+	res.send(result)
+})
+
+app.post("/updateTransfEstado", async (req, res) => {
+	let result = ''
+
+	mongoose.connect(URL)
+
+	try {
+		await TransaccionesModel.updateOne(
+			{ numTransf: req.body.numTransf },
+			{ $set: { estado: "Disputa" } }
+		)
+			.then((response) => {
+				result = response.modifiedCount === 1 ? "succeed" : "failed"
+			})
+	} catch (error) {
+		result = "exeChangeState failed"
 	}
 
 	res.send(result)
@@ -227,9 +249,10 @@ app.post("/getAccounts", async (req, res) => {
 })
 
 app.post("/exeChangeState", async (req, res) => {
-	mongoose.connect(URL)
 	let nuevoEstado = ''
 	let resMsg = ''
+
+	mongoose.connect(URL)
 
 	if (req.body.action === "aprobar") {
 		nuevoEstado = "activa"

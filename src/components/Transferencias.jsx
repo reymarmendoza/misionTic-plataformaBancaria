@@ -19,23 +19,45 @@ const Transferencias = ({ data, fechaInicio, fechaFin, idCuenta }) => {
 	}
 
 	async function createReclamosTask(numTran) {
+		let res = ''
+
 		try {
-			const reclamo = await Axios.post(`${process.env.REACT_APP_URL}/createReclamo`, {
+			res = await Axios.post(`${process.env.REACT_APP_URL}/createReclamo`, {
 				numTransf: numTran
 			})
-			createReclamosTask(numTran)
 		} catch (error) {
 			console.log("markClaimStatus", error)
 		}
+
+		return res.data === "succeed" ? 1 : 0
+	}
+	/* ESTAMOS AQUI */
+	async function updateTransaccionesStatus(numTran) {
+		let res = ''
+
+		try {
+			res = await Axios.post(`${process.env.REACT_APP_URL}/updateTransfEstado`, {
+				numTransf: numTran
+			})
+		} catch (error) {
+			console.log("markClaimStatus", error)
+		}
+
+		return res.data === "succeed" ? 1 : 0
 	}
 
 	async function markClaimStatus(numTran) {
+		let verifier = 0
+		const OK = 2
+
 		try {
-			// updateTransaccionesStatus(numTran)
-			createReclamosTask(numTran)
+			verifier += await updateTransaccionesStatus(numTran)
+			verifier += await createReclamosTask(numTran)
 		} catch (error) {
 			console.log("markClaimStatus", error)
 		}
+
+		return verifier === OK ? "saved" : "error"
 	}
 
 	useEffect(() => {
@@ -44,7 +66,13 @@ const Transferencias = ({ data, fechaInicio, fechaFin, idCuenta }) => {
 
 	const handleReclamo = async (event) => {
 		event.preventDefault()
-		await markClaimStatus(event.target.id)
+
+		try {
+			// console.log("handleReclamo:", await markClaimStatus(event.target.id))
+			await markClaimStatus(event.target.id)
+		} catch (error) {
+			console.log("handleReclamo", error)
+		}
 	}
 
 	return (
