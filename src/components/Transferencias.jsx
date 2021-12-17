@@ -18,15 +18,16 @@ const Transferencias = ({ data, fechaInicio, fechaFin, idCuenta }) => {
 		}
 	}
 
-	useEffect(() => {
-		return null;
-	}, [transferencias])
+	// useEffect(() => {
+	// 	return null;
+	// }, [transferencias])
 
 	async function createReclamosTask(numTran) {
 		let res = ''
 
 		try {
 			res = await Axios.post(`${process.env.REACT_APP_URL}/createReclamo`, {
+				doc: JSON.parse(localStorage.getItem("banAgrario")).userSession,
 				numTransf: numTran
 			})
 		} catch (error) {
@@ -35,7 +36,7 @@ const Transferencias = ({ data, fechaInicio, fechaFin, idCuenta }) => {
 
 		return res.data === "succeed" ? 1 : 0
 	}
-	/* ESTAMOS AQUI */
+
 	async function updateTransaccionesStatus(numTran) {
 		let res = ''
 
@@ -64,8 +65,8 @@ const Transferencias = ({ data, fechaInicio, fechaFin, idCuenta }) => {
 		return verifier === OK ? "saved" : "error"
 	}
 
-	useEffect(() => {
-		getTransactions(JSON.parse(localStorage.getItem("banAgrario")))
+	useEffect(async () => {
+		await getTransactions(JSON.parse(localStorage.getItem("banAgrario")))
 	}, [])
 
 	const handleReclamo = async (event) => {
@@ -104,7 +105,7 @@ const Transferencias = ({ data, fechaInicio, fechaFin, idCuenta }) => {
 								<td>$ {e.monto}</td>
 								<td>{e.tipoTrans}</td>
 								<td>
-									<button type="button" class="btn btn-warning" id={e.numTransf} onClick={handleReclamo}>Reclamar</button>
+									<button type="button" class="btn btn-warning" id={e.numTransf} onClick={handleReclamo} disabled={e.estado === "Disputa"}>Reclamar</button>
 								</td>
 							</tr>
 						))

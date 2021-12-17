@@ -181,6 +181,7 @@ app.post("/createReclamo", async (req, res) => {
 	try {
 		const reclCount = await getReclCount()
 		const newRec = new ReclamosModel({
+			numDoc: req.body.doc,
 			numReclamo: reclCount.res ? reclCount.num : "Error",
 			numTransf: req.body.numTransf
 		})
@@ -252,7 +253,7 @@ app.post("/getAccounts", async (req, res) => {
 				.then((result) => {
 					datadb = result
 				})
-				console.log(datadb);
+			console.log(datadb);
 		} catch (e) {
 			console.log("getAccountsByEstado failed: " + e)
 		}
@@ -362,36 +363,19 @@ app.post("/getTransactions", async (req, res) => {
 	res.json(trans)
 })
 
-// app.post("/getAccounts", async (req, res) => {
-// 	const activeUser = req.body.activeUser
-// 	const DBField = req.body.fetchBy
-// 	let datadb
+app.post("/getReclamos", async (req, res) => {
+	let response = {}
 
-// 	mongoose.connect(URL)
+	mongoose.connect(URL)
 
-// 	if (DBField === "documento") {
-// 		try {
-// 			await CuentasModel.find({ numDoc: activeUser }).exec()
-// 				.then((result) => {
-// 					datadb = result
-// 				})
-// 		} catch (e) {
-// 			console.log("getAccountsByDocumento failed: " + e)
-// 		}
-// 	} else if (DBField === "estado") {
-// 		try {
-// 			await CuentasModel.find({ estado: "pendiente" }).exec()
-// 				.then((result) => {
-// 					datadb = result
-// 				})
-// 		} catch (e) {
-// 			console.log("getAccountsByEstado failed: " + e)
-// 		}
-// 	}
+	try {
+		response = await ReclamosModel.find({ numDoc: req.body.numDoc })
+	} catch (error) {
+		console.log("getReclamos", error)
+	}
 
-// 	res.json(datadb)
-// })
-
+	res.json(response)
+})
 
 app.listen(3001, () => {
 	console.log("Server is running")
