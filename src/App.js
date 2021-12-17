@@ -23,6 +23,7 @@ import { Reclamos } from './components/Reclamos'
 import { ManejoCuentas } from './components/ManejoCuentas'
 import { HomePanel } from './components/HomePanel'
 import { Depositos } from './components/Depositos'
+import { ReclamosEmpleado } from './components/ReclamosEmpleado'
 
 // import appStyles from './styles/root.module.css'
 import navStyles from './styles/navbar.module.css'
@@ -129,7 +130,7 @@ export default function App() {
 						/>
 						<Route path='Reclamos' element={
 							<div className="col-9">
-								Reclamos
+								<ReclamosEmpleado />
 							</div>}
 						/>
 					</Route>
