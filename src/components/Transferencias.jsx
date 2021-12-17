@@ -18,15 +18,16 @@ const Transferencias = ({ data, fechaInicio, fechaFin, idCuenta }) => {
 		}
 	}
 
-	useEffect(() => {
-		return null;
-	}, [transferencias])
+	// useEffect(() => {
+	// 	return null;
+	// }, [transferencias])
 
 	async function createReclamosTask(numTran) {
 		let res = ''
 
 		try {
 			res = await Axios.post(`${process.env.REACT_APP_URL}/createReclamo`, {
+				doc: JSON.parse(localStorage.getItem("banAgrario")).userSession,
 				numTransf: numTran
 			})
 		} catch (error) {
@@ -64,8 +65,8 @@ const Transferencias = ({ data, fechaInicio, fechaFin, idCuenta }) => {
 		return verifier === OK ? "saved" : "error"
 	}
 
-	useEffect(() => {
-		getTransactions(JSON.parse(localStorage.getItem("banAgrario")))
+	useEffect(async () => {
+		await getTransactions(JSON.parse(localStorage.getItem("banAgrario")))
 	}, [])
 
 	const handleReclamo = async (event) => {

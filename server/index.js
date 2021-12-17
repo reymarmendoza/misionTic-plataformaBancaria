@@ -181,6 +181,7 @@ app.post("/createReclamo", async (req, res) => {
 	try {
 		const reclCount = await getReclCount()
 		const newRec = new ReclamosModel({
+			numDoc: req.body.doc,
 			numReclamo: reclCount.res ? reclCount.num : "Error",
 			numTransf: req.body.numTransf
 		})
@@ -360,6 +361,20 @@ app.post("/getTransactions", async (req, res) => {
 	}
 
 	res.json(trans)
+})
+
+app.post("/getReclamos", async (req, res) => {
+	let response = {}
+
+	mongoose.connect(URL)
+
+	try {
+		response = await ReclamosModel.find({ numDoc: req.body.numDoc })
+	} catch (error) {
+		console.log("getReclamos", error)
+	}
+
+	res.json(response)
 })
 
 app.listen(3001, () => {
