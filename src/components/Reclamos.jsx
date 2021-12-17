@@ -9,10 +9,9 @@ const Reclamos = ({ data }) => {
 		const reclamosData = await Axios.post(`${process.env.REACT_APP_URL}/getReclamos`, {
 			numDoc: JSON.parse(localStorage.getItem("banAgrario")).userSession
 		})
-
-		console.log("reclamosData", reclamosData.data)
+		// console.log("reclamosData", reclamosData.data)
 		setReclamos(reclamosData.data)
-	}, [])
+	}, [reclamos])
 
 	return (
 		<div>

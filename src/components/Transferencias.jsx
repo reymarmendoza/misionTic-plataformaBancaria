@@ -6,21 +6,20 @@ const Transferencias = ({ data, fechaInicio, fechaFin, idCuenta }) => {
 	const [transferencias, setTransferencias] = useState([])
 
 	async function getTransactions(numDoc) {
+		let accounts
+
 		try {
-			const accounts = await Axios.post(`${process.env.REACT_APP_URL}/getTransactions`, {
+			accounts = await Axios.post(`${process.env.REACT_APP_URL}/getTransactions`, {
 				doc: numDoc.userSession,
 				acc: idCuenta
 			})
 
-			setTransferencias(accounts.data)
 		} catch (error) {
 			console.log("getTransactions", error)
 		}
-	}
 
-	// useEffect(() => {
-	// 	return null;
-	// }, [transferencias])
+		return accounts.data
+	}
 
 	async function createReclamosTask(numTran) {
 		let res = ''
@@ -66,8 +65,9 @@ const Transferencias = ({ data, fechaInicio, fechaFin, idCuenta }) => {
 	}
 
 	useEffect(async () => {
-		await getTransactions(JSON.parse(localStorage.getItem("banAgrario")))
-	}, [])
+		const transaccionesData = await getTransactions(JSON.parse(localStorage.getItem("banAgrario")))
+		setTransferencias(transaccionesData)
+	}, [transferencias])
 
 	const handleReclamo = async (event) => {
 		event.preventDefault()
