@@ -11,6 +11,15 @@ const Transferencias = ({ data, fechaInicio, fechaFin, idCuenta }) => {
 	console.log("Inicio", fechaInicio, fini.getUTCFullYear(), fini.getUTCMonth(), fini.getUTCDate())
 	console.log("Fin", fechaFin, ffin.getUTCFullYear(), ffin.getUTCMonth(), ffin.getUTCDate())
 	// (fechaInicio && fechaFin) && e.fecha - fini >= 0 && ffin - e.fecha >= 0
+	if (fechaInicio && fechaFin) {
+		console.log("FECHAS POPUP OK")
+		console.log("Inicio", fini)
+		console.log("Fin", ffin)
+		// e.fecha - fini >= 0 && ffin - e.fecha >= 0
+	} else {
+		console.log("NO FECHAS POPUP")
+	}
+
 	console.log("-----------------")
 
 	useEffect(() => {
@@ -23,17 +32,6 @@ const Transferencias = ({ data, fechaInicio, fechaFin, idCuenta }) => {
 		}
 		effectTransacciones()
 	}, [idCuenta])
-
-	// useEffect(() => {
-	// 	async function effectTransacciones() {
-	// 		const transaccionesData = await Axios.post(`${process.env.REACT_APP_URL}/getTransactions`, {
-	// 			doc: JSON.parse(localStorage.getItem("banAgrario")).userSession,
-	// 			acc: idCuenta
-	// 		})
-	// 		setTransferencias(transaccionesData.data)
-	// 	}
-	// 	effectTransacciones()
-	// }, [transferencias])
 
 	async function createReclamosTask(numTran) {
 		let res = ''
@@ -107,8 +105,7 @@ const Transferencias = ({ data, fechaInicio, fechaFin, idCuenta }) => {
 				<tbody>
 					{
 						transferencias.map((e) => (
-							(fechaInicio && fechaFin) && e.fecha - fini >= 0 && ffin - e.fecha >= 0
-							&&
+							(fechaInicio && fechaFin) &&
 							<tr key={e.id}>
 								<td>{e.numTransf}</td>
 								<td>{e.fecha}</td>
