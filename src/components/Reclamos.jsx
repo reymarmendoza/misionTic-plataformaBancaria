@@ -5,13 +5,16 @@ import Axios from 'axios'
 const Reclamos = ({ data }) => {
 	const [reclamos, setReclamos] = useState([])
 
-	useEffect(async () => {
-		const reclamosData = await Axios.post(`${process.env.REACT_APP_URL}/getReclamos`, {
-			numDoc: JSON.parse(localStorage.getItem("banAgrario")).userSession
-		})
-		// console.log("reclamosData", reclamosData.data)
-		setReclamos(reclamosData.data)
-	}, [reclamos])
+	useEffect(() => {
+		async function effectReclamos() {
+			const reclamosData = await Axios.post(`${process.env.REACT_APP_URL}/getReclamos`, {
+				numDoc: JSON.parse(localStorage.getItem("banAgrario")).userSession
+			})
+			// console.log("reclamosData", reclamosData.data)
+			setReclamos(reclamosData.data)
+		}
+		effectReclamos()
+	}, [])
 
 	return (
 		<div>

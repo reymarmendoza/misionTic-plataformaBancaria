@@ -5,21 +5,35 @@ import Axios from 'axios'
 const Transferencias = ({ data, fechaInicio, fechaFin, idCuenta }) => {
 	const [transferencias, setTransferencias] = useState([])
 
-	async function getTransactions(numDoc) {
-		let accounts
+	const fini = new Date(fechaInicio)
+	const ffin = new Date(fechaFin)
 
-		try {
-			accounts = await Axios.post(`${process.env.REACT_APP_URL}/getTransactions`, {
-				doc: numDoc.userSession,
+	console.log("Inicio", fechaInicio, fini.getUTCFullYear(), fini.getUTCMonth(), fini.getUTCDate())
+	console.log("Fin", fechaFin, ffin.getUTCFullYear(), ffin.getUTCMonth(), ffin.getUTCDate())
+	// (fechaInicio && fechaFin) && e.fecha - fini >= 0 && ffin - e.fecha >= 0
+	console.log("-----------------")
+
+	useEffect(() => {
+		async function effectTransacciones() {
+			const transaccionesData = await Axios.post(`${process.env.REACT_APP_URL}/getTransactions`, {
+				doc: JSON.parse(localStorage.getItem("banAgrario")).userSession,
 				acc: idCuenta
 			})
-
-		} catch (error) {
-			console.log("getTransactions", error)
+			setTransferencias(transaccionesData.data)
 		}
+		effectTransacciones()
+	}, [idCuenta])
 
-		return accounts.data
-	}
+	// useEffect(() => {
+	// 	async function effectTransacciones() {
+	// 		const transaccionesData = await Axios.post(`${process.env.REACT_APP_URL}/getTransactions`, {
+	// 			doc: JSON.parse(localStorage.getItem("banAgrario")).userSession,
+	// 			acc: idCuenta
+	// 		})
+	// 		setTransferencias(transaccionesData.data)
+	// 	}
+	// 	effectTransacciones()
+	// }, [transferencias])
 
 	async function createReclamosTask(numTran) {
 		let res = ''
@@ -64,10 +78,6 @@ const Transferencias = ({ data, fechaInicio, fechaFin, idCuenta }) => {
 		return verifier === OK ? "saved" : "error"
 	}
 
-	useEffect(async () => {
-		const transaccionesData = await getTransactions(JSON.parse(localStorage.getItem("banAgrario")))
-		setTransferencias(transaccionesData)
-	}, [transferencias])
 
 	const handleReclamo = async (event) => {
 		event.preventDefault()
@@ -97,17 +107,31 @@ const Transferencias = ({ data, fechaInicio, fechaFin, idCuenta }) => {
 				<tbody>
 					{
 						transferencias.map((e) => (
+							(fechaInicio && fechaFin) && e.fecha - fini >= 0 && ffin - e.fecha >= 0
+							&&
 							<tr key={e.id}>
 								<td>{e.numTransf}</td>
 								<td>{e.fecha}</td>
 								<td>{e.fuente}</td>
 								<td>{e.destino}</td>
-								<td>$ {e.monto}</td>
+								<td>$$$ {e.monto}</td>
 								<td>{e.tipoTrans}</td>
 								<td>
 									<button type="button" class="btn btn-warning" id={e.numTransf} onClick={handleReclamo} disabled={e.estado === "Disputa"}>Reclamar</button>
 								</td>
 							</tr>
+
+							// <tr key={e.id}>
+							// 	<td>{e.numTransf}</td>
+							// 	<td>{e.fecha}</td>
+							// 	<td>{e.fuente}</td>
+							// 	<td>{e.destino}</td>
+							// 	<td>$ {e.monto}</td>
+							// 	<td>{e.tipoTrans}</td>
+							// 	<td>
+							// 		<button type="button" class="btn btn-warning" id={e.numTransf} onClick={handleReclamo} disabled={e.estado === "Disputa"}>Reclamar</button>
+							// 	</td>
+							// </tr>
 						))
 					}
 				</tbody>
