@@ -8,25 +8,11 @@ const Transferencias = ({ data, fechaInicio, fechaFin, idCuenta }) => {
 	const fini = new Date(fechaInicio)
 	const ffin = new Date(fechaFin)
 
-	console.log("Inicio", fechaInicio, fini.getUTCFullYear(), fini.getUTCMonth(), fini.getUTCDate())
-	console.log("Fin", fechaFin, ffin.getUTCFullYear(), ffin.getUTCMonth(), ffin.getUTCDate())
-	// (fechaInicio && fechaFin) && e.fecha - fini >= 0 && ffin - e.fecha >= 0
-	if (fechaInicio && fechaFin) {
-		console.log("FECHAS POPUP OK")
-		console.log("Inicio", fini)
-		console.log("Fin", ffin)
-		// e.fecha - fini >= 0 && ffin - e.fecha >= 0
-	} else {
-		console.log("NO FECHAS POPUP")
-	}
-
-	console.log("-----------------")
-
 	useEffect(() => {
 		async function effectTransacciones() {
 			const transaccionesData = await Axios.post(`${process.env.REACT_APP_URL}/getTransactions`, {
 				doc: JSON.parse(localStorage.getItem("banAgrario")).userSession,
-				acc: idCuenta
+				acc: idCuenta ? idCuenta : 0
 			})
 			setTransferencias(transaccionesData.data)
 		}
@@ -104,32 +90,22 @@ const Transferencias = ({ data, fechaInicio, fechaFin, idCuenta }) => {
 				</thead>
 				<tbody>
 					{
-						transferencias.map((e) => (
-							(fechaInicio && fechaFin) &&
-							<tr key={e.id}>
-								<td>{e.numTransf}</td>
-								<td>{e.fecha}</td>
-								<td>{e.fuente}</td>
-								<td>{e.destino}</td>
-								<td>$$$ {e.monto}</td>
-								<td>{e.tipoTrans}</td>
-								<td>
-									<button type="button" class="btn btn-warning" id={e.numTransf} onClick={handleReclamo} disabled={e.estado === "Disputa"}>Reclamar</button>
-								</td>
-							</tr>
-
-							// <tr key={e.id}>
-							// 	<td>{e.numTransf}</td>
-							// 	<td>{e.fecha}</td>
-							// 	<td>{e.fuente}</td>
-							// 	<td>{e.destino}</td>
-							// 	<td>$ {e.monto}</td>
-							// 	<td>{e.tipoTrans}</td>
-							// 	<td>
-							// 		<button type="button" class="btn btn-warning" id={e.numTransf} onClick={handleReclamo} disabled={e.estado === "Disputa"}>Reclamar</button>
-							// 	</td>
-							// </tr>
-						))
+						transferencias.map((e) => {
+							return (
+								fechaInicio && fechaFin && fini <= new Date(e.fecha) && new Date(e.fecha) <= ffin &&
+								<tr key={e.id}>
+									<td>{e.numTransf}</td>
+									<td>{(e.fecha).substring(0, (e.fecha).indexOf('T'))}</td>
+									<td>{e.fuente}</td>
+									<td>{e.destino}</td>
+									<td>$ {e.monto}</td>
+									<td>{e.tipoTrans}</td>
+									<td>
+										<button type="button" class="btn btn-warning" id={e.numTransf} onClick={handleReclamo} disabled={e.estado === "Disputa"}>Reclamar</button>
+									</td>
+								</tr>
+							)
+						})
 					}
 				</tbody>
 			</table>
