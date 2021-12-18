@@ -181,6 +181,7 @@ app.post("/createReclamo", async (req, res) => {
 	try {
 		const reclCount = await getReclCount()
 		const newRec = new ReclamosModel({
+			numDoc: req.body.doc,
 			numReclamo: reclCount.res ? reclCount.num : "Error",
 			numTransf: req.body.numTransf
 		})
@@ -252,7 +253,7 @@ app.post("/getAccounts", async (req, res) => {
 				.then((result) => {
 					datadb = result
 				})
-				console.log(datadb);
+			console.log(datadb);
 		} catch (e) {
 			console.log("getAccountsByEstado failed: " + e)
 		}
@@ -347,7 +348,8 @@ app.post("/getTransactions", async (req, res) => {
 				docDestino: t.docDestino,
 				docFuente: t.docFuente,
 				estado: t.estado,
-				fecha: extraerFechaFromDBField(t.fecha),
+				// fecha: extraerFechaFromDBField(t.fecha),
+				fecha: t.fecha,
 				fuente: t.fuente,
 				monto: t.monto,
 				numTransf: t.numTransf,
@@ -362,36 +364,71 @@ app.post("/getTransactions", async (req, res) => {
 	res.json(trans)
 })
 
-// app.post("/getAccounts", async (req, res) => {
-// 	const activeUser = req.body.activeUser
-// 	const DBField = req.body.fetchBy
-// 	let datadb
+app.post("/getTransById", async (req, res) => {
+	let response = {}
+	mongoose.connect(URL)
+	try {
+		response = await TransaccionesModel.find({ numTransf: req.body.transf })
+	} catch (error) {
+		console.log("getTransById", error)
+	}
+	res.json(response)
+})
 
-// 	mongoose.connect(URL)
+app.post("/getReclamosByStatus", async (req, res) => {
+	let response;
+	let transfData = [];
+	mongoose.connect(URL)
+	try {
+		response = await ReclamosModel.aggregate([
+			{
+				$lookup: {
+					from: 'transacciones',
+					localField: 'numTransf',
+					foreignField: 'numTransf',
+					as: 'transfData'
+				}
+			}
+		]);		
+	} catch (error) {
+		console.log("getAllReclamosPend", error)
+	}
+	res.json(response)
+})
 
-// 	if (DBField === "documento") {
-// 		try {
-// 			await CuentasModel.find({ numDoc: activeUser }).exec()
-// 				.then((result) => {
-// 					datadb = result
-// 				})
-// 		} catch (e) {
-// 			console.log("getAccountsByDocumento failed: " + e)
-// 		}
-// 	} else if (DBField === "estado") {
-// 		try {
-// 			await CuentasModel.find({ estado: "pendiente" }).exec()
-// 				.then((result) => {
-// 					datadb = result
-// 				})
-// 		} catch (e) {
-// 			console.log("getAccountsByEstado failed: " + e)
-// 		}
-// 	}
+app.post("/getReclamos", async (req, res) => {
+	let response = {}
 
-// 	res.json(datadb)
-// })
+	mongoose.connect(URL)
 
+	try {
+		response = await ReclamosModel.find({ numDoc: req.body.numDoc })
+	} catch (error) {
+		console.log("getReclamos", error)
+	}
+
+	res.json(response)
+})
+
+app.post("/requestCancelAccount", async (req, res) => {
+	let result = ''
+
+	mongoose.connect(URL)
+
+	try {
+		await CuentasModel.updateOne(
+			{ numCuenta: req.body.cuenta },
+			{ $set: { estado: "pendCancelacion" } }
+		)
+			.then((response) => {
+				result = response.modifiedCount === 1 ? "succeed" : "failed"
+			})
+	} catch (error) {
+		result = "exeChangeState failed"
+	}
+	console.log("result", result)
+	res.send(result)
+})
 
 app.listen(3001, () => {
 	console.log("Server is running")
