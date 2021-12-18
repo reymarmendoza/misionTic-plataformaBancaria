@@ -4,22 +4,22 @@ import Axios from 'axios'
 const ReclamosEmpleado = () => {
 	const [reclamos, setReclamos] = useState([])
 
-	async function getTransfer(id) {
-		const transfData = await Axios.post(`${process.env.REACT_APP_URL}/getTransById`, {
-			transf: id
-		});
-		return transfData.data[0];
-	}
+	// async function getTransfer(id) {
+	// 	const transfData = await Axios.post(`${process.env.REACT_APP_URL}/getTransById`, {
+	// 		transf: id
+	// 	});
+	// 	return transfData.data[0];
+	// }
 
 	async function getClaims() {
-		const reclamosData = await Axios.post(`${process.env.REACT_APP_URL}/getAllReclamos`, {});
-		reclamosData.data.map((e) => {
-				const transf = getTransfer(e.numTransf);
-				alert(transf)
-				e = { ...e, ...transf };
-			});
+		const reclamosData = await Axios.post(`${process.env.REACT_APP_URL}/getReclamosByStatus`, {
+			estado: "Pendiente"
+		});
+		// reclamosData.data.map((e) => {
+		// 		const transf = getTransfer(e.numTransf);
+				// e = { ...e, ...transf };
+			// });
 		setReclamos(reclamosData.data);
-		// alert(reclamos[0].monto)
 	};
 
 	useEffect(() => {
