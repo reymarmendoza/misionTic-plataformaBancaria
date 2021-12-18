@@ -364,6 +364,38 @@ app.post("/getTransactions", async (req, res) => {
 	res.json(trans)
 })
 
+app.post("/getTransById", async (req, res) => {
+	let response = {}
+	mongoose.connect(URL)
+	try {
+		response = await TransaccionesModel.find({ numTransf: req.body.transf })
+	} catch (error) {
+		console.log("getTransById", error)
+	}
+	res.json(response)
+})
+
+app.post("/getReclamosByStatus", async (req, res) => {
+	let response;
+	let transfData = [];
+	mongoose.connect(URL)
+	try {
+		response = await ReclamosModel.aggregate([
+			{
+				$lookup: {
+					from: 'transacciones',
+					localField: 'numTransf',
+					foreignField: 'numTransf',
+					as: 'transfData'
+				}
+			}
+		]);		
+	} catch (error) {
+		console.log("getAllReclamosPend", error)
+	}
+	res.json(response)
+})
+
 app.post("/getReclamos", async (req, res) => {
 	let response = {}
 
