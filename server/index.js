@@ -389,7 +389,7 @@ app.post("/getReclamosByStatus", async (req, res) => {
 					as: 'transfData'
 				}
 			}
-		]);		
+		]);
 	} catch (error) {
 		console.log("getAllReclamosPend", error)
 	}
