@@ -1,6 +1,5 @@
 import { Link, useLocation } from 'react-router-dom'
 import RegTransModal from './RegTransModal'
-// import '../styles/bootstrap-icons.css'
 import '../../node_modules/bootstrap-icons/font/bootstrap-icons.css'
 import style from '../styles/tableSide.module.css'
 import { Cuentas } from './Cuentas'
@@ -18,7 +17,7 @@ const user = [
 		user: 'administrador',
 		select: ['Depositos', 'Cuentas Pendientes', 'Manejo de Cuentas', 'Reclamos', 'Gestionar Personal']
 	}
-];
+]
 
 export function TableSide({ fechaInicio, fechaFin, idCuenta, onUpdate }) {
 	const userActive = JSON.parse(localStorage.getItem("banAgrario"))
@@ -39,7 +38,7 @@ export function TableSide({ fechaInicio, fechaFin, idCuenta, onUpdate }) {
 												fechaInicio={fechaInicio} fechaFin={fechaFin}
 												idCuenta={idCuenta} onUpdate={onUpdate} />
 										</div>
-									);
+									)
 								}
 								else {
 									let icono = ""
@@ -65,7 +64,6 @@ export function TableSide({ fechaInicio, fechaFin, idCuenta, onUpdate }) {
 											<Link to={`/${tipoUsr}/${s.replace(/ /g, '')}`}>
 												<a href={`/${tipoUsr}/${s.replace(/ /g, '')}`} className={'nav-link text-white ' + style.enlace}>
 													<i className={`me-2 bi bi-${icono}`}></i>
-													{/* <svg className="bi me-2" width="16" height="16"><use></use></svg> */}
 													{s}
 												</a>
 											</Link>
