@@ -11,19 +11,11 @@ const user = [
 	},
 	{
 		user: 'empleado',
-<<<<<<< HEAD
 		select: ['Depositos', 'Cuentas Pendientes', 'Manejo de Cuentas', 'Reclamos']
 	},
 	{
 		user: 'administrador',
 		select: ['Depositos', 'Cuentas Pendientes', 'Manejo de Cuentas', 'Reclamos', 'Gestionar Personal']
-=======
-		select: ['Depositos', 'Manejo de Cuentas', 'Reclamos', 'Bandeja de Cuentas']
-	},
-	{
-		user: 'administrador',
-		select: ['Gestionar Personal','Depositos', 'Manejo de Cuentas', 'Reclamos', 'Bandeja de Cuentas']
->>>>>>> e748ef86d7d7705af5730efe5421bd49241d5bdf
 	}
 ];
 
@@ -40,20 +32,20 @@ export function TableSide({ fechaInicio, fechaFin, idCuenta, onUpdate }) {
 							return u.select.map((s) => {
 								if (s === 'Transferencias') {
 									return (
-										<div className={"d-flex flex-row align-items-center p-1 mb-4 "+style.efecto}>
+										<div className={"d-flex flex-row align-items-center p-1 mb-4 " + style.efecto}>
 											<i className={'bi bi-transferencia ms-3 me-2 text-white'}></i>
 											<RegTransModal tipoUsr={tipoUsr} s={s}
-											fechaInicio={fechaInicio} fechaFin={fechaFin}
-											idCuenta={idCuenta} onUpdate={onUpdate}/>
+												fechaInicio={fechaInicio} fechaFin={fechaFin}
+												idCuenta={idCuenta} onUpdate={onUpdate} />
 										</div>
 									);
-								} 
+								}
 								else {
 									return (
-										<li className={"mb-4 "+style.efecto}>
+										<li className={"mb-4 " + style.efecto}>
 											<Link to={`/${tipoUsr}/${s.replace(/ /g, '')}`}>
-												<a href={`/${tipoUsr}/${s.replace(/ /g, '')}`} className={'nav-link text-white '+style.enlace}>
-													<i className={'me-2 bi bi-'+s.replace(/ /g, '')}></i>
+												<a href={`/${tipoUsr}/${s.replace(/ /g, '')}`} className={'nav-link text-white ' + style.enlace}>
+													<i className={'me-2 bi bi-' + s.replace(/ /g, '')}></i>
 													{/* <svg className="bi me-2" width="16" height="16"><use></use></svg> */}
 													{s}
 												</a>
