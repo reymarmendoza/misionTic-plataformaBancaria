@@ -84,7 +84,6 @@ const Registro = () => {
 					ciudad: valores.ciudad,
 					direccion: valores.direccion,
 					pwd: valores.pwd,
-					status: valores.status,
 					fechaExpDoc: valores.fechaExpDoc,
 					fechaNacimiento: valores.fechaNacimiento
 				})
