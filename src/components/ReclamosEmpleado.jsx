@@ -3,6 +3,8 @@ import Axios from 'axios'
 
 const ReclamosEmpleado = () => {
 	const [reclamos, setReclamos] = useState([])
+	const [texto, setTexto] = useState([])
+	// const [texto, setTexto] = useState([]) // TRIGERUPDATE
 
 	// async function getTransfer(id) {
 	// 	const transfData = await Axios.post(`${process.env.REACT_APP_URL}/getTransById`, {
@@ -14,34 +16,48 @@ const ReclamosEmpleado = () => {
 	async function getClaims() {
 		const reclamosData = await Axios.post(`${process.env.REACT_APP_URL}/getReclamosByStatus`, {
 			estado: "Pendiente"
-		});
-		// reclamosData.data.map((e) => {
-		// 		const transf = getTransfer(e.numTransf);
-		// e = { ...e, ...transf };
-		// });
+		})
 		setReclamos(reclamosData.data);
-	};
+	}
 
 	useEffect(() => {
 		getClaims();
-	}, []);
+	}, [])
 
-	async function aproveClaim(id, doc) {
-		// const opeOut = await Axios.post(`${process.env.REACT_APP_URL}/exeChangeState`, {
+	async function aproveClaim(id) {
+		// await Axios.post(`${process.env.REACT_APP_URL}/updateReclamo`, {
 		// 	id,
-		// 	estado: "Aprobado"
+		// 	estado: "Aprobado",
+		// 	mensaje: texto
 		// })
+		// submitData(doc)
+		// alert(id);
+
+		const t = reclamos.transfData
+		await Axios.post(`${process.env.REACT_APP_URL}/reversePayment`, {
+			idReclamo: id,
+			estadoReclamo: "Aprobado",
+			mensajeReclamo: texto,
+		})
+		// t.fuente
+		// t.destino
+		// t.monto + t.cobroBanco
+		// t._id
+		// t.estado = 'Reversada'
+	}
+
+	async function denyClaim(id) {
+		await Axios.post(`${process.env.REACT_APP_URL}/updateReclamo`, {
+			id,
+			estado: "Rechazado",
+			mensaje: texto
+		})
 		// submitData(doc)
 		// alert(id);
 	}
 
-	async function denyClaim(id, doc) {
-		const opeOut = await Axios.post(`${process.env.REACT_APP_URL}/exeChangeState`, {
-			id,
-			estado: "Rechazado"
-		})
-		// submitData(doc)
-		// alert(id);
+	function textoState(e) {
+		setTexto(e.target.value)
 	}
 
 	return (
@@ -53,7 +69,6 @@ const ReclamosEmpleado = () => {
 						<th scope="col">Fecha</th>
 						<th scope="col">Monto</th>
 						<th scope="col">Comentario</th>
-						{/* <th scope="col">Estado</th> */}
 						<th scope="col">Accion</th>
 					</tr>
 				</thead>
@@ -62,21 +77,20 @@ const ReclamosEmpleado = () => {
 						reclamos.map((e) => {
 							if (e.estado === 'Pendiente') {
 								return (
-									<tr key={e._id}>
+									<tr key={e._id} onChange={textoState}>
 										<td>{e.numReclamo}</td>
 										<td>{
 											(e.fecha).substring(0, (e.fecha).indexOf('T'))
 										}</td>
-										<td>$ {e.monto}</td>
+										<td>$ {e.transfData.monto}</td>
 										<td>
-											<textarea></textarea>
+											<textarea id='textArea'></textarea>
 										</td>
-										{/* <td>{e.estado}</td> */}
 										<td>
-											<button className='btn btn-success' onClick={() => aproveClaim(e.id, e.doc)}>
+											<button className='btn btn-success' onClick={() => aproveClaim(e._id)}>
 												Aprobar
 											</button>
-											<button className='btn btn-danger' onClick={() => denyClaim(e.id, e.doc)}>
+											<button className='btn btn-danger' onClick={() => denyClaim(e._id)}>
 												Rechazar
 											</button>
 										</td>

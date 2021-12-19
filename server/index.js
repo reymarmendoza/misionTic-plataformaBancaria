@@ -377,20 +377,19 @@ app.post("/getTransById", async (req, res) => {
 
 app.post("/getReclamosByStatus", async (req, res) => {
 	let response
-	let transfData = []
 
 	mongoose.connect(URL)
 
 	try {
 		// el aggregate es un array de pasos para una query
 		const reclamos = await ReclamosModel.aggregate([
-			// { $match: { age: { $gte: 30 } } }
 			{
 				$match: { estado: req.body.estado }
 			},
 			{
 				$lookup: {
 					from: 'transacciones',
+					// localField: 'numTransf' >> numTransf es un campo del resultado de la query de $match
 					localField: 'numTransf',
 					foreignField: 'numTransf',
 					as: 'transfData'
@@ -400,18 +399,7 @@ app.post("/getReclamosByStatus", async (req, res) => {
 				$unwind: '$transfData'
 			}
 		])
-
 		response = reclamos
-		// response = await ReclamosModel.aggregate([
-		// 	{
-		// 		$lookup: {
-		// 			from: 'transacciones',
-		// 			localField: 'numTransf',
-		// 			foreignField: 'numTransf',
-		// 			as: 'transfData'
-		// 		}
-		// 	}
-		// ]);
 	} catch (error) {
 		console.log("getReclamosByStatus", error)
 	}
@@ -451,6 +439,53 @@ app.post("/requestCancelAccount", async (req, res) => {
 	}
 	console.log("result", result)
 	res.send(result)
+})
+
+app.post("/updateReclamo", async (req, res) => {
+	mongoose.connect(URL)
+
+	try {
+		await ReclamosModel.updateOne(
+			{ _id: req.body.id },
+			{
+				$set: {
+					estado: req.body.estado,
+					mensaje: req.body.mensaje
+				}
+			}
+		)
+			.then((response) => {
+				resMsg = response.modifiedCount
+			})
+	} catch (error) {
+		resMsg = "exeChangeState failed"
+	}
+
+	res.sendStatus(200)
+})
+
+app.post("/reversePayment", async (req, res) => {
+	mongoose.connect(URL)
+
+	try {
+		await ReclamosModel.updateOne(
+			{ _id: req.body.idReclamo },
+			{
+				$set: {
+					estado: req.body.estadoReclamo,
+					mensaje: req.body.mensajeReclamo
+				}
+			}
+		)
+			.then((response) => {
+				resMsg = response.modifiedCount
+				console.log("resMsg", resMsg)
+			})
+	} catch (error) {
+		resMsg = "exeChangeState failed"
+	}
+
+	res.sendStatus(200)
 })
 
 app.listen(3001, () => {
