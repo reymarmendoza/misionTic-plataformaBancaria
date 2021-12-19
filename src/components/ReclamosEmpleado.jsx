@@ -3,7 +3,7 @@ import Axios from 'axios'
 
 const ReclamosEmpleado = () => {
 	const [reclamos, setReclamos] = useState([])
-	const [texto, setTexto] = useState([])
+	const [texto, setTexto] = useState('')
 	// const [texto, setTexto] = useState([]) // TRIGERUPDATE
 
 	// async function getTransfer(id) {
@@ -25,25 +25,30 @@ const ReclamosEmpleado = () => {
 	}, [])
 
 	async function aproveClaim(id) {
-		// await Axios.post(`${process.env.REACT_APP_URL}/updateReclamo`, {
-		// 	id,
-		// 	estado: "Aprobado",
-		// 	mensaje: texto
-		// })
-		// submitData(doc)
-		// alert(id);
+		let t
 
-		const t = reclamos.transfData
+		reclamos.map((r) => {
+			if (r._id === id) {
+				return (
+					t = r.transfData
+				)
+			}
+		})
+
 		await Axios.post(`${process.env.REACT_APP_URL}/reversePayment`, {
 			idReclamo: id,
 			estadoReclamo: "Aprobado",
 			mensajeReclamo: texto,
+			idTrans: t._id,
+			estadoTrans: 'Reversada',
+			fuenteTrans: t.fuente,
+			destinoTrans: t.destino,
+			montoTrans: t.monto,
+			montoTotalTrans: t.monto + t.cobroBanco,
 		})
-		// t.fuente
-		// t.destino
-		// t.monto + t.cobroBanco
-		// t._id
-		// t.estado = 'Reversada'
+
+		// submitData(doc)
+		// alert(id);
 	}
 
 	async function denyClaim(id) {

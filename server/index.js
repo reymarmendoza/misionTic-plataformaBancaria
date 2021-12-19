@@ -468,7 +468,7 @@ app.post("/reversePayment", async (req, res) => {
 	mongoose.connect(URL)
 
 	try {
-		await ReclamosModel.updateOne(
+		const resReclamo = await ReclamosModel.updateOne(
 			{ _id: req.body.idReclamo },
 			{
 				$set: {
@@ -477,11 +477,52 @@ app.post("/reversePayment", async (req, res) => {
 				}
 			}
 		)
-			.then((response) => {
-				resMsg = response.modifiedCount
-				console.log("resMsg", resMsg)
-			})
+
+		const resTransaccion = await TransaccionesModel.updateOne(
+			{ _id: req.body.idTrans },
+			{
+				$set: {
+					estado: req.body.estadoTrans
+				}
+			}
+		)
+
+		const cuentaOrigen = await CuentasModel.findOne({
+			numCuenta: req.body.fuenteTrans
+		})
+
+		const cuentaDestino = await CuentasModel.findOne({
+			numCuenta: req.body.destinoTrans
+		})
+
+		const resDevOrigen = await CuentasModel.updateOne(
+			{ numCuenta: req.body.fuenteTrans },
+			{
+				$set: {
+					balance: cuentaOrigen.balance + req.body.montoTotalTrans
+				}
+			}
+		)
+
+		const resDevDestino = await CuentasModel.updateOne(
+			{ numCuenta: req.body.destinoTrans },
+			{
+				$set: {
+					balance: cuentaDestino.balance + req.body.montoTrans
+				}
+			}
+		)
+
+		if (
+			resReclamo.modifiedCount === 1 &&
+			resTransaccion.modifiedCount === 1 &&
+			resDevOrigen.modifiedCount === 1 &&
+			resDevDestino.modifiedCount === 1
+		) {
+			console.log("reversePayment OK")
+		}
 	} catch (error) {
+		console.log("exeChangeState failed", error)
 		resMsg = "exeChangeState failed"
 	}
 
