@@ -378,21 +378,32 @@ app.post("/getTransById", async (req, res) => {
 app.post("/getReclamosByStatus", async (req, res) => {
 	let response;
 	let transfData = [];
+
 	mongoose.connect(URL)
+
 	try {
-		response = await ReclamosModel.aggregate([
-			{
-				$lookup: {
-					from: 'transacciones',
-					localField: 'numTransf',
-					foreignField: 'numTransf',
-					as: 'transfData'
-				}
+		// response = await ReclamosModel.aggregate([
+		// 	{
+		// 		$lookup: {
+		// 			from: 'transacciones',
+		// 			localField: 'numTransf',
+		// 			foreignField: 'numTransf',
+		// 			as: 'transfData'
+		// 		}
+		// 	}
+		// ]);
+		response = await ReclamosModel.lookup({
+			$lookup: {
+				from: 'transacciones',
+				localField: 'numTransf',
+				foreignField: 'numTransf',
+				as: 'transfData'
 			}
-		]);
+		})
 	} catch (error) {
-		console.log("getAllReclamosPend", error)
+		console.log("getReclamosByStatus", error)
 	}
+	console.log("getReclamosByStatus", response.transfData)
 	res.json(response)
 })
 

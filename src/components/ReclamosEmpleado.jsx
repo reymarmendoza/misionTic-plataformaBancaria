@@ -17,22 +17,31 @@ const ReclamosEmpleado = () => {
 		});
 		// reclamosData.data.map((e) => {
 		// 		const transf = getTransfer(e.numTransf);
-				// e = { ...e, ...transf };
-			// });
+		// e = { ...e, ...transf };
+		// });
 		setReclamos(reclamosData.data);
 	};
 
 	useEffect(() => {
 		getClaims();
-	},[]);
+	}, []);
 
-	async function aproveClaim (id, doc) {
+	async function aproveClaim(id, doc) {
 		// const opeOut = await Axios.post(`${process.env.REACT_APP_URL}/exeChangeState`, {
 		// 	id,
-		// 	estado: "activa"
+		// 	estado: "Aprobado"
 		// })
 		// submitData(doc)
-		alert(id);
+		// alert(id);
+	}
+
+	async function denyClaim(id, doc) {
+		const opeOut = await Axios.post(`${process.env.REACT_APP_URL}/exeChangeState`, {
+			id,
+			estado: "Rechazado"
+		})
+		// submitData(doc)
+		// alert(id);
 	}
 
 	return (
@@ -43,6 +52,7 @@ const ReclamosEmpleado = () => {
 						<th scope="col"># Reclamo</th>
 						<th scope="col">Fecha</th>
 						<th scope="col">Monto</th>
+						<th scope="col">Comentario</th>
 						{/* <th scope="col">Estado</th> */}
 						<th scope="col">Accion</th>
 					</tr>
@@ -51,24 +61,27 @@ const ReclamosEmpleado = () => {
 					{
 						reclamos.map((e) => {
 							if (e.estado === 'Pendiente') {
-							return (
-								<tr key={e._id}>
-									<td>{e.numReclamo}</td>
-									<td>{
-										(e.fecha).substring(0, (e.fecha).indexOf('T'))
-									}</td>
-									<td>$ {e.monto}</td>
-									{/* <td>{e.estado}</td> */}
-									<td>
-										<button className='btn btn-success' onClick={() => aproveClaim(e.id, e.doc)}>
-											Aprobar
-										</button>
-										<button className='btn btn-danger' onClick={() => aproveClaim(e.id, e.doc)}>
-											Rechazar
-										</button>
-									</td>
-								</tr>
-							)
+								return (
+									<tr key={e._id}>
+										<td>{e.numReclamo}</td>
+										<td>{
+											(e.fecha).substring(0, (e.fecha).indexOf('T'))
+										}</td>
+										<td>$ {e.monto}</td>
+										<td>
+											<textarea></textarea>
+										</td>
+										{/* <td>{e.estado}</td> */}
+										<td>
+											<button className='btn btn-success' onClick={() => aproveClaim(e.id, e.doc)}>
+												Aprobar
+											</button>
+											<button className='btn btn-danger' onClick={() => denyClaim(e.id, e.doc)}>
+												Rechazar
+											</button>
+										</td>
+									</tr>
+								)
 							} else { return null }
 						})
 					}
