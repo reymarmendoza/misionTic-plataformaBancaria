@@ -382,20 +382,40 @@ app.post("/getReclamosByStatus", async (req, res) => {
 	mongoose.connect(URL)
 
 	try {
-		// const reclamos = await ReclamosModel.find({ estado: req.body.estado })
-		// const transacciones = await TransaccionesModel.find({ estado: req.body.estado })
+		// el aggregate es un array de pasos para una query
 		const reclamos = await ReclamosModel.aggregate([
 			// { $match: { age: { $gte: 30 } } }
-			{ $match: { estado: req.body.estado } }
+			{
+				$match: { estado: req.body.estado }
+			},
+			{
+				$lookup: {
+					from: 'transacciones',
+					localField: 'numTransf',
+					foreignField: 'numTransf',
+					as: 'transfData'
+				}
+			},
+			{
+				$unwind: '$transfData'
+			}
 		])
 
 		response = reclamos
-
+		// response = await ReclamosModel.aggregate([
+		// 	{
+		// 		$lookup: {
+		// 			from: 'transacciones',
+		// 			localField: 'numTransf',
+		// 			foreignField: 'numTransf',
+		// 			as: 'transfData'
+		// 		}
+		// 	}
+		// ]);
 	} catch (error) {
 		console.log("getReclamosByStatus", error)
 	}
 
-	console.log("ReclamosByStatus", response)
 	res.json(response)
 })
 
