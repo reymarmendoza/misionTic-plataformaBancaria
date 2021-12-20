@@ -4,6 +4,7 @@ import Axios from 'axios'
 
 export function CuentasPendientes() {
 	const [accPend, setAccPend] = useState([])
+	const [pulse, setPulse] = useState(false)
 
 	useEffect(() => {
 		async function userAccounts() {
@@ -29,7 +30,7 @@ export function CuentasPendientes() {
 		}
 
 		userAccounts()
-	}, [])
+	}, [pulse])
 
 	async function handleAprobar(id, state) {
 		const opeOut = await Axios.post(`${process.env.REACT_APP_URL}/exeChangeState`, {
@@ -43,6 +44,8 @@ export function CuentasPendientes() {
 			id,
 			estado: (state === "pendActivacion") ? "rechazada" : (state === "pendCancelacion") ? "activa" : ""
 		})
+
+		setPulse(!pulse)
 	}
 
 	return (

@@ -125,8 +125,9 @@ app.post("/createUser", async (req, res) => {
 		await newUser.save().then(() => {
 			result = "Creating User succeed"
 		})
-	} catch (e) {
+	} catch (error) {
 		result = "Saving account failed"
+		console.log("createUser", error)
 	}
 
 	res.send(result)
@@ -221,6 +222,8 @@ app.post("/updateTransfEstado", async (req, res) => {
 
 app.post("/getAllAccounts", async (req, res) => {
 	let accData
+
+	mongoose.connect(URL)
 
 	try {
 		accData = await CuentasModel.find({})
@@ -527,6 +530,64 @@ app.post("/reversePayment", async (req, res) => {
 	}
 
 	res.sendStatus(200)
+})
+
+app.post("/getEmployees", async (req, res) => {
+	let employees
+
+	mongoose.connect(URL)
+
+	try {
+		employees = await RegistroModel.find({
+			tipoUsuario: { $nin: [req.body.tipoUsuario] }
+		})
+	} catch (error) {
+		console.log("getEmployees", error)
+	}
+
+	res.json(employees)
+})
+
+app.post("/updateEmployeeStatus", async (req, res) => {
+	mongoose.connect(URL)
+
+	try {
+		await RegistroModel.updateOne(
+			{ _id: req.body.id },
+			{
+				$set: {
+					status: "desactivada"
+				}
+			}
+		)
+	} catch (error) {
+		console.log("updateEmployeeStatus", error)
+	}
+})
+
+app.post("/updateUser", async (req, res) => {
+	mongoose.connect(URL)
+	// console.log("updateUser", req.body)
+	try {
+		const uno = await RegistroModel.updateOne(
+			{ _id: req.body.id },
+			{
+				$set: { // update
+					nombre: req.body.nombre,
+					correo: req.body.correo,
+					ciudad: req.body.ciudad,
+					direccion: req.body.direccion,
+					tipoUsuario: req.body.tipoUsuario,
+					pwd: req.body.pwd
+				}
+			}
+		)
+		console.log("UNO", uno)
+	} catch (error) {
+		console.log("updateUser", error)
+	}
+
+	res.send("Complete")
 })
 
 app.listen(3001, () => {
