@@ -61,4 +61,4 @@ const schema = new mongoose.Schema({
 
 const RegistroModel = mongoose.model("clientes", schema)
 
-module.exports = { RegistroModel }
+module.exports = { RegistroModel } 
