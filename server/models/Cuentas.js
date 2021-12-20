@@ -11,7 +11,7 @@ const schema = new mongoose.Schema({
 	},
 	estado: {
 		type: String,
-		enum: ['activa', 'desactivada', 'pendiente', 'rechazada'],
+		enum: ['activa', 'desactivada', 'pendActivacion', 'pendCancelacion', 'rechazada'],
 		required: true
 	},
 	balance: {

@@ -25,13 +25,18 @@ const schema = new mongoose.Schema({
 		type: Number,
 		required: true
 	},
+	numTransf: {
+		type: Number,
+		required: true,
+		unique: true
+	},
 	fecha: {
 		type: Date,
 		default: () => Date.now(),
 	},
 	estado: {
 		type: String,
-		enum: ['Aceptada', 'Rechazada', 'Disputa'],
+		enum: ['Aceptada', 'Rechazada', 'Disputa', 'Reversada'],
 		default: () => 'Aceptada'
 	}
 })
